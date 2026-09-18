@@ -1,10 +1,9 @@
-name: Build AMD vs Intel v1.1.8
+name: Build AMD vs Intel v1.1.9
 
 "on":
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -22,23 +21,23 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.9"
-      - name: Build Android APK
+      - name: Build APK
         working-directory: android-app
         run: gradle clean assembleDebug
-      - name: Prepare files
+      - name: Prepare artifacts
         run: |
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.8.apk
-          zip -qr AMD-vs-Intel-Android-Project-v1.1.8.zip android-app -x "*/build/*" "*/.gradle/*"
-          cp index.html AMD-vs-Intel-App-v1.1.8.html
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.9.apk
+          zip -qr AMD-vs-Intel-Android-Project-v1.1.9.zip android-app -x "*/build/*" "*/.gradle/*"
+          cp index.html AMD-vs-Intel-App-v1.1.9.html
       - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-v1.1.8-APK
-          path: AMD-vs-Intel-v1.1.8.apk
+          name: AMD-vs-Intel-v1.1.9-APK
+          path: AMD-vs-Intel-v1.1.9.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-Android-Project-v1.1.8
-          path: AMD-vs-Intel-Android-Project-v1.1.8.zip
+          name: AMD-vs-Intel-Android-Project-v1.1.9
+          path: AMD-vs-Intel-Android-Project-v1.1.9.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-App-v1.1.8
-          path: AMD-vs-Intel-App-v1.1.8.html
+          name: AMD-vs-Intel-App-v1.1.9
+          path: AMD-vs-Intel-App-v1.1.9.html
