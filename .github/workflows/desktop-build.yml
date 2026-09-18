@@ -2,11 +2,6 @@ name: Build Windows, Linux and macOS desktop apps
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "main"
-    tags:
-      - "desktop-v*"
 
 jobs:
   build:
