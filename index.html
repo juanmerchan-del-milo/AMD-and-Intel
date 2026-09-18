@@ -720,6 +720,35 @@ header .top{
   }
 }
 </style>
+
+<style id="ihs-spacing-final">
+/* Final spacing adjustment only: lower the architecture diagrams slightly */
+#tab-inside .chip-card .package-view{
+  margin-top:18px!important;
+}
+#tab-inside .chip-card .diagram-title,
+#tab-inside .chip-head{
+  position:relative!important;
+  z-index:40!important;
+}
+#tab-inside .chip-card .chip-tag{
+  position:relative!important;
+  z-index:40!important;
+}
+#tab-inside #amdPackage,
+#tab-inside #intelPackage{
+  top:10px!important;
+}
+@media(max-width:620px){
+  #tab-inside .chip-card .package-view{
+    margin-top:22px!important;
+  }
+  #tab-inside #amdPackage,
+  #tab-inside #intelPackage{
+    top:14px!important;
+  }
+}
+</style>
 </head>
 <body>
 <header>
