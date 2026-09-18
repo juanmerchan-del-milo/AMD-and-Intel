@@ -2700,7 +2700,18 @@ window.applyStrictLanguage=applyStrict;
    ].forEach(([s,t,d])=>qa(s,lab).forEach(el=>bindPart(el,box,t,d)))
  }
 
- function boot(){tabs();inside();laptop();mini();cooling()}
+ function boot(){
+   // Estado inicial consistente: el primer toque siempre activa una función visible.
+   ["#amdPackage","#intelPackage"].forEach(sel=>{
+     const el=q(sel);
+     if(el)el.classList.remove("exploded","signal-mode","signal","heat-mode","heat")
+   });
+   ["#archExplode","#archSignal","#archHeat"].forEach(sel=>q(sel)?.classList.remove("active"));
+   const cool=q("#coolingLab");
+   if(cool)cool.classList.remove("heat-on","cool-performance","cool-silent");
+   q("#coolingPulse")?.classList.remove("active");
+   tabs();inside();laptop();mini();cooling()
+ }
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
  else boot();
 })();
