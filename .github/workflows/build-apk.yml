@@ -1,8 +1,11 @@
 name: Build AMD vs Intel v1.1.8
+
 "on":
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
