@@ -1648,6 +1648,7 @@ if(!model||!stage)return;
  }).forEach(n=>{let o=document.createElement("option");o.textContent=n;model.appendChild(o)});
 
 let rx=58,rz=-34,zoom=1,drag=false,lx=0,ly=0,auto=false,raf=0,selected=null,isolate=false;
+const v1213Lite3D=matchMedia('(pointer:coarse)').matches||innerWidth<760;
 const partInfo={
 "TIM":["TIM / interfaz térmica","Material de interfaz térmica entre el silicio y el IHS; su composición real depende del encapsulado."],
 "Microbumps":["Microbumps / microconexiones","Pequeñas uniones eléctricas entre el die y otras capas del encapsulado."],
@@ -1708,11 +1709,13 @@ function build(){
  badge.textContent=d.gpu?("iGPU · "+gpuName):"";
 
  addPart("Sustrato","plate substrate-v5",0,0,0,310,310,"SUSTRATO","Sustrato");
- for(let y=-112;y<=112;y+=28)for(let x=-112;x<=112;x+=28){
+ const contactStep=v1213Lite3D?40:28;
+ for(let y=-112;y<=112;y+=contactStep)for(let x=-112;x<=112;x+=contactStep){
    if(Math.abs(x)<35&&Math.abs(y)<35)continue;
    addPart("Contactos","ball-v5",x,y,-8,9,9,"","Contactos");
  }
- for(let y=-105;y<=105;y+=30)for(let x=-105;x<=105;x+=30)addPart("Microbumps","ball-v5",x,y,9,11,11,"","Microbumps");
+ const bumpStep=v1213Lite3D?42:30;
+ for(let y=-105;y<=105;y+=bumpStep)for(let x=-105;x<=105;x+=bumpStep)addPart("Microbumps","ball-v5",x,y,9,11,11,"","Microbumps");
 
  if(d.type==="amdAPU"){
    addPart("SoC monolítico","die-v5",0,-5,34,220,178,"MONOLITHIC SOC","SoC monolítico");
@@ -1797,7 +1800,13 @@ function selectPart(e){
  }
  [...partsBox.children].forEach(b=>b.classList.toggle("active",b.textContent===e.dataset.group));
 }
-function updateStage(){stage.style.transform=`translate(-50%,-50%) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`}
+let v1213StageRAF=0,v1213LastTransform="";
+function v1213CommitStage(){
+ v1213StageRAF=0;
+ const next=`translate3d(-50%,-50%,0) rotateX(${rx.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale(${zoom.toFixed(4)})`;
+ if(next!==v1213LastTransform){stage.style.transform=next;v1213LastTransform=next}
+}
+function updateStage(){if(!v1213StageRAF)v1213StageRAF=requestAnimationFrame(v1213CommitStage)}
 $("v5Explode").addEventListener("input",()=>stage.querySelectorAll(".v5part").forEach(setTransform));
 model.addEventListener("change",build);
 const v10Pointers=new Map(); let v10PinchDist=0,v10PinchZoom=1;
@@ -1820,24 +1829,22 @@ function v10StartInertia(){
 }
 function v10Dist(){const p=[...v10Pointers.values()];if(p.length<2)return 0;return Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)}
 scene.addEventListener("pointerdown",e=>{
+  scene.classList.add("v1213-interacting");
   v10StopInertia();
   scene.setPointerCapture?.(e.pointerId);v10Pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(v10Pointers.size===1){drag=true;lx=e.clientX;ly=e.clientY;v10VelZ=0;v10VelX=0}
   else{drag=false;v10PinchDist=v10Dist();v10PinchZoom=zoom}
 });
 scene.addEventListener("pointermove",e=>{
+  if(e.pointerType==="touch"&&e.cancelable)e.preventDefault();
   if(!v10Pointers.has(e.pointerId))return;v10Pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(v10Pointers.size>=2){
     const d=v10Dist();
-    if(v10PinchDist>0){zoom=Math.max(.55,Math.min(1.85,v10PinchZoom*(d/v10PinchDist)));updateStage()}
+    if(v10PinchDist>0){zoom=Math.max(.42,Math.min(2.25,v10PinchZoom*Math.pow(d/v10PinchDist,1.45)));updateStage()}
     return
   }
   if(!drag)return;
   const dx=e.clientX-lx,dy=e.clientY-ly;
-  if(e.pointerType==="touch" && Math.abs(dy)>Math.abs(dx)*1.18){
-    lx=e.clientX;ly=e.clientY;
-    return;
-  }
   const dz=dx*.46,drx=-dy*.39;
   rz+=dz;rx=Math.max(15,Math.min(82,rx+drx));
   v10VelZ=v10VelZ*.42+dz*.58;
@@ -1847,10 +1854,10 @@ scene.addEventListener("pointermove",e=>{
 function v10PointerEnd(e){
   v10Pointers.delete(e.pointerId);
   if(v10Pointers.size===1){const p=[...v10Pointers.values()][0];lx=p.x;ly=p.y;drag=true}
-  else if(v10Pointers.size===0){drag=false;v10PinchDist=0;v10StartInertia()}
+  else if(v10Pointers.size===0){drag=false;v10PinchDist=0;scene.classList.remove("v1213-interacting");v10StartInertia()}
 }
 scene.addEventListener("pointerup",v10PointerEnd);scene.addEventListener("pointercancel",v10PointerEnd);scene.addEventListener("pointerleave",e=>{if(e.pointerType!=="mouse")v10PointerEnd(e)});
-scene.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.55,Math.min(1.85,zoom+(e.deltaY<0?.08:-.08)));updateStage()},{passive:false});
+scene.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.42,Math.min(2.25,zoom*Math.exp(-e.deltaY*.0015)));updateStage()},{passive:false});
 $("v5Reset").addEventListener("click",()=>{v10StopInertia();v10VelZ=0;v10VelX=0;rx=58;rz=-34;zoom=1;updateStage()});
 $("v5Assemble").addEventListener("click",()=>{$("v5Explode").value=0;stage.querySelectorAll(".v5part").forEach(e=>{e.dataset.lifted="0";e.classList.remove("lifted","part-hidden","isolated-dim");setTransform(e)});isolate=false});
 $("v5Auto").addEventListener("click",()=>{auto=!auto;$("v5Auto").textContent=auto?"Pausar rotación":"Rotación automática";if(auto)tick();else cancelAnimationFrame(raf)});
@@ -2414,17 +2421,18 @@ window.applyStrictLanguage=applyStrict;
    const max=document.documentElement.scrollHeight-innerHeight;
    $("#v15Progress").style.width=(max>0?(scrollY/max*100):0)+"%";
  }
- addEventListener("scroll",progress,{passive:true});progress();
+ let progressRAF=0;
+ addEventListener("scroll",()=>{if(!progressRAF)progressRAF=requestAnimationFrame(()=>{progressRAF=0;progress()})},{passive:true});progress();
 
  // Touch lighting / realistic interaction.
- $$(".package-view,.v5scene,.mini-lab,.laptop-cutaway,.cooling-lab,.v15-hero").forEach(el=>{
+ $$(".package-view,.mini-lab,.laptop-cutaway,.cooling-lab,.v15-hero").forEach(el=>{
    el.classList.add("v15-touch-light");
    const move=e=>{
      const p=e.touches?.[0]||e; const r=el.getBoundingClientRect();
      el.style.setProperty("--mx",((p.clientX-r.left)/r.width*100)+"%");
      el.style.setProperty("--my",((p.clientY-r.top)/r.height*100)+"%");
    };
-   el.addEventListener("pointermove",move,{passive:true});el.addEventListener("touchmove",move,{passive:true});
+   el.addEventListener("pointermove",move,{passive:true});
  });
  const device=$("#v15Device"), chip=$("#v15Chip");
  device?.addEventListener("pointermove",e=>{
@@ -3062,9 +3070,35 @@ window.applyStrictLanguage=applyStrict;
  window.APP_BUILD='1.1.8';
 })();
 </script>
-<script id="v121-data-language-audit">
+<style id="v1213-performance-css">
+.v5scene{
+  touch-action:none!important;
+  overscroll-behavior:contain;
+  contain:layout paint style;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.v5stage{
+  transition:none!important;
+  will-change:transform;
+  backface-visibility:hidden;
+  transform-origin:50% 50%;
+}
+.v5part{backface-visibility:hidden}
+.v5scene.v1213-interacting .v5part{transition:none!important}
+.v5scene.v1213-interacting .v5stage:after{filter:blur(5px);opacity:.55}
+.brand-group,.compare,.corebench-card,.specs-card{
+  content-visibility:auto;
+  contain-intrinsic-size:1px 680px;
+}
+@media(pointer:coarse){
+  .v5stage:after{filter:blur(7px)!important;opacity:.65}
+  .v5part.selected{filter:brightness(1.2) drop-shadow(0 0 6px #a9d6ff)}
+}
+</style>
+<script id="v1213-data-language-audit">
 (()=>{
- window.APP_BUILD='1.2.1';
+ window.APP_BUILD='1.21.3';
 
  // Keep auxiliary specification records synchronized with the verified catalog.
  if(typeof models!=='undefined' && window.PROC_SPECS){
@@ -3158,8 +3192,8 @@ window.applyStrictLanguage=applyStrict;
    document.querySelectorAll('[placeholder],[aria-label],[title]').forEach(element);
    const grid=document.querySelector('#specsSection .spec-grid');
    if(grid){
-     let note=document.getElementById('v121SpecNote');
-     if(!note){note=document.createElement('p');note.id='v121SpecNote';note.className='tiny';grid.insertAdjacentElement('afterend',note)}
+     let note=document.getElementById('v1213SpecNote');
+     if(!note){note=document.createElement('p');note.id='v1213SpecNote';note.className='tiny';grid.insertAdjacentElement('afterend',note)}
      note.textContent={
        es:'Frecuencia = base / turbo. En AMD, la potencia suele corresponder al TDP; en Intel, a la potencia base y, cuando aparece, a la potencia turbo máxima. La caché conserva la nomenclatura oficial de cada fabricante.',
        en:'Frequency = base / turbo. For AMD, power usually refers to TDP; for Intel, it refers to processor base power and, when shown, maximum turbo power. Cache follows each manufacturer’s official terminology.',
@@ -3174,6 +3208,6 @@ window.applyStrictLanguage=applyStrict;
  setTimeout(()=>{try{render?.()}catch(e){};try{window.updateCoreBench?.()}catch(e){};try{window.updSpecs?.()}catch(e){};apply()},260);
 })();
 </script>
-<script id="v121-marker">window.APP_BUILD='1.2.1';</script>
+<script id="v1213-marker">window.APP_BUILD='1.21.3';</script>
 </body>
 </html>
