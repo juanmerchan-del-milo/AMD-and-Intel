@@ -1,0 +1,1860 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD Ryzen vs Intel Core — V15 Mobile PWA · ES/EN/中文</title>
+<style>
+:root{--bg:#0b1020;--card:#141b2f;--card2:#10172a;--text:#eef3ff;--muted:#aab6d3;--line:#293452;--accent:#62a8ff;--amd:#39d98a;--intel:#5ea7ff;--warn:#ffd166}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(135deg,#080c18,#111a31);color:var(--text)}
+header{padding:28px 5%;border-bottom:1px solid var(--line);background:#0c1222ee;position:sticky;top:0;z-index:3;backdrop-filter:blur(10px)}
+.top{max-width:1200px;margin:auto;display:flex;gap:20px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(25px,4vw,42px)}.sub{color:var(--muted);margin:7px 0 0}
+select,input,button{font:inherit;border:1px solid var(--line);border-radius:11px;background:#0e1528;color:var(--text);padding:11px 13px}
+select{min-width:160px}button{cursor:pointer}.lang{display:flex;align-items:center;gap:8px}
+main{max-width:1200px;margin:28px auto;padding:0 5%}
+.notice{padding:15px 17px;border:1px solid #40506f;background:#10182b;border-radius:14px;color:#c9d5ef;margin-bottom:22px}
+.controls{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+@media(max-width:800px){.controls{grid-template-columns:1fr 1fr}}@media(max-width:520px){.controls{grid-template-columns:1fr}}
+.grid{display:block}.brand-group{margin:0 0 28px}.brand-title{font-size:23px;font-weight:900;margin:12px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line)}.amd-title{color:#76e7b2}.intel-title{color:#8fc4ff}.brand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:16px}
+.card{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:0 12px 30px #0003}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;background:#24304c;color:#dbe6ff}.amd{border-top:4px solid var(--amd)}.intel{border-top:4px solid var(--intel)}
+.card h3{margin:10px 0 5px}.card p{color:var(--muted);line-height:1.5;margin:7px 0}.spec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.spec div{background:#0d1426;padding:9px;border-radius:10px}.spec small{display:block;color:#8491b1}.spec b{display:block;margin-top:3px}
+.compare{margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.compare-head{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}.compare-grid{display:grid;grid-template-columns:1fr 80px 1fr;gap:1px;background:var(--line);margin-top:16px;border-radius:12px;overflow:hidden}.compare-grid>div{background:#10172a;padding:12px}.compare-grid .label{text-align:center;color:var(--muted);font-weight:700}
+.tag{font-size:12px;color:#07111f;padding:4px 7px;border-radius:999px;background:var(--warn);font-weight:800}
+footer{max-width:1200px;margin:28px auto;padding:0 5% 35px;color:#8190b0;font-size:13px;line-height:1.6}
+.hidden{display:none}.empty{padding:30px;text-align:center;color:var(--muted);grid-column:1/-1}
+
+.visuals{margin-top:28px}.visual-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.visual-tabs button.active{border-color:var(--accent);background:#182744}
+.visual-panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.visual-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}
+@media(max-width:800px){.visual-grid{grid-template-columns:1fr}}
+.diagram{background:#080e1c;border:1px solid #2c3a59;border-radius:16px;min-height:300px;display:flex;align-items:center;justify-content:center;padding:18px}
+.die{width:min(330px,90%);aspect-ratio:1.15;border:8px solid #9aa7c2;border-radius:22px;background:#18243a;position:relative;box-shadow:0 0 0 4px #46536e,0 20px 45px #0008}
+.die:before{content:"";position:absolute;inset:18px;border:2px dashed #71809e;border-radius:13px}
+.chiplet{position:absolute;background:#243b5c;border:2px solid #7ea5d8;border-radius:8px}
+.ccd1{left:28px;top:35px;width:105px;height:80px}.ccd2{right:28px;top:35px;width:105px;height:80px}
+.iod{left:83px;bottom:32px;width:165px;height:70px;background:#33435f;border-color:#9db2d3}
+.core{position:absolute;width:16px;height:16px;border-radius:3px;background:#69d7a4;box-shadow:0 0 7px #69d7a488}
+.c1{left:42px;top:52px}.c2{left:66px;top:52px}.c3{left:90px;top:52px}.c4{left:42px;top:77px}.c5{left:66px;top:77px}.c6{left:90px;top:77px}
+.inteldie{width:min(360px,90%);aspect-ratio:1.2;border:7px solid #9aa7c2;border-radius:20px;background:#18243a;position:relative;box-shadow:0 0 0 4px #46536e,0 20px 45px #0008}
+.pcores,.ecores,.gpu,.cache{position:absolute;border:2px solid #6e9fe1;border-radius:9px;background:#243b5c}
+.pcores{left:24px;top:25px;width:135px;height:105px}.ecores{right:24px;top:25px;width:105px;height:105px}.gpu{left:24px;bottom:25px;width:135px;height:70px}.cache{right:24px;bottom:25px;width:105px;height:70px}
+.visual-copy h3{margin-top:0}.visual-copy p{color:var(--muted);line-height:1.6}.generation-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}
+.generation-list div{padding:10px;background:#0d1426;border:1px solid var(--line);border-radius:10px}.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:15px}
+.device{background:#0d1426;border:1px solid var(--line);border-radius:14px;padding:15px}.laptop{height:105px;position:relative;margin-bottom:12px}.screen{position:absolute;left:17%;top:4px;width:66%;height:70px;border:6px solid #a7b4cc;border-bottom-width:10px;border-radius:8px;background:linear-gradient(135deg,#18314e,#111a2b)}.base{position:absolute;left:8%;bottom:5px;width:84%;height:18px;background:#8795ae;clip-path:polygon(7% 0,93% 0,100% 100%,0 100%);border-radius:3px}.minipc{height:105px;display:flex;align-items:center;justify-content:center}.boxpc{width:120px;height:82px;border-radius:14px;background:#252f42;border:4px solid #8e9ab0;position:relative;box-shadow:0 12px 25px #0006}.boxpc:after{content:"";position:absolute;right:13px;top:17px;width:8px;height:8px;border-radius:50%;background:#67d8a4}.device p{color:var(--muted);font-size:14px;line-height:1.45}
+
+.threeD-launch{margin-top:28px;background:linear-gradient(135deg,#111c33,#0d1426);border:1px solid var(--line);border-radius:18px;padding:20px}
+.threeD-launch button{background:#162844;border-color:#4e78b3;font-weight:700}
+.viewer{display:none;margin-top:18px;padding:22px;border:1px solid var(--line);border-radius:18px;background:#080d19;overflow:hidden}
+.viewer.open{display:block}.viewer-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.viewer-head h3{margin:0}.viewer-head p{margin:5px 0;color:var(--muted)}
+.viewer-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0}.viewer-controls label{color:var(--muted);font-size:14px}
+.viewer-controls input[type=range]{accent-color:#62a8ff;min-width:180px}
+.scene{height:390px;display:flex;align-items:center;justify-content:center;perspective:900px;overflow:hidden}
+.cpu3d{width:270px;height:270px;position:relative;transform-style:preserve-3d;transform:rotateX(58deg) rotateZ(-35deg);transition:transform .45s ease}
+.layer{position:absolute;left:0;top:0;width:270px;height:270px;border:3px solid #a8b3c7;border-radius:18px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.substrate{background:linear-gradient(145deg,#202a3b,#101827);transform:translateZ(0)}
+.die-layer{background:linear-gradient(145deg,#28445b,#172b3e);transform:translateZ(18px)}
+.interposer{background:linear-gradient(145deg,#39485d,#222e40);transform:translateZ(34px)}
+.heatspreader{background:linear-gradient(145deg,#aeb8c7,#6f7b8e);transform:translateZ(52px);border-color:#dbe2ec}
+.layer .label3d{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotateZ(35deg) rotateX(-58deg);font-weight:800;text-align:center;color:#edf3ff;text-shadow:0 1px 2px #000}
+.heatspreader .label3d{color:#172033}
+.microgrid{position:absolute;inset:25px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;transform:translateZ(4px)}
+.microgrid span{border:1px solid #76a9d9;border-radius:3px;background:#263f59}
+.intel-die{background:linear-gradient(145deg,#30445d,#18283c)}
+.intel-die .p,.intel-die .e,.intel-die .g,.intel-die .c{position:absolute;border:2px solid #8db7e5;border-radius:7px;background:#213b56}
+.intel-die .p{left:25px;top:25px;width:105px;height:95px}.intel-die .e{right:25px;top:25px;width:80px;height:95px}.intel-die .g{left:25px;bottom:25px;width:105px;height:70px}.intel-die .c{right:25px;bottom:25px;width:80px;height:70px}
+.legend3d{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legend3d span{font-size:12px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;color:#c8d3e8}
+@media(max-width:560px){.scene{height:320px}.cpu3d,.layer{width:215px;height:215px}.microgrid{inset:20px;gap:4px}.intel-die .p{left:20px;top:20px;width:83px;height:76px}.intel-die .e{right:20px;top:20px;width:65px;height:76px}.intel-die .g{left:20px;bottom:20px;width:83px;height:56px}.intel-die .c{right:20px;bottom:20px;width:65px;height:56px}}
+
+.real3d-wrap{margin-top:30px}.real3d-card{background:radial-gradient(circle at 50% 0%,#223653 0,#0c1322 55%,#050810 100%);border:1px solid #3a4f70;border-radius:22px;padding:22px;box-shadow:0 25px 80px #0009}
+.real3d-head{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.real3d-head h2{margin:0}
+.real3d-lab{display:none;margin-top:18px}.real3d-lab.open{display:block}
+.real3d-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px;background:#090f1c;border:1px solid #2e415f;border-radius:14px}
+.real3d-toolbar label{font-size:13px;color:#b8c6dc}.real3d-toolbar input[type=range]{min-width:180px;accent-color:#63a9ff}
+.webgl-scene{height:560px;margin-top:14px;border-radius:18px;border:1px solid #2d405e;background:radial-gradient(circle at 50% 42%,#24364d 0,#0b121f 52%,#02050a 100%);overflow:hidden}
+.real3d-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.real3d-legend span{font-size:12px;color:#d0d9e8;border:1px solid #31435f;background:#0a1120;border-radius:999px;padding:7px 10px}
+
+.corebench-wrap{margin-top:30px}.corebench-card{background:linear-gradient(145deg,#111c31,#080d18);border:1px solid #344a69;border-radius:22px;padding:22px;box-shadow:0 20px 70px #0008}
+.corebench-head{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.corebench-head h2{margin:0}.corebench-head select{min-width:260px}
+.corebench-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}.bench-item{border:1px solid #2e405d;background:#0a1120;border-radius:16px;padding:18px}.bench-title{display:flex;justify-content:space-between;font-size:18px}.bench-title strong{font-size:20px}
+.bar{height:14px;border-radius:999px;background:#172238;margin:13px 0;overflow:hidden}.bar i{display:block;height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#447bb4,#8fc8ff);transition:width .6s ease}
+.bench-item p{color:#aebbd0;font-size:13px;line-height:1.5}.coreinfo{display:grid;grid-template-columns:120px 120px 1fr;gap:12px;margin-top:16px}.coreinfo div{border:1px solid #2e405d;border-radius:12px;padding:12px;background:#0a1120}.coreinfo b{display:block;color:#94a6bf;font-size:12px;margin-bottom:5px}.coreinfo span{font-size:14px}
+@media(max-width:700px){.corebench-grid{grid-template-columns:1fr}.coreinfo{grid-template-columns:1fr 1fr}.coreinfo div:last-child{grid-column:1/-1}}
+.specs-section{margin-top:30px}.specs-card{background:linear-gradient(145deg,#101b2d,#070c16);border:1px solid #344a69;border-radius:22px;padding:24px;box-shadow:0 20px 70px #0008}.specs-head{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}.specs-head select{min-width:300px}.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.spec-box{border:1px solid #30435f;background:#0a1220;border-radius:14px;padding:15px}.spec-box span{display:block;color:#94a6bf;font-size:12px;margin-bottom:7px}.spec-box b{font-size:17px}.corebench{margin-top:18px;border-top:1px solid #273852;padding-top:18px}.bench-title{display:flex;justify-content:space-between;margin-top:8px}.benchbar{height:13px;background:#172238;border-radius:99px;overflow:hidden;margin:7px 0 14px}.benchbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#447bb4,#9bd2ff);border-radius:99px;transition:width .5s}.tiny{color:#8e9db3;font-size:12px}@media(max-width:700px){.spec-grid{grid-template-columns:1fr 1fr}.specs-head select{width:100%;min-width:0}}.level-match{display:flex;justify-content:space-between;align-items:center;background:#101c31;border:1px solid #2b4262;border-radius:9px;padding:7px 9px;margin:7px 0 9px}.level-match small{color:#91a4bd}.level-match b{color:#9bd2ff}.level-map{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#0b1424;border:1px solid #2d4666;border-radius:16px;padding:14px;margin:22px 0;color:#dbe8f7}.level-map span{background:#14233a;border-radius:9px;padding:7px 10px;font-size:13px}.level-map small{width:100%;color:#8fa2bb}</style>
+
+<style id="v5labcss">
+.lab-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:18px 0}.lab-controls label{display:flex;flex-direction:column;gap:6px;color:#aab6d3;font-size:13px}.lab-controls select{min-width:260px}.lab-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px}.v5scene{height:590px;position:relative;overflow:hidden;border:1px solid #354b69;border-radius:18px;background:radial-gradient(circle at 50% 38%,#263b52 0,#0a111e 55%,#02050a 100%);perspective:1000px;cursor:grab;user-select:none}.v5scene:active{cursor:grabbing}.v5stage{position:absolute;left:50%;top:48%;width:360px;height:360px;transform-style:preserve-3d;transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-34deg) scale(1);transition:transform .08s linear}.v5part{position:absolute;left:50%;top:50%;transform-style:preserve-3d;transition:transform .45s ease,opacity .3s,filter .25s;cursor:pointer}.v5part.selected{filter:brightness(1.35) drop-shadow(0 0 12px #a9d6ff)}.plate{width:310px;height:310px;margin:-155px;border-radius:24px;border:3px solid #a7b2c5;box-shadow:inset 0 0 30px #0007,0 12px 25px #0007}.substrate-v5{background:linear-gradient(135deg,#263d32,#0c2017);border-color:#6b8b78}.ihs-v5{background:linear-gradient(135deg,#d6d9dd,#7e8792 45%,#e5e8eb 62%,#656e78);border-color:#eef2f5}.die-v5{width:110px;height:92px;margin:-55px;border-radius:9px;background:linear-gradient(135deg,#4a8095,#182f46 55%,#6f9eb2);border:2px solid #91bfd1}.iod-v5{width:128px;height:92px;margin:-64px;border-radius:9px;background:linear-gradient(135deg,#695d7e,#302942);border:2px solid #aa98c5}.cache-v5{width:102px;height:82px;margin:-51px;border-radius:8px;background:linear-gradient(135deg,#6f5230,#c28a45);border:2px solid #f0bc76}.tile-v5{border-radius:10px;border:2px solid #7caee5;background:linear-gradient(135deg,#294968,#122b42)}.ball-v5{width:11px;height:11px;margin:-5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f1f3f5,#777 55%,#222);box-shadow:0 2px 4px #000}.core-v5{width:27px;height:22px;margin:-13px;border-radius:4px;border:1px solid #9dd1b7;background:#2e7356}.v5label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;font-weight:800;color:#eef5ff;pointer-events:none;text-shadow:0 1px 3px #000}.ihs-v5 .v5label{font-size:18px;color:#202733;text-shadow:none}.v5hint{position:absolute;left:12px;bottom:10px;padding:7px 10px;border-radius:9px;background:#050912c9;color:#aebbd0;font-size:12px}.part-panel{border:1px solid #30435f;border-radius:16px;background:#09111f;padding:15px;min-width:0}.part-panel h3{margin-top:0}.part-panel p{color:#9eabc0;line-height:1.45}.part-actions{display:grid;gap:8px}.parts-list{display:grid;gap:7px;max-height:270px;overflow:auto}.parts-list button{text-align:left;padding:8px 10px;font-size:12px}.parts-list button.active{border-color:#83bfff;background:#172943}.part-hidden{opacity:.06!important;pointer-events:none}.isolated-dim{opacity:.08!important}.lifted{filter:brightness(1.2)}@media(max-width:850px){.lab-layout{grid-template-columns:1fr}.v5scene{height:470px}.part-panel{display:grid;grid-template-columns:1fr 1fr;gap:10px}.part-panel h3,.part-panel p,.part-panel h4,.parts-list{grid-column:1/-1}}@media(max-width:520px){.v5scene{height:390px}.v5stage{width:280px;height:280px}.plate{width:250px;height:250px;margin:-125px}.lab-controls select{min-width:0;width:100%}.lab-controls label{width:100%}}
+</style>
+
+
+<style id="v6css">
+.power-rank{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 10px;padding:7px 9px;border:1px solid #334764;border-radius:9px;background:#0b1526}
+.power-rank small{color:#91a4bd}.power-rank b{font-size:12px;letter-spacing:.3px}
+.device-badge{display:inline-block;margin:5px 5px 0 0;padding:4px 7px;border-radius:999px;border:1px solid #334764;color:#aebdd3;font-size:11px}
+.extreme-card{box-shadow:0 0 0 1px #6b5330 inset,0 16px 38px #0005}
+.v6note{margin:0 0 18px;padding:12px 14px;border:1px solid #3a4f70;border-radius:12px;background:#0d1728;color:#afbdd2;font-size:13px;line-height:1.5}
+.v5scene{background:radial-gradient(circle at 46% 34%,#34475a 0,#101925 42%,#05090f 75%,#010203 100%)}
+.v5stage:after{content:"";position:absolute;left:50%;top:50%;width:390px;height:390px;transform:translate(-50%,-50%) translateZ(-15px);border-radius:50%;background:radial-gradient(ellipse,#0009 0,#0005 45%,transparent 70%);filter:blur(13px);pointer-events:none}
+.ihs-v5{box-shadow:inset 8px 8px 16px #fff7,inset -12px -12px 20px #20252b99,0 18px 28px #0009}
+.substrate-v5{box-shadow:inset 0 0 45px #0009,0 14px 24px #0008}
+.die-v5,.iod-v5,.cache-v5,.tile-v5{box-shadow:inset 0 0 18px #ffffff18,0 7px 15px #000a}
+.part-panel strong{color:#e9f2ff}
+</style>
+
+<style id="v7mobile">
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{overflow-x:hidden}
+button,select,input{touch-action:manipulation}
+@media(max-width:700px){
+ header{position:relative;padding:18px 14px}.top{gap:12px}.top h1{font-size:28px}
+ main{padding:0 12px;margin-top:16px}.notice,.v6note{font-size:13px}
+ .controls{grid-template-columns:1fr!important;gap:9px}.controls input,.controls select{width:100%;min-width:0;min-height:48px}
+ .brand-grid{grid-template-columns:1fr!important}.card{padding:15px;border-radius:15px}
+ .spec{gap:7px}.spec div{padding:10px 8px}.spec b{font-size:14px;overflow-wrap:anywhere}
+ .compare{padding:14px}.compare-grid{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr);font-size:12px}
+ .compare-grid>div{padding:8px 5px;overflow-wrap:anywhere}
+ .lab-controls{display:grid;grid-template-columns:1fr 1fr}.lab-controls label:first-child{grid-column:1/-1}
+ .lab-controls select{width:100%;min-height:48px}.lab-controls button{min-height:48px}
+ .lab-layout{grid-template-columns:1fr}.v5scene{height:430px;border-radius:14px}
+ .part-panel{display:block}.part-actions{grid-template-columns:1fr}.parts-list{max-height:none;grid-template-columns:1fr 1fr}
+ .real3d-card,.corebench-card,.specs-card{padding:14px;border-radius:16px}
+ .spec-grid{grid-template-columns:1fr 1fr}.spec-box{padding:11px}
+ footer{padding:0 14px 25px}
+}
+@media(max-width:390px){
+ .v5scene{height:360px}.parts-list{grid-template-columns:1fr}
+ .spec{grid-template-columns:1fr 1fr}.brand-title{font-size:20px}
+}
+.install-note{margin:12px 0;padding:11px 13px;border:1px solid #345071;border-radius:12px;background:#0a1424;color:#aebdd3;font-size:13px}
+</style>
+
+<style id="v8catalogcss">
+.cpu-picker{display:grid;grid-template-columns:minmax(180px,1fr) minmax(240px,1.35fr) auto;gap:8px;align-items:center;min-width:min(100%,620px)}
+.cpu-picker input,.cpu-picker select{width:100%;min-height:43px;border:1px solid #314866;border-radius:11px;background:#0b1424;color:#eaf3ff;padding:0 12px;outline:none}
+.cpu-picker input:focus,.cpu-picker select:focus{border-color:#68adff;box-shadow:0 0 0 3px #5ca8ff1d}
+.catalog-count{white-space:nowrap;padding:8px 10px;border:1px solid #304764;border-radius:999px;color:#9fb4cf;background:#0a1321;font-size:12px;text-align:center}
+.selected-cpu-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.selected-cpu-meta span{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border:1px solid #2d4664;border-radius:999px;background:#0a1424;color:#afc1d9;font-size:12px}
+.selected-cpu-meta b{color:#f2f7ff}
+.bench-method{margin-top:12px;padding:10px 12px;border:1px solid #2d4260;background:#091321;border-radius:11px;color:#91a5bf;font-size:12px;line-height:1.45}
+#coreBenchModel optgroup,#specModel optgroup{font-weight:700;color:#dcecff;background:#111d31}
+#coreBenchModel option,#specModel option{font-weight:400;color:#e8f2ff;background:#0c1525}
+@media(max-width:760px){
+ .cpu-picker{grid-template-columns:1fr;width:100%;min-width:0}
+ .corebench-head,.specs-head{align-items:stretch}
+ .catalog-count{justify-self:start}
+}
+</style>
+
+
+<style id="v9-arch-style">
+.extreme-visuals{margin-top:30px}.arch-shell{overflow:hidden;background:radial-gradient(circle at 10% 0%,#17305577 0,transparent 30%),radial-gradient(circle at 90% 10%,#15425c55 0,transparent 27%),linear-gradient(160deg,#101a2c,#070d18 72%);border-color:#34506f;box-shadow:0 20px 40px #00000030 inset}.arch-hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:14px}.arch-kicker,.panel-kicker{display:inline-block;font-size:11px;letter-spacing:1.7px;font-weight:900;color:#78b9ff}.hero-stats{display:grid;grid-template-columns:repeat(3,88px);gap:8px}.hero-stats span{padding:10px 8px;border:1px solid #294362;border-radius:14px;background:#081221;text-align:center}.hero-stats b{display:block;font-size:18px}.hero-stats small{display:block;font-size:10px;color:#8195ae;margin-top:3px}.arch-tabs{padding:5px;background:#070e18;border:1px solid #29405d;border-radius:14px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.arch-tabs button{min-height:52px;border:0!important;border-radius:10px;background:transparent;color:#90a5be;font-weight:800}.arch-tabs button.active{background:linear-gradient(180deg,#183251,#101f36);color:#f4f8ff;box-shadow:0 0 0 1px #63adff77 inset,0 8px 20px #00000040}.arch-panel{margin-top:10px;border:1px solid #2d4462;border-radius:18px;padding:18px;background:linear-gradient(145deg,#0b1424,#08101c)}.panel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:14px}.panel-head h3{margin:6px 0 0;font-size:24px}.panel-actions{display:flex;gap:7px;flex-wrap:wrap}.panel-btn{border:1px solid #34506f!important;background:#0d1728!important;color:#adc0d8!important;border-radius:10px!important;padding:9px 12px!important;font-size:12px!important}.panel-btn.active,.panel-btn:hover{border-color:#63adff!important;color:#fff!important;background:#152845!important}.arch-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.chip-card{border:1px solid #2d4260;border-radius:18px;padding:14px;background:#070d18}.chip-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.chip-tag{font-size:10px;color:#8aa0bb;padding:5px 8px;border:1px solid #2b4260;border-radius:999px}.package-view{height:360px;position:relative;perspective:1100px;transform-style:preserve-3d;margin:0 auto;max-width:520px}.pkg-shadow{position:absolute;left:50%;top:65%;width:70%;height:20%;transform:translate(-50%,-50%) rotateX(70deg);background:#000a;filter:blur(18px);border-radius:50%}.pkg{position:absolute;left:50%;top:50%;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.82,.2,1),opacity .35s,box-shadow .35s;display:flex;align-items:center;justify-content:center;border-radius:16px}.pkg span,.pkg strong,.pkg small,.pkg b{transform:rotateZ(29deg) rotateX(-62deg)}.contacts{width:282px;height:240px;transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(-24px);background:radial-gradient(circle,#d7b461 0 2px,transparent 2.4px) 0 0/16px 16px,linear-gradient(145deg,#183d2a,#0d251b);border:2px solid #466b53;color:#b7c8bd;font-size:10px}.substrate{width:278px;height:236px;transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(0);background:linear-gradient(145deg,#163427,#0d231b);border:2px solid #446857;box-shadow:0 14px 35px #000a,inset 0 0 35px #06110d}.intel-substrate{background:linear-gradient(145deg,#193346,#0c1d2b);border-color:#446277}.trace{position:absolute;height:2px;background:linear-gradient(90deg,transparent,#d7b26199,transparent)}.t1{width:160px;left:28px;top:52px;transform:rotate(18deg)}.t2{width:140px;left:82px;top:172px;transform:rotate(-16deg)}.t3{width:110px;left:40px;top:122px;transform:rotate(30deg)}.t4{width:96px;right:20px;top:112px;transform:rotate(-42deg)}.silicon{width:224px;height:174px;transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(38px);border:1px solid #4f82b3;background:#0c1b29d9;box-shadow:0 0 30px #48a7ff22}.cache{width:84px;height:72px;left:38%;top:39%;transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(54px);background:linear-gradient(145deg,#55357d,#2c1d46);border:1px solid #b57cf3;flex-direction:column;color:#f2dbff;font-size:8px;text-align:center}.intel-cache{background:linear-gradient(145deg,#215a57,#153a37);border-color:#61c6b8}.tim{width:228px;height:178px;transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(68px);background:linear-gradient(145deg,#8a919d77,#4d556377);border:1px solid #cdd7e355;color:#e0e8f2;font-size:11px;backdrop-filter:blur(2px)}.ihs{width:286px;height:244px;transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(90px);background:linear-gradient(120deg,#f3f6fa 0,#9aa5b2 22%,#dce2e8 45%,#7d8794 70%,#cdd5dd 100%);border:3px solid #e8edf3;color:#1d2733;box-shadow:inset 8px 8px 20px #fff8,inset -9px -11px 24px #3337,0 15px 25px #0008;flex-direction:column}.intel-ihs{background:linear-gradient(120deg,#eef4fa 0,#9eb1c5 22%,#d8e3ef 45%,#7e8b99 70%,#d0d9e3 100%)}.ihs strong{font-size:17px;letter-spacing:1.4px}.ihs small{font-weight:800;opacity:.55;margin-top:5px}.amd-chiplet,.intel-tile{position:absolute;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 18px #ffffff12,0 7px 15px #0008;overflow:hidden}.amd-chiplet{color:#e0f4ff;font-size:10px}.ccd{width:74px;height:64px;background:linear-gradient(145deg,#285b7b,#15364c);border:1px solid #70bff0}.left{left:17px;top:18px}.right{right:17px;top:18px}.ccd em{display:block;width:42px;height:24px;margin-top:4px;border-radius:4px;background:repeating-linear-gradient(90deg,#77ddb8 0 8px,transparent 8px 11px),repeating-linear-gradient(#77ddb833 0 10px,transparent 10px 13px)}.iod{width:116px;height:58px;left:54px;bottom:14px;background:linear-gradient(145deg,#3a4d67,#1d2b40);border:1px solid #879dbc;color:#d9e3f0}.iod small{font-size:8px;color:#8fa6c5}.intel-silicon{display:block}.intel-tile{font-size:9px;color:#e6f3ff}.intel-tile small{font-size:7px;color:#9fc2df}.compute{left:14px;top:15px;width:110px;height:84px;background:linear-gradient(145deg,#285c80,#173852);border:1px solid #67b8ed}.gpu{right:14px;top:15px;width:72px;height:84px;background:linear-gradient(145deg,#315b73,#183448);border:1px solid #71c7e9}.soc{left:14px;bottom:13px;width:110px;height:50px;background:linear-gradient(145deg,#513d72,#2a2140);border:1px solid #ae7ce5}.io{right:14px;bottom:13px;width:72px;height:50px;background:linear-gradient(145deg,#4b515e,#252b36);border:1px solid #8995aa}.heat-plume{position:absolute;left:50%;top:47%;height:100px;width:24px;transform:translate(-50%,-50%);opacity:0;filter:blur(8px);background:linear-gradient(0deg,#ff3b2e00,#ff5823aa,#ffd45caa,#ffffff22);border-radius:50%;transition:.4s}.package-view.exploded .contacts{transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(-55px)}.package-view.exploded .substrate{transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(-15px)}.package-view.exploded .silicon{transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(52px)}.package-view.exploded .cache{transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(84px)}.package-view.exploded .tim{transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(114px)}.package-view.exploded .ihs{transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(154px)}.package-view.signal .trace{height:3px;box-shadow:0 0 11px #ffd466;animation:signalFlow 1.2s linear infinite}.package-view.signal .silicon{box-shadow:0 0 40px #4ab9ff55}.package-view.heat .heat-plume{opacity:1;animation:heatRise 1.25s ease-in-out infinite}.package-view.heat .ihs{box-shadow:inset 8px 8px 20px #fff8,inset -9px -11px 24px #3337,0 0 36px #ff6b3d66}@keyframes signalFlow{50%{filter:brightness(2.2)}}@keyframes heatRise{50%{height:136px;filter:blur(12px)}}.legend-pills{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 10px}.legend-pills span{padding:6px 9px;border:1px solid #2c4360;border-radius:999px;background:#091321;color:#9db3cc;font-size:11px}.arch-copy{color:#95a8bf;line-height:1.58;font-size:13px}.disclaimer-box{margin-top:14px;padding:12px 14px;border:1px solid #29405d;border-radius:12px;background:#081320;color:#91a6bf;font-size:12px}.timeline{position:relative;display:grid;grid-template-columns:repeat(10,minmax(150px,1fr));gap:10px;overflow-x:auto;padding:28px 2px 12px}.axis{position:absolute;left:1%;right:1%;top:15px;height:2px;background:linear-gradient(90deg,#ff735e,#7f83ff,#54baff);box-shadow:0 0 16px #5faeff55}.tl-card{position:relative;min-height:120px;padding:13px;border-radius:14px;border:1px solid #2e4462;background:#091321}.tl-card:before{content:"";position:absolute;top:-18px;left:18px;width:9px;height:9px;border-radius:50%;background:#75a9df;box-shadow:0 0 0 4px #0a1321,0 0 16px #75a9df}.tl-card .year{font-size:10px;color:#7690af;display:block}.tl-card b{display:block;margin:8px 0 4px}.tl-card small{display:block;color:#8094ae;line-height:1.35}.tl-card.amd{border-top:2px solid #ff725e}.tl-card.intel{border-top:2px solid #5baeff}.tl-card.latest{box-shadow:0 0 22px #5daeff1f,inset 0 0 18px #5daeff0d}.facts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.facts-grid>div{display:grid;grid-template-columns:42px 1fr;gap:2px 9px;padding:12px;border:1px solid #2c4260;border-radius:14px;background:#091321}.facts-grid>div>span{grid-row:1/3;font-size:22px;font-weight:900;color:#365d85}.facts-grid b{font-size:12px}.facts-grid p{margin:2px 0;color:#8094ae;font-size:11px;line-height:1.45}.laptop-cutaway{max-width:920px;margin:18px auto 8px;perspective:1100px}.lap-screen{width:74%;height:210px;margin:auto;border:8px solid #313c4f;border-bottom-width:14px;border-radius:15px 15px 9px 9px;background:linear-gradient(145deg,#07111d,#111d2e);box-shadow:0 20px 45px #0009}.lap-display{height:100%;border-radius:6px;background:radial-gradient(circle at 70% 20%,#204667,#081421 58%);position:relative;overflow:hidden}.lap-display:before{content:"";position:absolute;inset:12px;background:linear-gradient(90deg,#4da7ff22 1px,transparent 1px),linear-gradient(#4da7ff18 1px,transparent 1px);background-size:18px 18px}.lap-display span{position:absolute;left:22px;top:20px;font-size:12px;letter-spacing:2px;color:#81bfff}.lap-display i{position:absolute;height:5px;border-radius:9px;background:#5ab0ff66;left:22px}.lap-display i:nth-of-type(1){top:60px;width:46%}.lap-display i:nth-of-type(2){top:78px;width:61%}.lap-display i:nth-of-type(3){top:96px;width:35%}.lap-hinge{width:50%;height:10px;margin:-3px auto 0;background:linear-gradient(#5d6878,#242c39);border-radius:10px}.lap-base{width:92%;height:270px;margin:0 auto;position:relative;transform:rotateX(56deg);transform-origin:top;background:linear-gradient(145deg,#3d4756,#1b2230);clip-path:polygon(5% 0,95% 0,100% 100%,0 100%);border-radius:5px 5px 20px 20px;box-shadow:0 35px 50px #000b;overflow:hidden}.lap-board{position:absolute;left:11%;top:12%;width:54%;height:45%;border-radius:10px;background:radial-gradient(circle,#c6a756 0 1px,transparent 1.4px) 0 0/13px 13px,linear-gradient(145deg,#143a2e,#0b211b);border:2px solid #386650}.lap-cpu{position:absolute;left:37%;top:24%;width:80px;height:64px;border:2px solid #89b8da;border-radius:7px;background:linear-gradient(145deg,#294a62,#172b3d);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 22px #50afff33}.lap-cpu small{font-size:6px;color:#91b4ce}.lap-ram{position:absolute;left:8%;top:16%;width:55px;height:18px;background:#252e3a;border:1px solid #697b90;font-size:7px;color:#c9d4df;text-align:center;line-height:18px}.lap-ram.r2{top:39%}.lap-ssd{position:absolute;right:12%;top:48%;width:86px;height:16px;background:#28303e;border:1px solid #6f8094;font-size:7px;color:#d0dae5;text-align:center;line-height:16px}.lap-vrm{position:absolute;left:28%;top:8%;width:135px;height:14px;border-radius:20px;background:repeating-linear-gradient(90deg,#3f4f61 0 10px,#202b38 10px 14px)}.pipe{position:absolute;height:12px;border-radius:20px;background:linear-gradient(#d99c58,#7d4e2e);box-shadow:0 0 8px #d87b3644}.p1{left:42%;top:19%;width:36%;transform:rotate(8deg)}.p2{left:41%;top:29%;width:34%;transform:rotate(-11deg)}.fan{position:absolute;width:82px;height:82px;border-radius:50%;border:8px solid #303845;background:conic-gradient(#77808d 0 8%,#222936 8% 17%,#77808d 17% 25%,#222936 25% 34%,#77808d 34% 42%,#222936 42% 51%,#77808d 51% 59%,#222936 59% 68%,#77808d 68% 76%,#222936 76% 85%,#77808d 85% 93%,#222936 93%);box-shadow:inset 0 0 16px #000}.fan span{position:absolute;inset:29%;border-radius:50%;background:#111927;border:2px solid #7f8997}.fan.a{right:8%;top:10%}.fan.b{right:19%;top:43%}.battery{position:absolute;left:13%;right:11%;bottom:7%;height:58px;border:2px solid #424d5e;border-radius:9px;background:linear-gradient(#1c2634,#101721);display:flex;align-items:center;gap:5px;padding:7px}.battery i{width:14%;height:38px;border:1px solid #37495e;border-radius:4px;background:#182434}.battery span{font-size:8px;color:#75879f;margin-left:auto}.speaker{position:absolute;bottom:12%;width:8%;height:44px;border-radius:8px;background:repeating-linear-gradient(#5c6674 0 2px,#202733 2px 5px)}.speaker.sa{left:3%}.speaker.sb{right:3%}.thermal{position:absolute;border-radius:50%;background:radial-gradient(circle,#ff422b99 0,#ff7a2844 45%,transparent 70%);filter:blur(10px);opacity:0;transition:.45s}.thermal.cpu{left:37%;top:12%;width:110px;height:100px}.thermal.vrm{left:29%;top:3%;width:150px;height:70px}.laptop-cutaway.thermal-on .thermal{opacity:1}.laptop-cutaway.thermal-on .pipe{box-shadow:0 0 20px #ff743a99}.laptop-cutaway.thermal-on .fan{animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.two-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.info-card{padding:14px;border:1px solid #2c4260;border-radius:14px;background:#091321}.info-card p{margin:8px 0 0;color:#8297b1;font-size:12px;line-height:1.45}.mini-lab{height:390px;max-width:760px;margin:12px auto;position:relative;perspective:1100px;transform-style:preserve-3d}.mini-layer{position:absolute;left:50%;top:50%;width:360px;height:245px;transform:translate(-50%,-50%) rotateX(59deg) rotateZ(-28deg);transition:.65s cubic-bezier(.2,.8,.2,1);border-radius:22px}.mini-layer.top{background:linear-gradient(145deg,#606c7c,#252e3d);border:3px solid #8a96a6;color:#dfe8f2;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:inset 12px 10px 25px #ffffff1e,inset -10px -10px 20px #0007}.mini-layer.cooler{width:310px;height:190px;z-index:4;background:#111925cc;border:1px solid #4d5d70;display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px;color:#c9d4df}.blower{position:absolute;left:26px;top:28px;width:100px;height:100px;border-radius:50%;border:9px solid #353e4a;background:conic-gradient(#77828e 0 7%,#1a222d 7% 15%,#77828e 15% 22%,#1a222d 22% 30%,#77828e 30% 37%,#1a222d 37% 45%,#77828e 45% 52%,#1a222d 52% 60%,#77828e 60% 67%,#1a222d 67% 75%,#77828e 75% 82%,#1a222d 82% 90%,#77828e 90% 100%)}.blower span{position:absolute;inset:30%;border-radius:50%;background:#111927;border:2px solid #7e8895}.mini-pipe{position:absolute;left:104px;top:68px;width:136px;height:12px;border-radius:20px;background:linear-gradient(#d99c58,#7d4e2e)}.mini-layer.board{width:320px;height:210px;z-index:3;background:radial-gradient(circle,#b99c50 0 1px,transparent 1.3px) 0 0/14px 14px,linear-gradient(#163d30,#0c241d);border:2px solid #416e58}.mini-layer.board span{position:absolute;right:12px;bottom:10px;font-size:10px;color:#76a78e}.mcpu,.mram,.mssd,.mwifi{position:absolute;border:1px solid #718ba4;border-radius:6px;background:#243343;color:#cdd9e6;font-size:9px;display:flex;align-items:center;justify-content:center}.mcpu{left:118px;top:58px;width:82px;height:70px;background:linear-gradient(145deg,#2d4f66,#182c3d)}.mram{left:34px;top:48px;width:64px;height:20px}.mssd{right:24px;top:132px;width:86px;height:20px}.mwifi{right:34px;top:44px;width:44px;height:44px}.ports{position:absolute;left:18px;right:18px;bottom:16px;height:18px;display:flex;gap:6px}.ports i{flex:1;border-radius:4px;background:#273a31;border:1px solid #5e8d74}.mini-layer.bottom{z-index:2;background:linear-gradient(#303947,#151d28);border:3px solid #626f80;color:#8696aa;display:flex;align-items:flex-end;justify-content:center;padding-bottom:15px}.mini-lab.exploded .top{transform:translate(-50%,-50%) rotateX(59deg) rotateZ(-28deg) translateZ(155px)}.mini-lab.exploded .cooler{transform:translate(-50%,-50%) rotateX(59deg) rotateZ(-28deg) translateZ(78px)}.mini-lab.exploded .board{transform:translate(-50%,-50%) rotateX(59deg) rotateZ(-28deg) translateZ(20px)}.mini-lab.exploded .bottom{transform:translate(-50%,-50%) rotateX(59deg) rotateZ(-28deg) translateZ(-55px)}.cooling-lab{display:grid;grid-template-columns:1.3fr .7fr;gap:16px;align-items:center;min-height:390px;border:1px solid #2b405d;border-radius:17px;background:radial-gradient(circle at 30% 48%,#281a16,#08111d 58%);padding:18px}.thermal-stack{position:relative;height:330px;perspective:900px}.th{position:absolute;left:50%;transform:translateX(-50%) rotateX(62deg);display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:10px;box-shadow:0 15px 25px #0007}.th b{font-size:11px}.th small{font-size:9px;color:#d4b6a6;margin-top:3px}.th.die{top:225px;width:125px;height:80px;background:#2f566d;border:2px solid #79b8dd;color:#e5f7ff}.th.tim2{top:176px;width:145px;height:55px;background:#6c6f77;border:1px solid #aeb3bc}.th.ihs2{top:112px;width:240px;height:75px;background:linear-gradient(145deg,#c2c9d1,#66717d);border:2px solid #e1e5e9;color:#1a222a}.th.pipes{top:53px;width:280px;height:56px;background:#1d2530;border:1px solid #586777;flex-direction:row;gap:12px;color:#dbe7f2}.th.pipes span{width:64px;height:12px;border-radius:20px;background:linear-gradient(#d99c58,#7d4e2e)}.th.fin{right:0;left:auto;top:18px;transform:rotateX(62deg);width:160px;height:74px;background:#141d29;border:1px solid #5b6a79;color:#d9e6f0}.th.fin i{position:absolute;top:10px;bottom:10px;width:10px;border-radius:8px;background:#5f7385}.th.fin i:nth-of-type(1){left:18px}.th.fin i:nth-of-type(2){left:42px}.th.fin i:nth-of-type(3){left:66px}.th.fin i:nth-of-type(4){left:90px}.th.fin i:nth-of-type(5){left:114px}.harrow{position:absolute;left:50%;transform:translateX(-50%);font-style:normal;font-size:24px;color:#ff7143;text-shadow:0 0 14px #ff5b36;opacity:.25}.h1{top:205px}.h2{top:154px}.h3{top:90px}.h4{left:83%;top:38px;transform:none}.heat-on .harrow{animation:heatPulse 1s ease-in-out infinite}.heat-on .die{box-shadow:0 0 30px #ff4e3555}.heat-on .pipes span{box-shadow:0 0 13px #ff7a3b77}@keyframes heatPulse{50%{opacity:1;filter:brightness(1.6)}}.cool-readout{display:grid;gap:8px}.cool-readout>div{border:1px solid #2c405d;border-radius:11px;padding:11px;background:#08111e}.cool-readout span,.cool-readout b{display:block}.cool-readout span{font-size:10px;color:#8094ae}.cool-readout b{font-size:12px;margin-top:4px}.cool-readout p{font-size:10px;color:#7489a3;line-height:1.45}.hidden{display:none}@media(max-width:960px){.arch-hero{flex-direction:column;align-items:flex-start}.hero-stats{width:100%;grid-template-columns:repeat(3,1fr)}.arch-tabs{grid-template-columns:repeat(3,1fr)}.arch-grid,.facts-grid,.two-cards,.cooling-lab{grid-template-columns:1fr}.cool-readout{grid-template-columns:repeat(3,1fr)}.cool-readout p{grid-column:1/-1}}@media(max-width:620px){.arch-tabs{grid-template-columns:1fr 1fr}.arch-panel{padding:12px}.panel-head h3{font-size:20px}.panel-actions{width:100%}.panel-actions .panel-btn{flex:1}.package-view{height:300px;transform:scale(.88);margin:-10px -4%}.timeline{grid-template-columns:repeat(10,145px)}.laptop-cutaway{transform:scale(.82);margin:-15px -12% -25px;width:124%}.mini-lab{transform:scale(.78);margin:-25px -16% -35px;width:132%}.cooling-lab{padding:10px}.thermal-stack{transform:scale(.88);margin:-18px -8%}.cool-readout{grid-template-columns:1fr}}
+</style>
+
+<style id="v10-touch-css">
+html{font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans SC",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+button,select,input{touch-action:manipulation}
+.v5scene,.scene,#webglScene{touch-action:none;overscroll-behavior:contain;-webkit-user-select:none;user-select:none}
+.v5scene{cursor:grab}.v5scene:active{cursor:grabbing}
+.touch-chip{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 9px;border:1px solid #345071;border-radius:999px;background:#091526;color:#91acd0;font-size:11px}
+@media(pointer:coarse){
+ button,select,input{min-height:48px;font-size:16px}
+ .visual-tabs button,.panel-btn,.part-actions button,.parts-list button{min-height:48px}
+ .parts-list button{padding:11px 12px}
+ input[type=range]{height:38px;padding:0}
+ input[type=range]::-webkit-slider-thumb{width:26px;height:26px}
+ .v5hint{font-size:13px;line-height:1.35;max-width:calc(100% - 24px)}
+ .card{box-shadow:0 8px 22px #0004}
+ .lang select{min-width:135px}
+}
+@media(max-width:700px){
+ header{position:relative}.lang{width:100%;justify-content:flex-end}.lang select{width:auto}
+ .arch-tabs{overflow-x:auto;display:flex!important;scroll-snap-type:x proximity;padding-bottom:6px}
+ .arch-tabs button{min-width:150px;scroll-snap-align:start;flex:0 0 auto}
+ .lab-controls button,.part-actions button{width:100%}
+ .v5scene{height:440px!important}
+ .cpu-picker input,.cpu-picker select{font-size:16px}
+}
+</style>
+
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#09111f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CPU Lab">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style id="v15-mobile-pwa-css">
+:root{--v15-nav-h:74px;--v15-glow-x:50%;--v15-glow-y:30%}
+html{scroll-padding-top:92px}
+body{min-height:100dvh;background:
+ radial-gradient(circle at 12% -10%,#173c6d55,transparent 34%),
+ radial-gradient(circle at 88% 0%,#1d5a5640,transparent 30%),
+ linear-gradient(155deg,#050810 0%,#0a1020 48%,#0d1729 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:
+ linear-gradient(90deg,#ffffff08 1px,transparent 1px),
+ linear-gradient(#ffffff06 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#0005,transparent 70%)}
+header{box-shadow:0 14px 40px #0007}
+.v15-header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.v15-action{min-height:44px!important;padding:9px 12px!important;border-radius:12px!important;background:#0b1728cc!important;border:1px solid #365574!important;box-shadow:inset 0 1px #ffffff0d}
+.v15-action.primary{background:linear-gradient(145deg,#1b6fb9,#164d88)!important;border-color:#65b8ff!important;font-weight:800}
+.v15-action:active{transform:scale(.97)}
+.v15-status{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 10px;border-radius:999px;background:#07111dcc;border:1px solid #2b425d;color:#a9bad0;font-size:11px}
+.v15-status i{width:7px;height:7px;border-radius:50%;background:#39d98a;box-shadow:0 0 10px #39d98a}
+.v15-status.offline i{background:#ffd166;box-shadow:0 0 10px #ffd166}
+.v15-anchor{scroll-margin-top:96px}
+.v15-hero{position:relative;overflow:hidden;margin:0 0 24px;padding:24px;border:1px solid #365270;border-radius:24px;background:
+ radial-gradient(circle at var(--v15-glow-x) var(--v15-glow-y),#4aa7ff22,transparent 28%),
+ linear-gradient(145deg,#101c31ee,#08111fee);box-shadow:0 22px 70px #0007,inset 0 1px #ffffff12}
+.v15-hero::after{content:"";position:absolute;right:-70px;top:-90px;width:260px;height:260px;border-radius:50%;border:1px solid #66b9ff22;box-shadow:0 0 80px #3c9dff22 inset;pointer-events:none}
+.v15-hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px;align-items:center;position:relative;z-index:1}
+.v15-eyebrow{display:inline-flex;gap:7px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #34516f;background:#071424;color:#84c7ff;font-size:11px;font-weight:900;letter-spacing:1.2px}
+.v15-hero h2{margin:12px 0 8px;font-size:clamp(28px,5vw,54px);line-height:1.02;letter-spacing:-1.4px}
+.v15-hero p{max-width:760px;color:#9eb0c6;line-height:1.65}
+.v15-quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.v15-quick button{min-height:48px;font-weight:800;background:#0b1728;border-color:#345879}
+.v15-quick button:first-child{background:linear-gradient(145deg,#1c74c4,#124d8d);border-color:#6fc0ff}
+.v15-device{height:260px;position:relative;display:flex;align-items:center;justify-content:center;perspective:900px}
+.v15-chip{width:190px;height:190px;position:relative;transform:rotateX(58deg) rotateZ(-32deg);transform-style:preserve-3d;transition:transform .18s ease-out}
+.v15-chip .v15-layer{position:absolute;inset:0;border-radius:22px;border:2px solid #aab5c3;box-shadow:0 18px 36px #0008,inset 7px 7px 18px #ffffff18}
+.v15-chip .base{background:linear-gradient(145deg,#17392d,#0a1e17);transform:translateZ(0)}
+.v15-chip .diex{inset:30px;background:linear-gradient(145deg,#2c6689,#172f45);border-color:#79bfe7;transform:translateZ(30px)}
+.v15-chip .lid{background:linear-gradient(120deg,#eef2f6,#8a96a5 27%,#d7dde3 52%,#717d8c 77%,#c8d0da);transform:translateZ(68px)}
+.v15-chip .lid::before{content:"AMD × INTEL";position:absolute;inset:0;display:grid;place-items:center;color:#172231;font-weight:1000;letter-spacing:1px;transform:rotateZ(32deg) rotateX(-58deg)}
+.v15-orbit{position:absolute;width:235px;height:235px;border:1px solid #67b6ff28;border-radius:50%;transform:rotateX(68deg);animation:v15orbit 7s linear infinite}
+.v15-orbit::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#7ec8ff;left:20px;top:40px;box-shadow:0 0 18px #7ec8ff}
+@keyframes v15orbit{to{transform:rotateX(68deg) rotateZ(360deg)}}
+.v15-mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:17px}
+.v15-mini-stats div{padding:11px;border-radius:14px;background:#071221;border:1px solid #28425f}
+.v15-mini-stats b{display:block;font-size:16px}.v15-mini-stats span{font-size:10px;color:#7f93ad}
+.v15-progress{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,#41d49a,#62a8ff);z-index:9999;box-shadow:0 0 12px #62a8ff}
+.v15-bottom-nav{display:none}
+.v15-toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:9998;max-width:min(92vw,520px);padding:11px 14px;border-radius:13px;background:#07111df2;border:1px solid #3a5878;color:#eaf3ff;box-shadow:0 16px 50px #000a;transition:.28s}
+.v15-toast.show{opacity:1;transform:translate(-50%,0)}
+.v15-install-banner{display:none;margin:0 0 18px;padding:13px 14px;border-radius:16px;border:1px solid #345777;background:linear-gradient(145deg,#0d2137,#0a1626)}
+.v15-install-banner.show{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.v15-install-banner p{margin:0;color:#aebdd1;font-size:13px;line-height:1.45}
+.v15-install-banner button{min-height:44px;font-weight:800}
+.card,.compare,.arch-panel,.real3d-card,.corebench-card,.specs-card{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.card:active,.panel-btn:active{transform:scale(.985)}
+.v15-reveal{opacity:0;transform:translateY(16px);transition:opacity .45s ease,transform .45s ease}
+.v15-reveal.visible{opacity:1;transform:none}
+.v15-touch-light{position:relative;overflow:hidden}
+.v15-touch-light::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:20;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),#ffffff12 0,transparent 24%);opacity:0;transition:opacity .18s}
+.v15-touch-light:active::before,.v15-touch-light:hover::before{opacity:1}
+@media (hover:hover){
+ .card:hover,.compare:hover,.arch-panel:hover,.real3d-card:hover,.corebench-card:hover,.specs-card:hover{border-color:#48688d;box-shadow:0 18px 55px #0006}
+}
+@media(max-width:760px){
+ body{padding-bottom:calc(var(--v15-nav-h) + env(safe-area-inset-bottom) + 8px)}
+ header{position:sticky!important;top:0!important;padding:10px 12px!important}
+ .top{gap:8px!important}.top>div:first-child .sub{display:none}.top h1{font-size:19px!important;letter-spacing:-.4px}
+ .lang{width:100%;justify-content:space-between}.lang select{flex:1;min-height:46px!important}.touch-chip{font-size:10px}
+ .v15-header-actions{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr}.v15-action{padding:8px!important;font-size:12px}
+ main{padding:0 10px!important;margin-top:12px!important}
+ .v15-hero{padding:18px 14px;border-radius:20px}.v15-hero-grid{grid-template-columns:1fr}.v15-device{height:210px;order:-1}
+ .v15-chip{width:150px;height:150px}.v15-orbit{width:188px;height:188px}.v15-chip .diex{inset:24px}
+ .v15-hero h2{font-size:32px}.v15-hero p{font-size:13px}.v15-mini-stats{grid-template-columns:repeat(3,1fr)}
+ .v15-quick{display:grid;grid-template-columns:1fr 1fr}.v15-quick button{width:100%}.v15-quick button:last-child{grid-column:1/-1}
+ .v15-bottom-nav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:9997;min-height:66px;padding:6px;border-radius:20px;background:#06101bea;border:1px solid #304a66;backdrop-filter:blur(18px);box-shadow:0 16px 40px #000b}
+ .v15-bottom-nav button{min-width:0!important;min-height:54px!important;padding:5px 2px!important;border:0!important;background:transparent!important;border-radius:14px!important;color:#8296af!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9px!important}
+ .v15-bottom-nav button b{font-size:19px;line-height:1}.v15-bottom-nav button.active{background:#13263dcc!important;color:#eaf4ff!important;box-shadow:inset 0 0 0 1px #4b83b8}
+ .controls{position:relative}.controls input,.controls select,button{font-size:16px}
+ .package-view,.v5scene,.mini-lab,.laptop-cutaway{touch-action:pan-y pinch-zoom}
+}
+@media(max-width:390px){
+ .v15-mini-stats b{font-size:13px}.v15-mini-stats span{font-size:9px}
+ .v15-header-actions{grid-template-columns:1fr 1fr}.v15-header-actions .v15-status{grid-column:1/-1;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+
+
+<style id="v16-upgrade-css">
+.pro-tools{display:grid;grid-template-columns:1.2fr 1.1fr 1.1fr auto auto;gap:10px;max-width:1200px;margin:14px auto 10px;padding:12px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#0c1426,#101a31);box-shadow:0 10px 30px #0005}
+.pro-tools .pro-item{display:flex;flex-direction:column;gap:6px}
+.pro-tools label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.2px}
+.pro-tools select,.pro-tools button{min-height:46px;border-radius:14px;border:1px solid #324867;background:#0c1526;color:var(--text);padding:10px 12px;font:inherit}
+.pro-tools button{font-weight:800;cursor:pointer}
+.pro-tools .ghost{background:#101b31}.pro-tools .primary{background:linear-gradient(135deg,#16365c,#1e5da0);border-color:#5da8ff}
+.pro-hint{max-width:1200px;margin:0 auto 12px;padding:10px 14px;border-left:3px solid #5ea7ff;border-radius:12px;background:#0e1728;color:#b4c2da;font-size:13px}
+.brand-headline{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}.brand-headline .count{font-size:12px;color:#9fb4d4}
+.card.intel.intel-pro{background:linear-gradient(160deg,#142341,#0e1730 58%,#0d1328);border:1px solid #4f78b5;box-shadow:0 16px 40px #08101f inset,0 12px 30px #0005}.card.intel.intel-pro::before{content:"";display:block;height:4px;border-radius:999px;background:linear-gradient(90deg,#8dd2ff,#5ea7ff,#3258ff);margin:-2px -2px 14px}.card.intel .intel-real{margin:8px 0 12px;padding:9px 10px;border-radius:12px;background:linear-gradient(145deg,#0d1830,#13274c);border:1px solid #335f9c}.card.intel .intel-real small{display:block;color:#a8b9d3;margin-bottom:6px}.card.intel .meter{height:8px;background:#09101d;border-radius:999px;overflow:hidden;border:1px solid #30465f}.card.intel .meter i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#89d2ff,#5ea7ff,#6a5eff)}
+.card .power-rank,.card .level-match{margin-top:8px}
+.quick-actions{display:flex;gap:8px;flex-wrap:wrap;max-width:1200px;margin:0 auto 16px}.quick-actions button{min-height:42px;padding:10px 14px;border-radius:999px;border:1px solid #325578;background:#0d1527;color:var(--text);font:inherit;font-weight:800;cursor:pointer}.quick-actions button.primary{background:linear-gradient(135deg,#194575,#2366b0)}
+.card.flash{outline:2px solid #7ed0ff;transform:translateY(-3px);transition:all .25s ease;box-shadow:0 0 0 3px #7ed0ff25,0 18px 42px #0007}
+@media(max-width:900px){.pro-tools{grid-template-columns:1fr 1fr}.pro-tools .span-all{grid-column:1/-1}}
+@media(max-width:650px){.pro-tools{grid-template-columns:1fr}.pro-tools .span-all{grid-column:auto}.quick-actions{padding:0 2px}.quick-actions button{flex:1 1 calc(50% - 8px)}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top">
+  <div><h1 data-i18n="title">AMD Ryzen vs Intel Core</h1><div class="sub" data-i18n="subtitle">Comparador de generaciones, modelos y gráficos integrados</div></div>
+  <div class="lang"><span>🌐</span><select id="language" aria-label="Seleccionar idioma"><option value="es">Español</option><option value="en">English</option><option value="zh">中文</option></select><span class="touch-chip">👆 Táctil optimizado</span></div>
+<div class="v15-header-actions">
+ <button class="v15-action primary" id="v15Install" type="button" data-v15-key="install">⬇ Instalar app</button>
+ <button class="v15-action" id="v15Fullscreen" type="button" data-v15-key="fullscreen">⛶ Pantalla completa</button>
+ <span class="v15-status" id="v15Status"><i></i><span data-v15-key="online">En línea</span></span>
+</div>
+ </div>
+</header>
+<main>
+
+<div class="v15-progress" id="v15Progress"></div>
+<section class="v15-hero v15-anchor" id="homeSection">
+ <div class="v15-hero-grid">
+  <div>
+   <span class="v15-eyebrow" data-v15-key="eyebrow">● LABORATORIO MÓVIL DE CPU</span>
+   <h2 data-v15-key="heroTitle">Explora AMD e Intel como si tuvieras el procesador en la mano.</h2>
+   <p data-v15-key="heroText">Catálogo, especificaciones, benchmarks y vistas 3D optimizadas para tocar, arrastrar y comparar desde el celular.</p>
+   <div class="v15-quick">
+    <button type="button" data-v15-go="catalogSection" data-v15-key="explore">Explorar catálogo</button>
+    <button type="button" data-v15-go="real3dSection" data-v15-key="open3d">Abrir laboratorio 3D</button>
+    <button type="button" id="v15Download" data-v15-key="download">Descargar para Chrome</button>
+   </div>
+   <div class="v15-mini-stats">
+    <div><b>ES · EN · 中文</b><span data-v15-key="languages">3 idiomas</span></div>
+    <div><b>TOUCH</b><span data-v15-key="touch">gestos táctiles</span></div>
+    <div><b>OFFLINE</b><span data-v15-key="offlineReady">modo sin conexión</span></div>
+   </div>
+  </div>
+  <div class="v15-device" id="v15Device">
+   <div class="v15-orbit"></div>
+   <div class="v15-chip" id="v15Chip">
+    <div class="v15-layer base"></div>
+    <div class="v15-layer diex"></div>
+    <div class="v15-layer lid"></div>
+   </div>
+  </div>
+ </div>
+</section>
+<div class="v15-install-banner" id="v15InstallBanner">
+ <p data-v15-key="installHelp">En Android con Chrome puedes instalarla como una app y usarla desde la pantalla de inicio.</p>
+ <button type="button" id="v15InstallBannerBtn" data-v15-key="installNow">Instalar ahora</button>
+</div>
+
+ <div class="notice" data-i18n="notice">
+  Puedes buscar por modelo, elegir fabricante, familia y generación, y filtrar si tiene gráficos integrados. La app usa fichas de modelos y familias para comparar; las especificaciones exactas cambian según el modelo.
+ </div>
+ <div class="controls">
+   <input id="search" data-placeholder="search" placeholder="Buscar modelo (ej. 7600, 14900K, 5600G)">
+   <select id="brand"><option value="all" data-i18n="allBrands">Todos</option><option value="AMD">AMD</option><option value="Intel">Intel</option></select>
+   <select id="family"><option value="all" data-i18n="allFamilies">Todas las familias</option></select>
+   <select id="generation"><option value="all">Todas las generaciones</option></select>
+   <select id="igpu"><option value="all" data-i18n="allGraphics">Gráficos: todos</option><option value="yes" data-i18n="withGraphics">Con gráficos integrados</option><option value="no" data-i18n="withoutGraphics">Sin gráficos integrados</option></select>
+ </div>
+
+<div class="pro-tools" id="proTools">
+  <div class="pro-item">
+    <label id="pt-sort-label">Ordenar por potencia</label>
+    <select id="sortOrder">
+      <option value="asc">Menor a mayor</option>
+      <option value="desc">Mayor a menor</option>
+    </select>
+  </div>
+  <div class="pro-item">
+    <label id="pt-level-label">Nivel de potencia</label>
+    <select id="powerLevel">
+      <option value="all">Todos</option>
+      <option value="basic">Básico</option>
+      <option value="mid">Medio</option>
+      <option value="high">Alto</option>
+      <option value="extreme">Extremo</option>
+    </select>
+  </div>
+  <div class="pro-item">
+    <label id="pt-focus-label">Enfoque rápido</label>
+    <select id="focusView">
+      <option value="all">Vista equilibrada</option>
+      <option value="desktop">Escritorio</option>
+      <option value="laptop">Portátiles</option>
+      <option value="igpu">Con gráficos integrados</option>
+    </select>
+  </div>
+  <button class="ghost" id="jumpWeak">Ir al menos potente</button>
+  <button class="primary" id="jumpStrong">Ir al más potente</button>
+</div>
+<div class="pro-hint" id="proHint">Usa estos controles para encontrar más rápido el procesador más básico o el más potente sin crear otra app.</div>
+<div class="quick-actions">
+  <button id="bestIntel">Intel más potente</button>
+  <button id="bestAMD">AMD más potente</button>
+  <button id="cheapIntel">Intel menos potente</button>
+  <button id="cheapAMD">AMD menos potente</button>
+</div>
+ <div class="install-note"><strong>📱 Versión móvil:</strong> diseñada para abrirse en Android/iPhone desde el navegador. No necesita ocupar GB: todo el laboratorio y el catálogo están dentro de este archivo HTML.</div><div class="v6note"><strong>Orden:</strong> de menor potencia a nivel EXTREME dentro de cada marca. La posición es orientativa y usa especificaciones del CPU; no es un benchmark universal, porque laptops y desktops cambian según refrigeración y límites de potencia.</div><div id="catalogSection" class="v15-anchor"></div><div id="cards" class="grid"></div>
+
+ 
+<section class="visuals extreme-visuals v15-anchor" id="architectureSection">
+ <div class="compare arch-shell">
+  <div class="arch-hero">
+   <div>
+    <span class="arch-kicker">LABORATORIO DE ARQUITECTURA</span>
+    <h2 data-i18n="visualTitle">Cómo se construyen y dónde se usan</h2>
+    <p class="sub" data-i18n="visualSub">Explora una vista técnica e interactiva del interior del chip, sus generaciones y los equipos donde se usan estos procesadores.</p>
+   </div>
+   <div class="hero-stats">
+    <span><b>5</b><small>módulos</small></span>
+    <span><b>3D</b><small>vistas técnicas</small></span>
+    <span><b>EXT</b><small>modo visual</small></span>
+   </div>
+  </div>
+  <div class="visual-tabs arch-tabs">
+   <button class="active" data-tab="inside" data-i18n="inside">Interior del procesador</button>
+   <button data-tab="gens" data-i18n="generations">Generaciones</button>
+   <button data-tab="laptops" data-i18n="laptops">Laptops</button>
+   <button data-tab="minipcs" data-i18n="minipcs">Mini PCs</button>
+   <button data-tab="cooling">Refrigeración</button>
+  </div>
+
+  <div id="tab-inside" class="visual-panel arch-panel">
+   <div class="panel-head">
+    <div>
+     <span class="panel-kicker">EXPLORADOR DEL CHIP</span>
+     <h3>Del IHS al silicio</h3>
+    </div>
+    <div class="panel-actions">
+     <button type="button" class="panel-btn active" id="archExplode">Separar capas</button>
+     <button type="button" class="panel-btn" id="archSignal">Ruta de señal</button>
+     <button type="button" class="panel-btn" id="archHeat">Ruta térmica</button>
+    </div>
+   </div>
+   <div class="arch-grid">
+    <article class="chip-card">
+     <div class="chip-head"><b data-i18n="amdInside">AMD: diseño con chiplets</b><span class="chip-tag">CCD · I/O · 3D V-Cache</span></div>
+     <div class="package-view amd-package exploded" id="amdPackage">
+      <div class="pkg-shadow"></div>
+      <div class="pkg contacts"><span>Contactos</span></div>
+      <div class="pkg substrate">
+       <i class="trace t1"></i><i class="trace t2"></i><i class="trace t3"></i><i class="trace t4"></i>
+       <span>Sustrato</span>
+      </div>
+      <div class="pkg silicon">
+       <div class="amd-chiplet ccd left"><b>CCD 0</b><small>núcleos</small><em></em></div>
+       <div class="amd-chiplet ccd right"><b>CCD 1</b><small>núcleos</small><em></em></div>
+       <div class="amd-chiplet iod"><b>I/O DIE</b><small>DDR / PCIe</small></div>
+      </div>
+      <div class="pkg cache"><b>3D V-CACHE</b><small>caché apilada</small></div>
+      <div class="pkg tim"><span>TIM</span></div>
+      <div class="pkg ihs"><strong>AMD RYZEN</strong><small>IHS</small></div>
+      <div class="heat-plume"></div>
+     </div>
+     <div class="legend-pills">
+      <span>CCD</span><span>I/O</span><span>3D V-Cache</span><span>IHS</span>
+     </div>
+     <p class="arch-copy">Vista educativa de una CPU Ryzen moderna: los núcleos pueden agruparse en CCD y conectarse a un I/O Die. En modelos X3D, una capa adicional de caché mejora ciertas cargas de juego y latencia.</p>
+    </article>
+
+    <article class="chip-card">
+     <div class="chip-head"><b data-i18n="intelInside">Intel: arquitectura híbrida y tiles</b><span class="chip-tag">P-core · E-core · GPU · SoC</span></div>
+     <div class="package-view intel-package exploded" id="intelPackage">
+      <div class="pkg-shadow"></div>
+      <div class="pkg contacts"><span>Contactos</span></div>
+      <div class="pkg substrate intel-substrate">
+       <i class="trace t1"></i><i class="trace t2"></i><i class="trace t3"></i><i class="trace t4"></i>
+       <span>Sustrato</span>
+      </div>
+      <div class="pkg silicon intel-silicon">
+       <div class="intel-tile compute"><b>COMPUTE</b><small>P + E cores</small></div>
+       <div class="intel-tile gpu"><b>GPU</b><small>Xe / Arc</small></div>
+       <div class="intel-tile soc"><b>SoC</b><small>NPU · media</small></div>
+       <div class="intel-tile io"><b>I/O</b><small>PCIe / links</small></div>
+      </div>
+      <div class="pkg cache intel-cache"><b>FABRIC</b><small>interconexión</small></div>
+      <div class="pkg tim"><span>TIM</span></div>
+      <div class="pkg ihs intel-ihs"><strong>INTEL CORE ULTRA</strong><small>IHS</small></div>
+      <div class="heat-plume"></div>
+     </div>
+     <div class="legend-pills">
+      <span>P-core</span><span>E-core</span><span>GPU</span><span>NPU / SoC</span>
+     </div>
+     <p class="arch-copy">Vista educativa de un diseño Intel moderno: la lógica de cómputo se combina con gráficos y otras funciones del sistema. En Core Ultra, varias funciones pueden organizarse en tiles con aceleración de IA.</p>
+    </article>
+   </div>
+   <div class="disclaimer-box">Estas ilustraciones son reconstrucciones educativas para entender el empaquetado y los bloques funcionales. No copian el floorplan exacto de cada modelo.</div>
+  </div>
+
+  <div id="tab-gens" class="visual-panel arch-panel hidden">
+   <div class="panel-head">
+    <div>
+     <span class="panel-kicker">LÍNEA DE TIEMPO</span>
+     <h3>Evolución de arquitecturas</h3>
+    </div>
+   </div>
+   <p class="arch-copy" data-i18n="generationText">Las generaciones cambian la arquitectura, el nodo de fabricación, el empaquetado, los gráficos y la eficiencia. Esta línea de tiempo resume familias clave.</p>
+   <div class="timeline">
+    <div class="axis"></div>
+    <article class="tl-card amd"><span class="year">2017</span><b>Ryzen 1000</b><small>Zen · 14 nm</small></article>
+    <article class="tl-card amd"><span class="year">2019</span><b>Ryzen 3000</b><small>Zen 2 · chiplets</small></article>
+    <article class="tl-card amd"><span class="year">2020</span><b>Ryzen 5000</b><small>Zen 3 · latencia refinada</small></article>
+    <article class="tl-card amd"><span class="year">2022</span><b>Ryzen 7000</b><small>Zen 4 · DDR5 / PCIe 5</small></article>
+    <article class="tl-card amd"><span class="year">2024</span><b>Ryzen 9000</b><small>Zen 5 · nueva generación</small></article>
+    <article class="tl-card intel"><span class="year">2021</span><b>Core 12th</b><small>Alder Lake · P+E</small></article>
+    <article class="tl-card intel"><span class="year">2022–24</span><b>Core 13th / 14th</b><small>Raptor Lake</small></article>
+    <article class="tl-card intel"><span class="year">2023</span><b>Core Ultra S1</b><small>Meteor Lake · tiles</small></article>
+    <article class="tl-card intel"><span class="year">2024–25</span><b>Core Ultra S2</b><small>Arrow / Lunar Lake</small></article>
+    <article class="tl-card intel latest"><span class="year">2026</span><b>Core Ultra S3</b><small>AI PC · serie reciente</small></article>
+   </div>
+   <div class="facts-grid">
+    <div><span>01</span><b>Arquitectura</b><p>Nuevos núcleos, cachés, predicción y ejecución.</p></div>
+    <div><span>02</span><b>Empaquetado</b><p>Chiplets, tiles, interconexiones y apilado 3D.</p></div>
+    <div><span>03</span><b>IA y movilidad</b><p>NPUs dedicadas, mejores iGPU y plataformas más eficientes.</p></div>
+   </div>
+  </div>
+
+  <div id="tab-laptops" class="visual-panel arch-panel hidden">
+   <div class="panel-head">
+    <div><span class="panel-kicker">PLATAFORMA MÓVIL</span><h3>Laptop moderna por dentro</h3></div>
+    <div class="panel-actions"><button type="button" class="panel-btn" id="laptopThermal">Mapa térmico</button></div>
+   </div>
+   <p class="arch-copy" data-i18n="laptopText">En laptops, CPU, gráficos, memoria, batería y refrigeración comparten un espacio reducido. Por eso el diseño térmico es tan importante como el propio procesador.</p>
+   <div class="laptop-cutaway" id="laptopCutaway">
+    <div class="lap-screen"><div class="lap-display"><span>ARCH LAB</span><i></i><i></i><i></i></div></div>
+    <div class="lap-hinge"></div>
+    <div class="lap-base">
+      <div class="lap-board">
+        <div class="lap-cpu"><b>CPU</b><small>Ryzen AI / Core Ultra</small></div>
+        <div class="lap-ram r1">RAM</div><div class="lap-ram r2">RAM</div>
+        <div class="lap-ssd">SSD</div>
+        <div class="lap-vrm"></div>
+      </div>
+      <div class="pipe p1"></div><div class="pipe p2"></div>
+      <div class="fan a"><span></span></div><div class="fan b"><span></span></div>
+      <div class="battery"><i></i><i></i><i></i><i></i><span>BATTERY</span></div>
+      <div class="speaker sa"></div><div class="speaker sb"></div>
+      <div class="thermal cpu"></div><div class="thermal vrm"></div>
+    </div>
+   </div>
+   <div class="two-cards">
+    <div class="info-card"><b>AMD Ryzen Laptop</b><p>Normalmente integra CPU Zen, gráficos Radeon y, en las familias Ryzen AI, una NPU para tareas locales de IA.</p></div>
+    <div class="info-card"><b>Intel Core Laptop</b><p>Core y Core Ultra móviles combinan CPU, iGPU y, según la serie, NPU. Las variantes H y HX priorizan mayor rendimiento.</p></div>
+   </div>
+  </div>
+
+  <div id="tab-minipcs" class="visual-panel arch-panel hidden">
+   <div class="panel-head">
+    <div><span class="panel-kicker">SISTEMAS COMPACTOS</span><h3>Mini PC: pequeño por fuera, complejo por dentro</h3></div>
+    <div class="panel-actions"><button type="button" class="panel-btn" id="miniExplode">Abrir carcasa</button></div>
+   </div>
+   <p class="arch-copy" data-i18n="miniText">Las mini PCs pueden usar chips móviles, modelos de bajo consumo o soluciones embebidas. Todo depende del tamaño, la refrigeración y el uso previsto.</p>
+   <div class="mini-lab" id="miniLab">
+    <div class="mini-layer top"><span>Cubierta superior</span></div>
+    <div class="mini-layer cooler"><div class="blower"><span></span></div><div class="mini-pipe"></div><b>Módulo térmico</b></div>
+    <div class="mini-layer board">
+      <div class="mcpu">CPU</div><div class="mram">SO-DIMM</div><div class="mssd">NVMe</div><div class="mwifi">Wi‑Fi</div>
+      <div class="ports"><i></i><i></i><i></i><i></i><i></i></div><span>PCB</span>
+    </div>
+    <div class="mini-layer bottom"><span>Chasis inferior</span></div>
+   </div>
+   <div class="facts-grid">
+    <div><span>01</span><b>Oficina / estudio</b><p>Silencio, bajo consumo y espacio mínimo.</p></div>
+    <div><span>02</span><b>Creación / desarrollo</b><p>Más RAM, mejor SSD y refrigeración más exigente.</p></div>
+    <div><span>03</span><b>Embebido / edge</b><p>Conectividad, operación continua y formatos específicos.</p></div>
+   </div>
+  </div>
+
+  <div id="tab-cooling" class="visual-panel arch-panel hidden">
+   <div class="panel-head">
+    <div><span class="panel-kicker">INGENIERÍA TÉRMICA</span><h3>El rendimiento depende del calor</h3></div>
+    <div class="panel-actions"><button type="button" class="panel-btn active" id="coolingPulse">Animar calor</button></div>
+   </div>
+   <p class="arch-copy">El calor sale del silicio, pasa por la interfaz térmica, el IHS o cold plate, los heatpipes y finalmente el radiador o el aire. Una mejor refrigeración permite sostener frecuencias altas durante más tiempo.</p>
+   <div class="cooling-lab heat-on" id="coolingLab">
+    <div class="thermal-stack">
+      <div class="th die"><b>CPU DIE</b><small>85–95°C*</small></div>
+      <i class="harrow h1">↑</i>
+      <div class="th tim2"><b>TIM</b><small>interfaz térmica</small></div>
+      <i class="harrow h2">↑</i>
+      <div class="th ihs2"><b>IHS / PLACA FRÍA</b></div>
+      <i class="harrow h3">↑</i>
+      <div class="th pipes"><span></span><span></span><span></span><b>HEATPIPES</b></div>
+      <i class="harrow h4">→</i>
+      <div class="th fin"><i></i><i></i><i></i><i></i><i></i><b>ALETAS + AIRE</b></div>
+    </div>
+    <div class="cool-readout">
+      <div><span>Fuente</span><b>CPU / GPU / NPU</b></div>
+      <div><span>Transferencia</span><b>TIM → metal → heatpipe</b></div>
+      <div><span>Disipación</span><b>Radiador + flujo de aire</b></div>
+      <p>*Valores ilustrativos. La temperatura real depende del procesador, el equipo, la carga y la refrigeración.</p>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="threeD-launch">
+<h2 data-i18n="threeDTitle">Visor 3D: desarma el procesador</h2>
+<p class="sub" data-i18n="threeDSub">Entra a una vista aparte y separa las capas para ver cómo está construido.</p>
+<button type="button" id="open3d" data-i18n="open3d">Abrir visor 3D</button>
+<div id="viewer3d" class="viewer">
+<div class="viewer-head"><div><h3 data-i18n="processor3d">Procesador 3D</h3><p id="viewerModel">AMD Ryzen</p></div><button type="button" id="close3d" data-i18n="close3d">Cerrar visor</button></div>
+<div class="viewer-controls"><label for="threeDBrand" data-i18n="brand3d">Marca</label><select id="threeDBrand"><option value="AMD">AMD Ryzen</option><option value="Intel">Intel Core</option></select><label for="explode" data-i18n="disassemble">Desmontar</label><input id="explode" type="range" min="0" max="100" value="35"><button type="button" id="rotate3d" data-i18n="rotate">Rotar vista</button></div>
+<div class="scene"><div id="cpu3d" class="cpu3d">
+<div class="layer substrate"><div class="label3d" data-i18n="base3d">Sustrato / base</div></div>
+<div class="layer interposer"><div class="label3d" data-i18n="interposer3d">Interposer / conexión</div></div>
+<div class="layer die-layer"><div class="microgrid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<div id="intelBlocks" class="intel-die" style="display:none;position:absolute;inset:0;border-radius:15px"><div class="p"></div><div class="e"></div><div class="g"></div><div class="c"></div></div>
+<div class="label3d" data-i18n="die3d">Die / silicio</div></div>
+<div class="layer heatspreader"><div class="label3d" data-i18n="lid3d">Cubierta metálica</div></div>
+</div></div>
+<div class="legend3d"><span data-i18n="base3d">Sustrato / base</span><span data-i18n="die3d">Die / silicio</span><span data-i18n="interposer3d">Interposer / conexión</span><span data-i18n="lid3d">Cubierta metálica</span><span data-i18n="cores3d">Núcleos y bloques internos</span></div>
+<p class="sub" data-i18n="schematic3d">Vista 3D esquemática...</p>
+</div></section>
+
+
+<section class="real3d-wrap v15-anchor" id="real3dSection">
+<div class="real3d-card">
+  <div class="real3d-head"><div><h2>Laboratorio 3D interactivo del procesador</h2>
+  <p class="sub">Arrastra para rotar. Usa la rueda para zoom. Haz clic en cualquier pieza para seleccionarla, aislarla, ocultarla o separarla.</p></div></div>
+  <div class="lab-controls">
+    <label>Procesador <select id="v5Model"></select></label>
+    <span id="v7ModelCount" class="device-badge">Catálogo 3D completo</span>
+    <label>Separación <input id="v5Explode" type="range" min="0" max="100" value="18"></label>
+    <button type="button" id="v5Auto">Rotación automática</button>
+    <button type="button" id="v5Reset">Restablecer cámara</button>
+    <button type="button" id="v5Assemble">Ensamblar</button>
+  </div>
+  <div class="lab-layout">
+    <div class="v5scene" id="v5Scene" tabindex="0" aria-label="Visor tridimensional interactivo">
+      <div class="v5stage" id="v5Stage"></div>
+      <div class="v5hint">🖱️ Arrastrar = rotar · rueda = zoom · clic = seleccionar pieza</div>
+    </div>
+    <aside class="part-panel">
+      <h3 id="v5PartTitle">Selecciona una pieza</h3>
+      <p id="v5PartDesc">Puedes interactuar con cada componente del procesador.</p>
+      <div class="part-actions">
+        <button type="button" id="v5Focus">Aislar pieza</button>
+        <button type="button" id="v5Hide">Ocultar / mostrar</button>
+        <button type="button" id="v5Lift">Levantar pieza</button>
+      </div>
+      <h4>Objetos interactivos</h4><div id="v5Parts" class="parts-list"></div>
+    </aside>
+  </div>
+  <p class="tiny">Reconstrucción educativa 3D: representa capas y bloques funcionales; no pretende reproducir el floorplan físico exacto de cada chip.</p>
+</div>
+</section>
+<section class="corebench-wrap v15-anchor" id="coreBench">
+  <div class="corebench-card">
+    <div class="corebench-head">
+      <div>
+        <h2 data-i18n="coreBenchTitle">Mononúcleo vs multinúcleo</h2>
+        <p class="sub" data-i18n="coreBenchText">Compara el rendimiento de un solo núcleo frente al trabajo de todos los núcleos.</p>
+      </div>
+      <div class="cpu-picker"><input id="coreBenchSearch" type="search" placeholder="Buscar procesador…" aria-label="Buscar procesador"><select id="coreBenchModel"></select><span id="coreBenchCount" class="catalog-count">—</span></div>
+    </div>
+
+    <div id="coreBenchMeta" class="selected-cpu-meta"></div><div class="corebench-grid">
+      <article class="bench-item">
+        <div class="bench-title">
+          <span data-i18n="singleCore">Mononúcleo</span>
+          <strong id="singleScore">—</strong>
+        </div>
+        <div class="bar"><i id="singleBar"></i></div>
+        <p data-i18n="singleExplain">Mide el trabajo realizado usando principalmente un núcleo. Es importante para muchas tareas que dependen del rendimiento por núcleo.</p>
+      </article>
+      <article class="bench-item">
+        <div class="bench-title">
+          <span data-i18n="multiCore">Multinúcleo</span>
+          <strong id="multiScore">—</strong>
+        </div>
+        <div class="bar"><i id="multiBar"></i></div>
+        <p data-i18n="multiExplain">Mide el trabajo repartido entre varios núcleos. Es útil para renderizado, compilación, edición y otras cargas paralelizables.</p>
+      </article>
+    </div>
+
+    <div class="bench-method">El índice de 0–100 es <b>orientativo</b>: sirve para visualizar diferencias dentro de esta app. Cuando existe un valor curado en la base de la app se usa ese valor; para el resto se estima a partir de frecuencia, generación, núcleos e hilos. No sustituye Cinebench, Geekbench ni pruebas de un equipo real.</div><div class="coreinfo">
+      <div><b data-i18n="coresLabel">Núcleos</b><span id="coreCount">—</span></div>
+      <div><b data-i18n="threadsLabel">Hilos</b><span id="threadCount">—</span></div>
+      <div><b data-i18n="noteLabel">Nota</b><span data-i18n="benchmarkNote">Las puntuaciones mostradas son orientativas para visualizar la diferencia; no sustituyen un benchmark de una configuración concreta.</span></div>
+    </div>
+  </div>
+</section>
+<section id="specsSection" class="specs-section v15-anchor">
+<div class="specs-card">
+<div class="specs-head">
+<div><h2 data-i18n="specsTitle">Especificaciones del procesador</h2><p data-i18n="specsSub">Núcleos, hilos, frecuencia, caché, potencia y gráficos integrados.</p></div>
+<div class="cpu-picker"><input id="specSearch" type="search" placeholder="Buscar procesador…" aria-label="Buscar procesador"><select id="specModel"></select><span id="specCount" class="catalog-count">—</span></div>
+</div>
+<div id="specMeta" class="selected-cpu-meta"></div>
+<div class="spec-grid">
+<div class="spec-box"><span data-i18n="cores">Núcleos</span><b id="spCores">—</b></div>
+<div class="spec-box"><span data-i18n="threads">Hilos</span><b id="spThreads">—</b></div>
+<div class="spec-box"><span data-i18n="frequency">Frecuencia turbo</span><b id="spFreq">—</b></div>
+<div class="spec-box"><span data-i18n="cache">Caché</span><b id="spCache">—</b></div>
+<div class="spec-box"><span data-i18n="power">Potencia</span><b id="spPower">—</b></div>
+<div class="spec-box"><span data-i18n="igpu">Gráficos integrados</span><b id="spGPU">—</b></div>
+</div>
+<div class="corebench">
+<div class="bench-title"><span data-i18n="single">Mononúcleo</span><b id="spSingle">—</b></div><div class="benchbar"><i id="singleBar2"></i></div>
+<div class="bench-title"><span data-i18n="multi">Multinúcleo</span><b id="spMulti">—</b></div><div class="benchbar"><i id="multiBar2"></i></div>
+<p class="tiny" data-i18n="benchNote">Indicadores orientativos, no benchmark oficial.</p>
+</div></div></section><div id="levelMap" class="level-map"><b>Ryzen ↔ Intel por nivel</b><span>Ryzen 3 ↔ Core 3 / Core i3</span><span>Ryzen 5 ↔ Core 5 / Core i5</span><span>Ryzen 7 ↔ Core 7 / Core i7</span><span>Ryzen 9 ↔ Core 9 / Core i9</span><small>No significa que tengan el mismo rendimiento: es una equivalencia de categoría/nombre para orientarse.</small></div><section class="compare">
+  <div class="compare-head">
+   <div><h2 data-i18n="compareTitle">Comparación directa</h2><p class="sub" data-i18n="compareSub">Elige cualquier modelo disponible en cada lado.</p></div>
+   <span class="tag" data-i18n="tag">No son equivalencias exactas</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px">
+   <select id="leftSelect"></select><select id="rightSelect"></select>
+  </div>
+  <div id="comparison"></div>
+ </section>
+</main>
+<footer>
+ <span data-i18n="sources">Fuentes de referencia: páginas oficiales de AMD e Intel. Intel publica listas por generación y datos de gráficos integrados; AMD ofrece especificaciones completas de Ryzen y productos heredados.</span>
+ <br><br>
+ <span data-i18n="footerNote">Consejo: un nombre como Ryzen 7 o Core i7 no determina por sí solo cuál es más rápido. Compara el modelo concreto, generación, núcleos, hilos, frecuencia, caché, consumo y gráficos.</span>
+</footer>
+<script>
+const models=[
+// AMD
+["AMD","Ryzen 3","Ryzen 3 3100","3000","4","8","3.6 / 3.9 GHz","18 MB","65 W","No"],
+["AMD","Ryzen 3","Ryzen 3 3300X","3000","4","8","3.8 / 4.3 GHz","18 MB","65 W","No"],
+["AMD","Ryzen 3","Ryzen 3 4100","4000","4","8","3.8 / 4.0 GHz","6 MB","65 W","No"],
+["AMD","Ryzen 3","Ryzen 3 5300G","5000","4","8","4.0 / 4.2 GHz","10 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 3","Ryzen 3 8300G","8000","4","8","4.2 / 4.9 GHz","12 MB","65 W","Radeon 740M"],
+["AMD","Ryzen 5","Ryzen 5 3600","3000","6","12","3.6 / 4.2 GHz","35 MB","65 W","No"],
+["AMD","Ryzen 5","Ryzen 5 5600","5000","6","12","3.5 / 4.4 GHz","35 MB","65 W","No"],
+["AMD","Ryzen 5","Ryzen 5 5600G","5000","6","12","3.9 / 4.4 GHz","19 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 5","Ryzen 5 7600","7000","6","12","3.8 / 5.1 GHz","38 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 5","Ryzen 5 7600X","7000","6","12","4.7 / 5.3 GHz","38 MB","105 W","Radeon Graphics"],
+["AMD","Ryzen 5","Ryzen 5 8600G","8000","6","12","4.3 / 5.0 GHz","22 MB","65 W","Radeon 760M"],
+["AMD","Ryzen 5","Ryzen 5 9600X","9000","6","12","3.9 / 5.4 GHz","38 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 7","Ryzen 7 3700X","3000","8","16","3.6 / 4.4 GHz","36 MB","65 W","No"],
+["AMD","Ryzen 7","Ryzen 7 5700X","5000","8","16","3.4 / 4.6 GHz","36 MB","65 W","No"],
+["AMD","Ryzen 7","Ryzen 7 5700G","5000","8","16","3.8 / 4.6 GHz","20 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 7","Ryzen 7 7700","7000","8","16","3.8 / 5.3 GHz","40 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 7","Ryzen 7 7800X3D","7000","8","16","4.2 / 5.0 GHz","104 MB","120 W","Radeon Graphics"],
+["AMD","Ryzen 7","Ryzen 7 9700X","9000","8","16","3.8 / 5.5 GHz","40 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 9","Ryzen 9 3900X","3000","12","24","3.8 / 4.6 GHz","70 MB","105 W","No"],
+["AMD","Ryzen 9","Ryzen 9 5900X","5000","12","24","3.7 / 4.8 GHz","70 MB","105 W","No"],
+["AMD","Ryzen 9","Ryzen 9 7900","7000","12","24","3.7 / 5.4 GHz","76 MB","65 W","Radeon Graphics"],
+["AMD","Ryzen 9","Ryzen 9 7950X","7000","16","32","4.5 / 5.7 GHz","80 MB","170 W","Radeon Graphics"],
+["AMD","Ryzen 9","Ryzen 9 9950X","9000","16","32","4.3 / 5.7 GHz","80 MB","170 W","Radeon Graphics"],
+
+["AMD","Ryzen X3D","Ryzen 9 9950X3D2 Dual Edition","9000X3D","16","32","4.3 / 5.6 GHz","208 MB total","200 W","AMD Radeon Graphics"],
+// AMD laptop
+["AMD","Ryzen AI","Ryzen AI 5 340","AI 300","6","12","2.0 / 4.8 GHz","22 MB","15-54 W","AMD Radeon 840M"],
+["AMD","Ryzen AI","Ryzen AI 7 350","AI 300","8","16","2.0 / 5.0 GHz","24 MB","15-54 W","AMD Radeon 860M"],
+["AMD","Ryzen AI","Ryzen AI 9 365","AI 300","10","20","2.0 / 5.0 GHz","34 MB","15-54 W","AMD Radeon 880M"],
+["AMD","Ryzen AI","Ryzen AI 9 HX 370","AI 300","12","24","2.0 / 5.1 GHz","36 MB","15-54 W","AMD Radeon 890M"],
+["AMD","Ryzen AI","Ryzen AI 9 HX 375","AI 300","12","24","2.0 / 5.1 GHz","36 MB","15-54 W","AMD Radeon 890M"],
+["AMD","Ryzen Mobile","Ryzen 7 8845HS","8000 Mobile","8","16","3.8 / 5.1 GHz","24 MB","45 W","AMD Radeon 780M"],
+["AMD","Ryzen Mobile","Ryzen 7 7840HS","7000 Mobile","8","16","3.8 / 5.1 GHz","24 MB","35-54 W","AMD Radeon 780M"],
+
+// Intel
+["Intel","Core i3","Core i3-10100","10th","4","8","3.6 / 4.3 GHz","6 MB","65 W","Intel UHD 630"],
+["Intel","Core i3","Core i3-10100F","10th","4","8","3.6 / 4.3 GHz","6 MB","65 W","No"],
+["Intel","Core i3","Core i3-12100","12th","4","8","3.3 / 4.3 GHz","12 MB","60 W","Intel UHD 730"],
+["Intel","Core i3","Core i3-12100F","12th","4","8","3.3 / 4.3 GHz","12 MB","58 W","No"],
+["Intel","Core i3","Core i3-13100","13th","4","8","3.4 / 4.5 GHz","12 MB","60 W","Intel UHD 730"],
+["Intel","Core i3","Core i3-14100","14th","4","8","3.5 / 4.7 GHz","12 MB","60 W","Intel UHD 730"],
+["Intel","Core i5","Core i5-10400","10th","6","12","2.9 / 4.3 GHz","12 MB","65 W","Intel UHD 630"],
+["Intel","Core i5","Core i5-10400F","10th","6","12","2.9 / 4.3 GHz","12 MB","65 W","No"],
+["Intel","Core i5","Core i5-11400","11th","6","12","2.6 / 4.4 GHz","12 MB","65 W","Intel UHD 730"],
+["Intel","Core i5","Core i5-12400","12th","6","12","2.5 / 4.4 GHz","18 MB","65 W","Intel UHD 730"],
+["Intel","Core i5","Core i5-12400F","12th","6","12","2.5 / 4.4 GHz","18 MB","65 W","No"],
+["Intel","Core i5","Core i5-13400","13th","10","16","2.5 / 4.6 GHz","20 MB","65 W","Intel UHD 730"],
+["Intel","Core i5","Core i5-14400","14th","10","16","2.5 / 4.7 GHz","20 MB","65 W","Intel UHD 730"],
+["Intel","Core i5","Core i5-14400F","14th","10","16","2.5 / 4.7 GHz","20 MB","65 W","No"],
+["Intel","Core i7","Core i7-10700K","10th","8","16","3.8 / 5.1 GHz","16 MB","125 W","Intel UHD 630"],
+["Intel","Core i7","Core i7-11700K","11th","8","16","3.6 / 5.0 GHz","16 MB","125 W","Intel UHD 750"],
+["Intel","Core i7","Core i7-12700K","12th","12","20","3.6 / 5.0 GHz","25 MB","125 W","Intel UHD 770"],
+["Intel","Core i7","Core i7-13700K","13th","16","24","3.4 / 5.4 GHz","30 MB","125 W","Intel UHD 770"],
+["Intel","Core i7","Core i7-14700K","14th","20","28","3.4 / 5.6 GHz","33 MB","125 W","Intel UHD 770"],
+["Intel","Core i9","Core i9-10900K","10th","10","20","3.7 / 5.3 GHz","20 MB","125 W","Intel UHD 630"],
+["Intel","Core i9","Core i9-11900K","11th","8","16","3.5 / 5.3 GHz","20 MB","125 W","Intel UHD 750"],
+["Intel","Core i9","Core i9-12900K","12th","16","24","3.2 / 5.2 GHz","30 MB","125 W","Intel UHD 770"],
+["Intel","Core i9","Core i9-13900K","13th","24","32","3.0 / 5.8 GHz","36 MB","125 W","Intel UHD 770"],
+["Intel","Core i9","Core i9-14900K","14th","24","32","3.2 / 6.0 GHz","36 MB","125 W","Intel UHD 770"],
+["Intel","Core i9","Core i9-14900KF","14th","24","32","3.2 / 6.0 GHz","36 MB","125 W","No"],
+
+// AMD X3D + additional current models
+["AMD","Ryzen X3D","Ryzen 9 9950X3D","9000X3D","16","32","4.3 / 5.7 GHz","144 MB","170 W","AMD Radeon Graphics"],
+["AMD","Ryzen X3D","Ryzen 9 9900X3D","9000X3D","12","24","4.4 / 5.5 GHz","140 MB","120 W","AMD Radeon Graphics"],
+["AMD","Ryzen X3D","Ryzen 7 9800X3D","9000X3D","8","16","4.7 / 5.2 GHz","104 MB","120 W","AMD Radeon Graphics"],
+["AMD","Ryzen X3D","Ryzen 9 7950X3D","7000X3D","16","32","4.2 / 5.7 GHz","144 MB","120 W","AMD Radeon Graphics"],
+["AMD","Ryzen X3D","Ryzen 7 7800X3D","7000X3D","8","16","4.2 / 5.0 GHz","104 MB","120 W","AMD Radeon Graphics"],
+["AMD","Ryzen 9","Ryzen 9 9900X","9000","12","24","4.4 / 5.6 GHz","76 MB","120 W","AMD Radeon Graphics"],
+["AMD","Ryzen 7","Ryzen 7 9700X","9000","8","16","3.8 / 5.5 GHz","40 MB","65 W","AMD Radeon Graphics"],
+["AMD","Ryzen 5","Ryzen 5 9600X","9000","6","12","3.9 / 5.4 GHz","38 MB","65 W","AMD Radeon Graphics"],
+// Intel Core Ultra desktop Series 2
+["Intel","Core Ultra","Core Ultra 9 285K","Series 2","24","24","3.7 / 5.7 GHz","36 MB L3 + 40 MB L2","125 W / 250 W","Intel Graphics"],
+["Intel","Core Ultra","Core Ultra 7 265K","Series 2","20","20","3.9 / 5.5 GHz","30 MB L3 + 36 MB L2","125 W / 250 W","Intel Graphics"],
+["Intel","Core Ultra","Core Ultra 7 265KF","Series 2","20","20","3.9 / 5.5 GHz","30 MB L3 + 36 MB L2","125 W / 250 W","No"],
+["Intel","Core Ultra","Core Ultra 5 245K","Series 2","14","14","4.2 / 5.2 GHz","24 MB L3 + 26 MB L2","125 W / 159 W","Intel Graphics"],
+["Intel","Core Ultra","Core Ultra 5 245KF","Series 2","14","14","4.2 / 5.2 GHz","24 MB L3 + 26 MB L2","125 W / 159 W","No"],
+// Intel Core Ultra mobile Series 3
+["Intel","Core Ultra","Core Ultra X9 388H","Series 3","16","16","2.1 / 5.1 GHz","18 MB","25 W / 80 W","Intel Arc B390 GPU"],
+["Intel","Core Ultra","Core Ultra 9 386H","Series 3","16","16","2.1 / 4.9 GHz","18 MB","25 W / 80 W","Intel Graphics"],
+["Intel","Core Ultra","Core Ultra X7 368H","Series 3","16","16","2.0 / 5.0 GHz","18 MB","25 W base / 80 W turbo","Intel Arc B390 GPU"],
+["Intel","Core Ultra","Core Ultra 7 366H","Series 3","16","16","2.0 / 4.8 GHz","18 MB","25 W base / 80 W turbo","Intel Graphics"],
+["Intel","Core Ultra","Core Ultra 7 356H","Series 3","16","16","1.9 / 4.7 GHz","18 MB","25 W base / 80 W turbo","Intel Graphics"],
+["Intel","Core Ultra","Core Ultra 5 338H","Series 3","12","12","1.9 / 4.7 GHz","18 MB","25 W base / 65 W turbo","Intel Arc B370 GPU"],
+["Intel","Core Ultra","Core Ultra 5 336H","Series 3","12","12","1.9 / 4.6 GHz","18 MB","25 W base / 65 W turbo","Intel Graphics"],
+
+
+// Intel laptop
+["Intel","Core Ultra Mobile","Core Ultra 9 285HX","Series 2 Mobile","24","24","2.8 / 5.5 GHz","36 MB Smart Cache","55 W / 160 W","Intel Graphics"],
+["Intel","Core Ultra Mobile","Core Ultra 7 275HX","Series 2 Mobile","24","24","2.7 / 5.4 GHz","36 MB Smart Cache","55 W / 160 W","Intel Graphics"],
+["Intel","Core Ultra Mobile","Core Ultra 7 255HX","Series 2 Mobile","20","20","2.4 / 5.2 GHz","30 MB Smart Cache","55 W / 160 W","Intel Graphics"],
+["Intel","Core Ultra Mobile","Core Ultra 5 245HX","Series 2 Mobile","14","14","2.6 / 5.1 GHz","24 MB Smart Cache","55 W / 160 W","Intel Graphics"],
+["Intel","Core Ultra Mobile","Core Ultra 9 185H","Series 1 Mobile","16","22","2.3 / 5.1 GHz","24 MB Smart Cache","28 W / 115 W","Intel Arc Graphics"],
+["Intel","Core Ultra Mobile","Core Ultra 7 155H","Series 1 Mobile","16","22","1.4 / 4.8 GHz","24 MB Smart Cache","28 W / 115 W","Intel Arc Graphics"],
+["Intel","Core Ultra Mobile","Core Ultra 5 125H","Series 1 Mobile","14","18","1.2 / 4.5 GHz","18 MB Smart Cache","28 W / 115 W","Intel Arc Graphics"],
+
+// newer Intel naming examples
+["Intel","Core 3","Core 3 305","2026","6","6","1.5 / 4.3 GHz","6 MB","15 W base / 35 W turbo","Intel Graphics"],
+["Intel","Core 5","Core 5 320","2026","6","6","1.5 / 4.6 GHz","6 MB","15 W base / 35 W turbo","Intel Graphics"],
+["Intel","Core 7","Core 7 360","2026","6","6","1.5 / 4.8 GHz","6 MB","15 W base / 35 W turbo","Intel Graphics"],
+["Intel","Core 9","Core 9 273PE","2026","12","24","2.3 / 5.7 GHz","36 MB","65 W base","Intel UHD 770"]
+];
+
+const I={
+es:{title:"AMD Ryzen vs Intel Core",subtitle:"Comparador de generaciones, modelos y gráficos integrados",notice:"Busca por modelo, elige fabricante, familia y generación, y filtra si tiene gráficos integrados. La app incluye modelos representativos; las especificaciones exactas cambian según el modelo.",search:"Buscar modelo (ej. 7600, 14900K, 5600G)",allBrands:"Todos",allFamilies:"Todas las familias",allGenerations:"Todas las generaciones",allGraphics:"Gráficos: todos",withGraphics:"Con gráficos integrados",withoutGraphics:"Sin gráficos integrados",compareTitle:"Comparación directa",compareSub:"Elige cualquier modelo disponible en cada lado.",tag:"No son equivalencias exactas",sources:"Fuentes de referencia: AMD e Intel. AMD publica especificaciones de Ryzen y productos heredados; Intel publica listas de procesadores, generaciones y gráficos integrados.",footerNote:"Un Ryzen 7 o Core i7 no determina por sí solo cuál es más rápido. Compara el modelo concreto, generación, núcleos, hilos, frecuencia, caché, consumo y gráficos.",family:"Familia",gen:"Generación",cores:"Núcleos",threads:"Hilos",clock:"Frecuencia",cache:"Caché",power:"Potencia",graphics:"Gráficos integrados",levelMatch:"Nivel de referencia: Ryzen",amd:"AMD",intel:"Intel",no:"No",empty:"No se encontraron modelos.",choose:"Seleccionar modelo",visualTitle:"Cómo se construyen y dónde se usan",visualSub:"Explora una vista esquemática del interior del chip, sus generaciones y equipos que usan estos procesadores.",inside:"Interior del procesador",generations:"Generaciones",laptops:"Laptops",minipcs:"Mini PCs",amdInside:"AMD: diseño con chiplets",intelInside:"Intel: arquitectura híbrida",insideAMDText:"Vista esquemática: en muchas generaciones Ryzen de escritorio basadas en chiplets, los CCD contienen núcleos Zen y el I/O Die conecta memoria y E/S. No representa una fotografía ni el diseño exacto de un modelo.",insideIntelText:"Vista esquemática: desde 12.ª generación, muchos Intel Core combinan P-cores y E-cores en un mismo die. La distribución exacta cambia según generación y modelo.",generationText:"Las generaciones cambian la arquitectura y el proceso de fabricación. En Ryzen, AMD relaciona Ryzen 1000/3000/5000/7000-8000/9000 con Zen/Zen 2/Zen 3/Zen 4/Zen 5 en su tabla de arquitectura.",laptopText:"Los procesadores para laptops están diseñados con límites de potencia y térmicos diferentes a los de escritorio. AMD Ryzen para laptops puede integrar Radeon; Intel también ofrece gráficos integrados en muchas familias móviles.",miniText:"Las mini PCs pueden usar procesadores de escritorio de bajo consumo, procesadores móviles o familias embebidas. La configuración depende del fabricante y del modelo.",desktop:"Escritorio",integrated:"Gráficos integrados"},
+en:{title:"AMD Ryzen vs Intel Core",subtitle:"Processor generations, models, and integrated graphics comparison",notice:"Search by model, choose brand, family and generation, and filter by integrated graphics. The app includes representative models; exact specifications vary by model.",search:"Search model (e.g. 7600, 14900K, 5600G)",allBrands:"All",allFamilies:"All families",allGenerations:"All generations",allGraphics:"Graphics: all",withGraphics:"With integrated graphics",withoutGraphics:"Without integrated graphics",compareTitle:"Direct comparison",compareSub:"Choose any available model on each side.",tag:"Not exact equivalents",sources:"Reference sources: AMD and Intel. AMD publishes Ryzen and legacy product specifications; Intel publishes processor lists, generations and integrated graphics.",footerNote:"A Ryzen 7 or Core i7 name alone does not determine which is faster. Compare the exact model, generation, cores, threads, frequency, cache, power and graphics.",family:"Family",gen:"Generation",cores:"Cores",threads:"Threads",clock:"Frequency",cache:"Cache",power:"Power",graphics:"Integrated graphics",levelMatch:"Reference level: Ryzen",amd:"AMD",intel:"Intel",no:"No",empty:"No models found.",choose:"Select model",visualTitle:"How processors are built and where they are used",visualSub:"Explore a schematic view of the chip interior, generations and devices that use these processors.",inside:"Inside the processor",generations:"Generations",laptops:"Laptops",minipcs:"Mini PCs",amdInside:"AMD: chiplet design",intelInside:"Intel: hybrid architecture",insideAMDText:"Schematic view: in many chiplet-based Ryzen desktop generations, CCDs contain Zen cores and the I/O Die connects memory and I/O. It is not a photograph or the exact layout of a specific model.",insideIntelText:"Schematic view: since 12th generation, many Intel Core processors combine P-cores and E-cores on the same die. Exact layouts vary by generation and model.",generationText:"Generations change the architecture and manufacturing process. AMD maps Ryzen 1000/3000/5000/7000-8000/9000 to Zen/Zen 2/Zen 3/Zen 4/Zen 5 in its architecture table.",laptopText:"Laptop processors are designed around different power and thermal limits than desktop processors. AMD Ryzen laptops can include Radeon graphics; Intel also offers integrated graphics in many mobile families.",miniText:"Mini PCs can use low-power desktop processors, mobile processors or embedded families. The configuration depends on the manufacturer and model.",desktop:"Desktop",integrated:"Integrated graphics"},
+zh:{title:"AMD Ryzen 对比 Intel Core",subtitle:"处理器代际、型号与集成显卡对比",notice:"可以按型号搜索，也可以选择品牌、系列和代际，并筛选是否有集成显卡。应用包含代表性型号；具体规格会因型号而异。",search:"搜索型号（例如 7600、14900K、5600G）",allBrands:"全部",allFamilies:"全部系列",allGenerations:"全部代际",allGraphics:"显卡：全部",withGraphics:"有集成显卡",withoutGraphics:"无集成显卡",compareTitle:"直接对比",compareSub:"选择两边的任意型号进行比较。",tag:"并非严格等效",sources:"参考来源：AMD 和 Intel 官方资料。AMD 提供 Ryzen 及旧款产品规格；Intel 提供处理器、代际和集成显卡资料。",footerNote:"仅凭 Ryzen 7 或 Core i7 的名称不能判断谁更快。应比较具体型号、代际、核心、线程、频率、缓存、功耗和显卡。",family:"系列",gen:"代际",cores:"核心",threads:"线程",clock:"频率",cache:"缓存",power:"功耗",graphics:"集成显卡",levelMatch:"参考级别：Ryzen",amd:"AMD",intel:"Intel",no:"无",empty:"没有找到型号。",choose:"选择型号",visualTitle:"处理器的构造方式与应用场景",visualSub:"查看芯片内部示意图、代际以及使用这些处理器的设备。",inside:"处理器内部结构",generations:"处理器代际",laptops:"笔记本电脑",minipcs:"迷你电脑",amdInside:"AMD：Chiplet 小芯片架构",intelInside:"Intel：混合架构与 Tile 芯粒设计",insideAMDText:"示意图：许多采用 Chiplet 的 Ryzen 台式机处理器中，CCD 包含 Zen 核心，I/O Die 负责连接内存和输入输出。这不是照片，也不是某个具体型号的真实版图。",insideIntelText:"示意图：从第12代开始，许多 Intel Core 处理器在同一个 Die 中结合 P 核心和 E 核心。具体布局会因代际和型号而变化。",generationText:"不同代际会改变架构和制造工艺。AMD 的资料将 Ryzen 1000/3000/5000/7000-8000/9000 分别与 Zen/Zen 2/Zen 3/Zen 4/Zen 5 对应。",laptopText:"笔记本处理器针对不同的功耗和散热条件设计。AMD Ryzen 笔记本处理器可以集成 Radeon 显卡；Intel 许多移动系列也带有集成显卡。",miniText:"迷你电脑可以采用低功耗台式机处理器、移动处理器或嵌入式系列，具体配置取决于厂商和型号。",desktop:"台式机",integrated:"集成显卡"}
+};
+let lang="es";
+const $=id=>document.getElementById(id);
+function applyLang(){
+ const t=I[lang]; document.documentElement.lang=lang;
+ document.querySelectorAll("[data-i18n]").forEach(e=>{e.textContent=t[e.dataset.i18n]||e.textContent});
+ document.querySelectorAll("[data-placeholder]").forEach(e=>e.placeholder=t[e.dataset.placeholder]||e.placeholder);
+ render();
+}
+
+const EXTRA_FAMILIES = [];
+
+function populateFamilies(){
+ const fam=[...new Set(models.map(m=>m[1]).concat(EXTRA_FAMILIES.map(m=>m[1])))];
+ const t=I[lang];
+ $("family").innerHTML='<option value="all">'+t.allFamilies+'</option>'+
+   fam.map(x=>`<option value="${x}">${x}</option>`).join("");
+}
+function populateGenerations(){
+ const gens=[...new Set(models.map(m=>m[3]))];
+ $("generation").innerHTML='<option value="all">'+I[lang].allGenerations+'</option>'+
+   gens.map(x=>`<option value="${x}">${x}</option>`).join("");
+}
+
+function getAllModels(){
+  const specMap=(typeof PROC_SPECS!=='undefined' ? PROC_SPECS : (window.PROC_SPECS||{}));
+  const extras = EXTRA_FAMILIES.map(m=>{
+    const sp=specMap[m[2]];
+    if(sp) return [m[0],m[1],m[2],m[3],sp[0],sp[1],sp[2],sp[3],sp[4],m[4],sp[5]];
+    return [m[0],m[1],m[2],m[3],"—","—","—","—","—",m[4],""];
+  });
+  return models.concat(extras);
+}
+
+
+function powerScore(m){
+ const cores=parseInt(m[4])||0, threads=parseInt(m[5])||0;
+ const nums=String(m[6]).match(/[\d.]+/g)||[]; const boost=nums.length?parseFloat(nums[nums.length-1]):0;
+ let score=cores*9+threads*2+boost*14;
+ const n=m[2].toLowerCase();
+ if(n.includes("x3d2")) score+=38;
+ else if(n.includes("x3d")) score+=20;
+ if(n.includes("ryzen 9")||n.includes("core ultra 9")||n.includes("core i9")||n.includes("core 9"))score+=20;
+ if(n.includes("hx"))score+=8;
+ return score;
+}
+function powerTier(m){
+ const x=powerScore(m);
+ if(x<100)return "BÁSICO";
+ if(x<155)return "MEDIO";
+ if(x<210)return "ALTO";
+ if(x<270)return "ENTUSIASTA";
+ return "EXTREME";
+}
+function deviceType(m){
+ const g=String(m[3]).toLowerCase(), f=String(m[1]).toLowerCase();
+ if(/PE$/i.test(m[2])) return "Embedded / Workstation";
+ return (g.includes("mobile")||g.includes("series 3")||f.includes("mobile")||f.includes("ryzen ai")||/(HX|HS|H|U)$/i.test(m[2]))?"Laptop":"Desktop";
+}
+
+function filtered(){
+ const q=$("search").value.toLowerCase(), b=$("brand").value, f=$("family").value, gen=$("generation").value, g=$("igpu").value;
+ return getAllModels().filter(m=>(!q||m[2].toLowerCase().includes(q))&&(b==="all"||m[0]===b)&&(f==="all"||m[1]===f)&&(gen==="all"||m[3]===gen)&&(g==="all"||(g==="yes"?m[9]!=="No":m[9]==="No"))).sort((a,b)=>powerScore(a)-powerScore(b));
+}
+function card(m){
+ const t=I[lang];
+ let level="";
+ if(m[0]==="Intel"){
+   const f=(m[1]+" "+m[2]).toLowerCase();
+   if(f.includes("core 3")||f.includes("core i3")) level="Ryzen 3";
+   else if(f.includes("core 5")||f.includes("core i5")) level="Ryzen 5";
+   else if(f.includes("core 7")||f.includes("core i7")) level="Ryzen 7";
+   else if(f.includes("core 9")||f.includes("core i9")) level="Ryzen 9";
+ }
+ const levelLine=level?`<div class="level-match"><small>${t.levelMatch||"Nivel de referencia"}</small><b>${level}</b></div>`:"";
+ return `<article class="card ${m[0].toLowerCase()}"><span class="badge">${m[0]} · ${m[1]}</span><h3>${m[2]}</h3>
+ <p>${t.gen}: <b>${m[3]}</b></p><span class="device-badge">${deviceType(m)}</span><div class="power-rank"><small>Orden de potencia</small><b>${powerTier(m)}</b></div>${levelLine}<div class="spec">
+ <div><small>${t.cores}</small><b>${m[4]}</b></div><div><small>${t.threads}</small><b>${m[5]}</b></div>
+ <div><small>${t.clock}</small><b>${m[6]}</b></div><div><small>${t.cache}</small><b>${m[7]}</b></div>
+ <div><small>${t.power}</small><b>${m[8]==="No"?"—":m[8]}</b></div><div><small>${t.graphics}</small><b>${m[10]||(m[9]==="No"?t.no:(m[9]==="Yes"?(lang==="es"?"Sí":lang==="zh"?"有":"Yes"):m[9]))}</b></div>
+ </div></article>`;
+}
+function render(){
+ populateFamilies();
+ populateGenerations();
+ const arr=filtered();
+ const amd=arr.filter(m=>m[0]==="AMD"), intel=arr.filter(m=>m[0]==="Intel");
+ $("cards").innerHTML=arr.length?
+   `<div class="brand-group"><div class="brand-title amd-title">AMD Ryzen</div><div class="brand-grid">${amd.map(card).join("")}</div></div>
+    <div class="brand-group"><div class="brand-title intel-title">Intel Core / Core Ultra</div><div class="brand-grid">${intel.map(card).join("")}</div></div>`:
+   `<div class="empty">${I[lang].empty}</div>`;
+ populateSelects();
+ compare();
+}
+function populateSelects(){
+ const a=models.filter(m=>m[0]==="AMD"), i=models.filter(m=>m[0]==="Intel");
+ function fill(el,arr){el.innerHTML=arr.map((m,idx)=>`<option value="${models.indexOf(m)}">${m[2]} · ${m[3]}</option>`).join("")}
+ fill($("leftSelect"),a); fill($("rightSelect"),i);
+}
+function compare(){
+ const a=models[$("leftSelect").value||models.findIndex(m=>m[0]==="AMD")], i=models[$("rightSelect").value||models.findIndex(m=>m[0]==="Intel")];
+ if(!a||!i)return;
+ const t=I[lang], rows=[[t.family,a[1],i[1]],[t.gen,a[3],i[3]],[t.cores,a[4],i[4]],[t.threads,a[5],i[5]],[t.clock,a[6],i[6]],[t.cache,a[7],i[7]],[t.power,a[8],i[8]],[t.graphics,a[10]||(a[9]==="No"?t.no:a[9]),i[10]||(i[9]==="No"?t.no:i[9])]];
+ $("comparison").innerHTML='<div class="compare-grid">'+rows.map(r=>`<div>${r[1]}</div><div class="label">${r[0]}</div><div>${r[2]}</div>`).join("")+'</div>';
+}
+
+document.querySelectorAll(".visual-tabs button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll(".visual-tabs button").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".visual-panel").forEach(p=>p.classList.add("hidden"));
+  btn.classList.add("active");
+  $("tab-"+btn.dataset.tab).classList.remove("hidden");
+ });
+});
+
+const open3d=$("open3d"),close3d=$("close3d"),viewer3d=$("viewer3d"),explode=$("explode"),cpu3d=$("cpu3d"),threeDBrand=$("threeDBrand"),rotate3d=$("rotate3d"),viewerModel=$("viewerModel"),intelBlocks=$("intelBlocks");
+function update3D(){const v=Math.max(0,Math.min(100,Number(explode.value)||0)),k=v/100,intel=threeDBrand.value==="Intel";viewerModel.textContent=intel?I[lang].intel3d:I[lang].amd3d;intelBlocks.style.display=intel?"block":"none";const L=cpu3d.querySelectorAll(".layer"),O=intel?[0,38,70,108]:[0,42,76,112];L[0].style.transform=`translateZ(${O[0]*k}px)`;L[1].style.transform=`translateZ(${34+O[1]*k}px)`;L[2].style.transform=`translateZ(${18+O[2]*k}px)`;L[3].style.transform=`translateZ(${52+O[3]*k}px)`;L[3].style.opacity=k>.88?".42":"1";}
+open3d.addEventListener("click",()=>{viewer3d.classList.add("open");update3D();viewer3d.scrollIntoView({behavior:"smooth",block:"start"});});close3d.addEventListener("click",()=>viewer3d.classList.remove("open"));explode.addEventListener("input",update3D);threeDBrand.addEventListener("change",update3D);let angle=0;rotate3d.addEventListener("click",()=>{angle+=45;cpu3d.style.transform=`rotateX(58deg) rotateZ(${angle-35}deg)`;});
+["search","brand","family","generation","igpu"].forEach(id=>$(id).addEventListener("input",render));
+$("leftSelect").addEventListener("change",compare);$("rightSelect").addEventListener("change",compare);
+$("language").addEventListener("change",e=>{lang=e.target.value;applyLang()});
+populateFamilies();render();applyLang();
+</script>
+
+<script>
+window.REAL3D_I18N={
+es:{real3d:"Visor 3D realista",real3dOpen:"Abrir laboratorio 3D realista",real3dText:"Explora una reconstrucción 3D con materiales, iluminación y capas separables. Es una representación educativa, no una fotografía del interior de un chip.",selectChip:"Selecciona el procesador",explosion:"Separación de capas",rotate:"Rotar",closeLab:"Salir del laboratorio",substrate3d:"Sustrato orgánico",silicon:"Silicio / dies",solder:"Microconexiones",metal:"IHS / cubierta metálica",x3dLayer:"3D V-Cache",ultraLayer:"P-core / E-core / GPU / NPU"},
+en:{real3d:"Realistic 3D viewer",real3dOpen:"Open realistic 3D lab",real3dText:"Explore a 3D reconstruction with materials, lighting and separable layers. It is an educational representation, not a photograph of a chip interior.",selectChip:"Select processor",explosion:"Layer separation",rotate:"Rotate",closeLab:"Exit lab",substrate3d:"Organic substrate",silicon:"Silicon / dies",solder:"Micro-connections",metal:"IHS / metal heat spreader",x3dLayer:"3D V-Cache",ultraLayer:"P-core / E-core / GPU / NPU"},
+zh:{real3d:"真实感 3D 查看器",real3dOpen:"打开真实感 3D 实验室",real3dText:"探索带有材质、灯光和可分离层的 3D 重建。这是教育示意，不是芯片内部的真实照片。",selectChip:"选择处理器",explosion:"分层拆解",rotate:"旋转",closeLab:"退出实验室",substrate3d:"有机基板",silicon:"硅芯片 / Die",solder:"微连接",metal:"IHS / 金属顶盖",x3dLayer:"3D V-Cache",ultraLayer:"P 核心 / E 核心 / GPU / NPU"}
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+const host=document.getElementById("webglScene"),lab=document.getElementById("real3dLab");
+const openBtn=document.getElementById("openReal3D"),closeBtn=document.getElementById("realClose");
+const slider=document.getElementById("realExplode"),modelSel=document.getElementById("real3dModel"),autoBtn=document.getElementById("realAuto");
+let scene,camera,renderer,controls,root,parts=[],auto=false;
+
+function material(c,m=.25,r=.35){return new THREE.MeshStandardMaterial({color:c,metalness:m,roughness:r});}
+function box(w,h,d,c,m=.2,r=.4){const g=new THREE.BoxGeometry(w,h,d,4,4,2);return new THREE.Mesh(g,material(c,m,r));}
+function buildChip(name){
+  if(!scene)return;
+  if(root)scene.remove(root);
+  root=new THREE.Group();parts=[];scene.add(root);
+  const intel=/intel|core ultra/i.test(name), x3d=/x3d/i.test(name);
+  const base=box(6.4,5,.36,0x153b2d,.15,.45);root.add(base);parts.push([base,0,0]);
+  const solder=new THREE.Group(),sm=material(0xd6b36a,.8,.2);
+  for(let x=-2.75;x<=2.75;x+=.28)for(let y=-2.15;y<=2.15;y+=.28){
+    const b=new THREE.Mesh(new THREE.SphereGeometry(.035,8,8),sm);b.position.set(x,y,.22);solder.add(b);
+  }
+  root.add(solder);parts.push([solder,.28,.8]);
+  if(intel){
+    const tiles=[
+      [-1.7,.65,2.1,1.55,0x345f78],[1.35,.65,1.45,1.55,0x294c65],
+      [-1.35,-1.05,2.65,.95,0x2b506a],[1.65,-1.05,1.05,.95,0x45566c]
+    ];
+    tiles.forEach(t=>{let q=box(t[2],t[3],.13,t[4],.35,.27);q.position.set(t[0],t[1],.5);root.add(q);parts.push([q,.5,2.1]);});
+    // P/E/GPU/NPU-like tile details
+    for(let j=0;j<12;j++){
+      const q=box(.16,.16,.06,0x9ac7df,.15,.3);
+      q.position.set(-2.35+(j%6)*.42,.18+Math.floor(j/6)*.42,.66);
+      root.add(q);parts.push([q,.66,2.7]);
+    }
+  }else{
+    let io=box(3.2,1.45,.13,0x3c6074,.3,.28);io.position.set(0,-1.35,.5);root.add(io);parts.push([io,.5,2.1]);
+    [-1.45,1.45].forEach(x=>{
+      let ccd=box(1.9,1.55,.13,0x4b6d80,.32,.25);ccd.position.set(x,.55,.5);root.add(ccd);parts.push([ccd,.5,2.1]);
+      if(x3d){let cache=box(1.78,1.43,.11,0x9b6339,.4,.25);cache.position.set(x,.55,.68);root.add(cache);parts.push([cache,.68,3.3]);}
+      for(let cx=-.58;cx<=.58;cx+=.39)for(let cy=-.42;cy<=.42;cy+=.39){
+        let core=box(.24,.24,.08,0x9ccbdc,.15,.3);core.position.set(x+cx,.55+cy,.6);root.add(core);parts.push([core,.6,2.5]);
+      }
+    });
+  }
+  // polished heat spreader / IHS
+  let ihs=box(6.05,4.65,.34,0xb9c2cc,.92,.14);ihs.position.z=.88;root.add(ihs);parts.push([ihs,.88,4.8]);
+  let badge=box(2.8,.95,.025,intel?0x1a2634:0x252a31,.55,.22);badge.position.z=1.08;root.add(badge);parts.push([badge,1.08,5]);
+  root.rotation.set(-.28,.38,-.18);updateExplode();
+}
+function updateExplode(){
+  const k=Number(slider.value)/100;
+  parts.forEach(([o,z,e])=>o.position.z=z+e*k*1.45);
+}
+function init(){
+  if(renderer)return;
+  if(typeof THREE==="undefined"){alert("No se pudo cargar el motor 3D. Revisa la conexión a Internet y vuelve a abrir el laboratorio.");return;}
+  scene=new THREE.Scene();
+  camera=new THREE.PerspectiveCamera(40,Math.max(host.clientWidth,300)/Math.max(host.clientHeight,300),.1,100);
+  camera.position.set(8,7,9);
+  renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setSize(Math.max(host.clientWidth,300),Math.max(host.clientHeight,300));
+  renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
+  host.innerHTML="";host.appendChild(renderer.domElement);
+  controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=6;controls.maxDistance=16;
+  scene.add(new THREE.HemisphereLight(0xcfe6ff,0x101827,2.2));
+  let key=new THREE.DirectionalLight(0xffffff,4.5);key.position.set(7,9,10);key.castShadow=true;scene.add(key);
+  let blue=new THREE.PointLight(0x66aaff,18,18);blue.position.set(-6,3,5);scene.add(blue);
+  let warm=new THREE.PointLight(0xffb56e,10,15);warm.position.set(5,-4,4);scene.add(warm);
+  let floor=new THREE.Mesh(new THREE.CircleGeometry(14,64),material(0x04070d,.05,.75));floor.rotation.x=-Math.PI/2;floor.position.y=-3.2;scene.add(floor);
+  buildChip(modelSel.value);animate();
+}
+function resize3d(){if(renderer){renderer.setSize(Math.max(host.clientWidth,300),Math.max(host.clientHeight,300));camera.aspect=Math.max(host.clientWidth,300)/Math.max(host.clientHeight,300);camera.updateProjectionMatrix();}}
+function animate(){requestAnimationFrame(animate);if(auto&&root)root.rotation.y+=.004;controls&&controls.update();renderer&&renderer.render(scene,camera);}
+openBtn&&openBtn.addEventListener("click",()=>{lab.classList.add("open");setTimeout(()=>{init();resize3d();},60);});
+closeBtn&&closeBtn.addEventListener("click",()=>lab.classList.remove("open"));
+slider&&slider.addEventListener("input",updateExplode);
+modelSel&&modelSel.addEventListener("change",()=>buildChip(modelSel.value));
+autoBtn&&autoBtn.addEventListener("click",()=>{auto=!auto;autoBtn.classList.toggle("active",auto);});
+window.addEventListener("resize",resize3d);
+})();
+</script>
+
+<script>
+window.COREBENCH_I18N={
+es:{coreBenchTitle:"Mononúcleo vs multinúcleo",coreBenchText:"Compara el rendimiento de un solo núcleo frente al trabajo de todos los núcleos.",singleCore:"Mononúcleo",multiCore:"Multinúcleo",singleExplain:"Mide el trabajo realizado usando principalmente un núcleo. Es importante para muchas tareas que dependen del rendimiento por núcleo.",multiExplain:"Mide el trabajo repartido entre varios núcleos. Es útil para renderizado, compilación, edición y otras cargas paralelizables.",coresLabel:"Núcleos",threadsLabel:"Hilos",noteLabel:"Nota",benchmarkNote:"Las puntuaciones son orientativas para visualizar la diferencia; no sustituyen un benchmark de una configuración concreta."},
+en:{coreBenchTitle:"Single-core vs multi-core",coreBenchText:"Compare the work done by one core with work distributed across multiple cores.",singleCore:"Single-core",multiCore:"Multi-core",singleExplain:"Measures work mainly handled by one core. It matters for many tasks that depend on per-core performance.",multiExplain:"Measures work distributed across multiple cores. It is useful for rendering, compiling, editing and other parallel workloads.",coresLabel:"Cores",threadsLabel:"Threads",noteLabel:"Note",benchmarkNote:"Scores are illustrative to visualize the difference; they do not replace a benchmark of a specific configuration."},
+zh:{coreBenchTitle:"单核 vs 多核",coreBenchText:"比较单个核心处理任务与多个核心同时处理任务的表现。",singleCore:"单核",multiCore:"多核",singleExplain:"主要测量一个核心处理任务的能力，适合观察依赖单核性能的任务。",multiExplain:"测量多个核心共同处理任务的能力，适合渲染、编译、剪辑等可并行工作。",coresLabel:"核心",threadsLabel:"线程",noteLabel:"说明",benchmarkNote:"分数用于直观展示差异，仅作参考，不代替特定配置的实际基准测试。"}
+};
+</script>
+
+<script>
+(function(){
+const data={
+"Ryzen 9 9950X3D2 Dual Edition":{type:"amd",cores:16,desc:"Zen 5 · 16C/32T · dual 3D V-Cache · 208 MB total cache",ccds:2,x3d:true,dualx3d:true},
+"Ryzen 9 9950X3D":[96,100,16,32],"Ryzen 7 9800X3D":[96,72,8,16],"Ryzen 7 7800X3D":[91,63,8,16],"Ryzen 5 7600":[83,48,6,12],
+"Core Ultra 9 290HX Plus":[96,96,24,24],"Core Ultra 7 270K Plus":[94,78,20,20],"Core Ultra 5 250K Plus":[89,58,14,14],
+"Core i9":[90,92,24,32],"Core i7":[88,75,16,24],"Core i5":[84,58,14,20],"Core i3":[76,32,4,8]
+};
+function updateCoreBench(){
+ const el=document.getElementById("coreBenchModel"); if(!el)return;
+ const d=data[el.value]||[80,50,"—","—"];
+ document.getElementById("singleScore").textContent=d[0]+"/100";
+ document.getElementById("multiScore").textContent=d[1]+"/100";
+ document.getElementById("singleBar").style.width=d[0]+"%";
+ document.getElementById("multiBar").style.width=d[1]+"%";
+ document.getElementById("coreCount").textContent=d[2];
+ document.getElementById("threadCount").textContent=d[3];
+}
+document.getElementById("coreBenchModel")?.addEventListener("change",updateCoreBench);
+updateCoreBench();
+window.updateCoreBench=updateCoreBench;
+})();
+</script>
+
+<script>
+function applyCoreBenchLanguage(currentLang){
+ const t=window.COREBENCH_I18N?.[currentLang]||window.COREBENCH_I18N?.es;
+ if(!t)return;
+ document.querySelectorAll('#coreBench [data-i18n]').forEach(e=>{
+   const k=e.getAttribute('data-i18n'); if(t[k])e.textContent=t[k];
+ });
+ const sel=document.getElementById("coreBenchModel");
+ if(sel){
+   sel.setAttribute("aria-label",t.selectChip||"Select processor");
+ }
+}
+</script>
+<script>
+window.PROC_SPECS={"Ryzen 9 9950X3D": ["16", "32", "5.7 GHz", "144 MB total", "170 W", "AMD Radeon Graphics", 96, 100], "Ryzen 9 9900X3D": ["12", "24", "5.5 GHz", "140 MB total", "120 W", "AMD Radeon Graphics", 94, 82], "Ryzen 7 9800X3D": ["8", "16", "5.2 GHz", "104 MB total", "120 W", "AMD Radeon Graphics", 96, 72], "Ryzen 7 7800X3D": ["8", "16", "5.0 GHz", "104 MB total", "120 W", "AMD Radeon Graphics", 91, 63], "Ryzen 9 7950X3D": ["16", "32", "5.7 GHz", "128 MB total", "120 W", "AMD Radeon Graphics", 94, 92], "Ryzen 5 7600X3D": ["6", "12", "4.7 GHz", "102 MB total", "65 W", "AMD Radeon Graphics", 86, 48], "Ryzen 5 7600": ["6", "12", "5.1 GHz", "38 MB total", "65 W", "AMD Radeon Graphics", 83, 48], "Core Ultra 9 290HX Plus": ["24", "24", "5.5 GHz", "36 MB Smart Cache", "55 W base / 160 W turbo", "Intel Graphics", 96, 96], "Core Ultra 7 270HX Plus": ["20", "20", "5.3 GHz", "30 MB Smart Cache", "55 W base / 160 W turbo", "Intel Graphics", 94, 82], "Core Ultra 7 270K Plus": ["24", "24", "5.5 GHz", "36 MB Smart Cache", "125 W base / 159 W turbo", "Intel Graphics", 94, 92], "Core Ultra 5 250K Plus": ["18", "18", "5.3 GHz", "30 MB Smart Cache", "125 W base / 159 W turbo", "Intel Graphics", 89, 65], "Core Ultra 5 250KF Plus": ["18", "18", "5.3 GHz", "30 MB Smart Cache", "125 W base / 159 W turbo", "No integrated graphics", 89, 65], "Core Ultra X9 378H": ["16", "16", "5.0 GHz", "18 MB Smart Cache", "45 W class", "Intel Arc B390 GPU", 91, 78], "Core Ultra X9 388H": ["16", "16", "5.1 GHz", "18 MB Smart Cache", "45 W class", "Intel Arc B390 GPU", 93, 82], "Core Ultra X7 368H": ["16", "16", "5.0 GHz", "18 MB Smart Cache", "45 W class", "Intel Arc B390 GPU", 90, 70], "Core i9": ["Varies", "Varies", "Varies", "Varies", "Varies", "Varies by model", 90, 92], "Core i7": ["Varies", "Varies", "Varies", "Varies", "Varies", "Varies by model", 88, 75], "Core i5": ["Varies", "Varies", "Varies", "Varies", "Varies", "Varies by model", 84, 58], "Core i3": ["Varies", "Varies", "Varies", "Varies", "Varies", "Varies by model", 76, 32], "Ryzen 3": ["Varies", "Varies", "Varies", "Varies", "Varies", "Varies by model", 75, 30], "Ryzen 5": ["Varies", "Varies", "Varies", "Varies", "Varies", "Varies by model", 83, 48], "Ryzen 7": ["Varies", "Varies", "Varies", "Varies", "Varies by model", 90, 65], "Ryzen 9": ["Varies", "Varies", "Varies", "Varies", "Varies by model", 94, 90]};
+if(typeof render==="function") render();
+const SPEC_I18N={
+es:{specsTitle:"Especificaciones del procesador",specsSub:"Núcleos, hilos, frecuencia, caché, potencia y gráficos integrados.",cores:"Núcleos",threads:"Hilos",frequency:"Frecuencia",cache:"Caché",power:"Potencia",igpu:"Gráficos integrados",single:"Mononúcleo",multi:"Multinúcleo",benchNote:"Indicadores orientativos, no benchmark oficial.",yes:"Sí",no:"No",varies:"Depende del modelo"},
+en:{specsTitle:"Processor specifications",specsSub:"Cores, threads, frequency, cache, power and integrated graphics.",cores:"Cores",threads:"Threads",frequency:"Turbo frequency",cache:"Cache",power:"Power",igpu:"Integrated graphics",single:"Single-core",multi:"Multi-core",benchNote:"Illustrative indicators, not an official benchmark.",yes:"Yes",no:"No",varies:"Depends on the model"},
+zh:{specsTitle:"处理器规格",specsSub:"核心、线程、频率、缓存、功耗和集成显卡。",cores:"核心",threads:"线程",frequency:"睿频",cache:"缓存",power:"功耗",igpu:"集成显卡",single:"单核",multi:"多核",benchNote:"仅用于直观比较，不代表官方基准测试。",yes:"是",no:"否",varies:"取决于具体型号"}
+};
+function appLang(){return ((window.lang||window.currentLang||document.documentElement.lang||"es")+"").slice(0,2)}
+function updSpecs(){
+let sel=document.getElementById("specModel");if(!sel)return;let d=window.PROC_SPECS[sel.value],t=SPEC_I18N[appLang()]||SPEC_I18N.es;
+["spCores","spThreads","spFreq","spCache","spPower","spGPU"].forEach((id,i)=>{let v=d[i];if(v==="No integrated graphics")v=t.no;if(v==="Varies"||v==="Varies by model")v=t.varies;document.getElementById(id).textContent=v});
+document.getElementById("spSingle").textContent=d[6]+"/100";document.getElementById("spMulti").textContent=d[7]+"/100";document.getElementById("singleBar2").style.width=d[6]+"%";document.getElementById("multiBar2").style.width=d[7]+"%";
+document.querySelectorAll("#specsSection [data-i18n]").forEach(e=>{let k=e.dataset.i18n;if(t[k])e.textContent=t[k]});
+}
+document.addEventListener("DOMContentLoaded",()=>{let s=document.getElementById("specModel");if(s){Object.keys(window.PROC_SPECS).forEach(n=>{let o=document.createElement("option");o.value=n;o.textContent=n;s.appendChild(o)});s.addEventListener("change",updSpecs);updSpecs()}});
+</script><script>
+function fixGraphicsLanguage(){
+const t=SPEC_I18N[appLang()]||SPEC_I18N.es;
+document.querySelectorAll("body *").forEach(e=>{if(e.children.length===0){let x=e.textContent.trim();if(x==="Yes"||x==="No")e.textContent=x==="Yes"?t.yes:t.no}});
+if(document.getElementById("specModel"))updSpecs();
+}
+setInterval(fixGraphicsLanguage,700);
+</script>
+<script id="v5labjs">
+(()=>{
+const data={
+"Ryzen 9 9950X3D":{type:"amd",cores:16,desc:"Zen 5 · 16C/32T · 3D V-Cache",ccds:2,x3d:true},
+"Ryzen 9 9900X3D":{type:"amd",cores:12,desc:"Zen 5 · 12C/24T · 3D V-Cache",ccds:2,x3d:true},
+"Ryzen 7 9800X3D":{type:"amd",cores:8,desc:"Zen 5 · 8C/16T · 3D V-Cache",ccds:1,x3d:true},
+"Ryzen 9 7950X3D":{type:"amd",cores:16,desc:"Zen 4 · 16C/32T · 3D V-Cache",ccds:2,x3d:true},
+"Ryzen 7 7800X3D":{type:"amd",cores:8,desc:"Zen 4 · 8C/16T · 3D V-Cache",ccds:1,x3d:true},
+"Ryzen 9 9950X":{type:"amd",cores:16,desc:"Zen 5 · 16C/32T",ccds:2,x3d:false},
+"Ryzen 9 9900X":{type:"amd",cores:12,desc:"Zen 5 · 12C/24T",ccds:2,x3d:false},
+"Ryzen 7 9700X":{type:"amd",cores:8,desc:"Zen 5 · 8C/16T",ccds:1,x3d:false},
+"Ryzen 5 9600X":{type:"amd",cores:6,desc:"Zen 5 · 6C/12T",ccds:1,x3d:false},
+"Ryzen AI 9 HX 370":{type:"amdMobile",cores:12,desc:"Laptop · 4x Zen 5 + 8x Zen 5c · Radeon 890M",ccds:1,x3d:false,mobile:true,gpu:true,npu:true},
+"Ryzen AI 9 365":{type:"amdMobile",cores:10,desc:"Laptop · Zen 5/Zen 5c · Radeon 880M",ccds:1,x3d:false,mobile:true,gpu:true,npu:true},
+"Ryzen 7 8845HS":{type:"amdMobile",cores:8,desc:"Laptop · Zen 4 · Radeon 780M",ccds:1,x3d:false,mobile:true,gpu:true,npu:true},
+"Core Ultra 9 285HX":{type:"intel",cores:24,desc:"Laptop HX · 8P + 16E · Intel Graphics",p:8,e:16,gpu:true,mobile:true},
+"Core Ultra 7 275HX":{type:"intel",cores:24,desc:"Laptop HX · 8P + 16E · Intel Graphics",p:8,e:16,gpu:true,mobile:true},
+"Core Ultra 9 185H":{type:"intel",cores:16,desc:"Laptop · hybrid cores · Intel Arc Graphics + NPU",p:6,e:10,gpu:true,npu:true,mobile:true},
+"Core Ultra 9 285K":{type:"intel",cores:24,desc:"Series 2 desktop · 8P + 16E",p:8,e:16,gpu:true},
+"Core Ultra 7 265K":{type:"intel",cores:20,desc:"Series 2 desktop · 8P + 12E",p:8,e:12,gpu:true},
+"Core Ultra 5 245K":{type:"intel",cores:14,desc:"Series 2 desktop · 6P + 8E",p:6,e:8,gpu:true},
+"Core Ultra X9 388H":{type:"intel",cores:16,desc:"Series 3 · 4P + 8E + 4LPE · Arc B390",p:4,e:12,gpu:true,npu:true},
+"Core Ultra 9 386H":{type:"intel",cores:16,desc:"Series 3 · 4P + 8E + 4LPE",p:4,e:12,gpu:true,npu:true},
+"Core Ultra X7 368H":{type:"intel",cores:16,desc:"Series 3 · 4P + 8E + 4LPE · Arc B390",p:4,e:12,gpu:true,npu:true},
+"Core Ultra 7 366H":{type:"intel",cores:16,desc:"Series 3 · 4P + 8E + 4LPE",p:4,e:12,gpu:true,npu:true},
+"Core Ultra 5 338H":{type:"intel",cores:12,desc:"Series 3 · 4P + 4E + 4LPE · Arc B370",p:4,e:8,gpu:true,npu:true}
+};
+const $=id=>document.getElementById(id), model=$("v5Model"), stage=$("v5Stage"), scene=$("v5Scene"), partsBox=$("v5Parts");
+if(!model||!stage)return;
+
+ // Todo procesador del catálogo aparece en el visor. Los modelos sin un preset
+ // específico usan una reconstrucción educativa genérica según su marca/familia.
+ if(typeof models!=="undefined"){
+   models.forEach(m=>{
+     if(data[m[2]]) return;
+     const c=parseInt(m[4])||4;
+     if(m[0]==="AMD"){
+       data[m[2]]={type:(deviceType(m)==="Laptop"?"amdMobile":"amd"),cores:c,
+         desc:`${deviceType(m)} · ${c} núcleos / ${m[5]} hilos · ${m[6]}`,
+         ccds:c>8?2:1,x3d:/X3D/i.test(m[2]),dualx3d:/X3D2/i.test(m[2]),
+         mobile:deviceType(m)==="Laptop",gpu:m[9]!=="No",npu:/Ryzen AI/i.test(m[1])};
+     }else{
+       let p=Math.max(1,Math.min(8,Math.round(c*.38))),e=Math.max(0,c-p);
+       data[m[2]]={type:"intel",cores:c,desc:`${deviceType(m)} · ${c} núcleos / ${m[5]} hilos · ${m[6]}`,
+         p:p,e:e,gpu:m[9]!=="No",npu:/Ultra|Core [3579] 3/i.test(m[1]+" "+m[2]),mobile:deviceType(m)==="Laptop"};
+     }
+   });
+ }
+ Object.keys(data).sort((a,b)=>{
+   const ma=(typeof models!=="undefined"?models.find(x=>x[2]===a):null);
+   const mb=(typeof models!=="undefined"?models.find(x=>x[2]===b):null);
+   return (ma?powerScore(ma):999)-(mb?powerScore(mb):999);
+ }).forEach(n=>{let o=document.createElement("option");o.textContent=n;model.appendChild(o)});
+
+let rx=58,rz=-34,zoom=1,drag=false,lx=0,ly=0,auto=false,raf=0,selected=null,isolate=false;
+const partInfo={
+"Pasta térmica":["Material térmico / TIM","Capa térmica entre el silicio y la cubierta; aquí se representa para entender el apilado."],
+"Contactos":["Contactos del paquete","Matriz de contactos eléctricos del encapsulado representada de forma educativa."],
+"IHS":["IHS / cubierta metálica","Distribuye la presión y transfiere calor hacia el sistema de refrigeración."],
+"Sustrato":["Sustrato orgánico","Base del encapsulado; conecta los dies con la placa base."],
+"CCD":["CCD / chiplet de CPU","Contiene los núcleos de CPU y caché de alto nivel en este modelo esquemático."],
+"I/O Die":["I/O Die","Bloque de entrada/salida, memoria y enlaces del encapsulado."],
+"3D V-Cache":["3D V-Cache","Caché adicional apilada verticalmente sobre un CCD en los modelos X3D."],
+"Compute Tile":["Compute Tile","Bloque de cómputo que agrupa núcleos P y E en la reconstrucción educativa."],
+"GPU Tile":["GPU / Graphics Tile","Bloque dedicado a gráficos integrados."],
+"SoC/NPU Tile":["SoC / NPU","Bloques de plataforma y aceleración de IA representados de forma educativa."],
+"Microconexión":["Microconexiones / bumps","Pequeñas conexiones eléctricas entre capas y componentes."],
+"Núcleo":["Núcleo CPU","Unidad de ejecución representada individualmente para poder seleccionarla."]
+};
+function addPart(name,cls,x,y,z,w,h,label,group){
+ const e=document.createElement("div");e.className="v5part "+cls;e.dataset.name=name;e.dataset.z=z;e.dataset.group=group||name;
+ if(w)e.style.width=w+"px"; if(h)e.style.height=h+"px";
+ e.style.marginLeft=(w?-w/2:0)+"px";e.style.marginTop=(h?-h/2:0)+"px";
+ e.dataset.x=x;e.dataset.y=y;e.style.left=`calc(50% + ${x}px)`;e.style.top=`calc(50% + ${y}px)`;
+ if(label)e.innerHTML=`<span class="v5label">${label}</span>`;
+ e.addEventListener("click",ev=>{ev.stopPropagation();selectPart(e)});
+ stage.appendChild(e);return e;
+}
+function setTransform(e){
+ let z=Number(e.dataset.z), ex=Number($("v5Explode").value)/100, lift=e.dataset.lifted==="1"?75:0;
+ e.style.transform=`translateZ(${z + z*ex*2.1 + lift}px)`;
+}
+function build(){
+ stage.innerHTML="";partsBox.innerHTML="";selected=null;isolate=false;
+ const d=data[model.value]; $("v5PartTitle").textContent=model.value; $("v5PartDesc").textContent=d.desc;
+ addPart("Sustrato","plate substrate-v5",0,0,0,310,310,"SUSTRATO","Sustrato");
+ // Contactos inferiores y trazas: detalles visuales del encapsulado.
+ for(let y=-112;y<=112;y+=28)for(let x=-112;x<=112;x+=28){
+   if(Math.abs(x)<35 && Math.abs(y)<35) continue;
+   addPart("Contactos","ball-v5",x,y,-8,9,9,"","Contactos");
+ }
+
+ // solder grid
+ for(let y=-105;y<=105;y+=30)for(let x=-105;x<=105;x+=30)addPart("Microconexión","ball-v5",x,y,9,11,11,"","Microconexión");
+ if(d.type==="amd" || d.type==="amdMobile"){
+   const positions=d.ccds===2?[[-70,-50],[70,-50]]:[[0,-55]];
+   positions.forEach((p,idx)=>{
+     addPart("CCD","die-v5",p[0],p[1],34,110,92,"CCD "+(idx+1),"CCD");
+     let n=Math.ceil(d.cores/d.ccds), cols=4;
+     for(let i=0;i<n;i++){let cx=p[0]-35+(i%cols)*23,cy=p[1]-25+Math.floor(i/cols)*27;addPart("Núcleo","core-v5",cx,cy,43,20,18,"","Núcleo")}
+     if(d.x3d && (idx===0 || d.dualx3d))addPart("3D V-Cache","cache-v5",p[0],p[1],58,102,82,"V-CACHE","3D V-Cache");
+   });
+   if(d.type==="amdMobile"){
+     addPart("GPU Tile","tile-v5",68,62,34,82,68,"RADEON","GPU Tile");
+     addPart("SoC/NPU Tile","tile-v5",-52,66,34,105,68,"NPU / SOC","SoC/NPU Tile");
+   } else addPart("I/O Die","iod-v5",0,68,34,128,92,"I/O DIE","I/O Die");
+ }else{
+   addPart("Compute Tile","tile-v5",-48,-42,34,155,120,"COMPUTE","Compute Tile");
+   addPart("GPU Tile","tile-v5",73,-48,34,75,105,"GPU","GPU Tile");
+   addPart("SoC/NPU Tile","tile-v5",42,69,34,145,74,"SOC / NPU","SoC/NPU Tile");
+   let total=Math.min(d.p+d.e,24),cols=6;
+   for(let i=0;i<total;i++){let cx=-95+(i%cols)*20,cy=-75+Math.floor(i/cols)*22;let c=addPart("Núcleo","core-v5",cx,cy,46,17,15,"","Núcleo");if(i>=d.p)c.style.background="#34557d";}
+ }
+ addPart("Pasta térmica","tile-v5",0,0,74,205,175,"TIM","Pasta térmica");
+ addPart("IHS","plate ihs-v5",0,0,90,310,310,model.value,"IHS");
+ stage.querySelectorAll(".v5part").forEach(setTransform);
+ const groups=[...new Set([...stage.querySelectorAll(".v5part")].map(e=>e.dataset.group))];
+ groups.forEach(g=>{let b=document.createElement("button");b.type="button";b.textContent=g;b.addEventListener("click",()=>{let e=stage.querySelector(`[data-group="${CSS.escape(g)}"]`);if(e)selectPart(e)});partsBox.appendChild(b)});
+ updateStage();
+}
+function selectPart(e){
+ stage.querySelectorAll(".selected").forEach(x=>x.classList.remove("selected"));e.classList.add("selected");selected=e;
+ let key=e.dataset.name,info=partInfo[key]||[key,"Componente interactivo del encapsulado."];
+ $("v5PartTitle").textContent=info[0];$("v5PartDesc").textContent=info[1];
+ [...partsBox.children].forEach(b=>b.classList.toggle("active",b.textContent===e.dataset.group));
+}
+function updateStage(){stage.style.transform=`translate(-50%,-50%) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`}
+$("v5Explode").addEventListener("input",()=>stage.querySelectorAll(".v5part").forEach(setTransform));
+model.addEventListener("change",build);
+const v10Pointers=new Map(); let v10PinchDist=0,v10PinchZoom=1;
+function v10Dist(){const p=[...v10Pointers.values()];if(p.length<2)return 0;return Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)}
+scene.addEventListener("pointerdown",e=>{
+  scene.setPointerCapture?.(e.pointerId);v10Pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(v10Pointers.size===1){drag=true;lx=e.clientX;ly=e.clientY}else{drag=false;v10PinchDist=v10Dist();v10PinchZoom=zoom}
+});
+scene.addEventListener("pointermove",e=>{
+  if(!v10Pointers.has(e.pointerId))return;v10Pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(v10Pointers.size>=2){const d=v10Dist();if(v10PinchDist>0){zoom=Math.max(.55,Math.min(1.85,v10PinchZoom*(d/v10PinchDist)));updateStage()}return}
+  if(!drag)return;rz+=(e.clientX-lx)*.35;rx-=(e.clientY-ly)*.3;rx=Math.max(15,Math.min(82,rx));lx=e.clientX;ly=e.clientY;updateStage()
+});
+function v10PointerEnd(e){v10Pointers.delete(e.pointerId);if(v10Pointers.size===1){const p=[...v10Pointers.values()][0];lx=p.x;ly=p.y;drag=true}else if(v10Pointers.size===0){drag=false;v10PinchDist=0}}
+scene.addEventListener("pointerup",v10PointerEnd);scene.addEventListener("pointercancel",v10PointerEnd);scene.addEventListener("pointerleave",e=>{if(e.pointerType!=="mouse")v10PointerEnd(e)});
+scene.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.55,Math.min(1.85,zoom+(e.deltaY<0?.08:-.08)));updateStage()},{passive:false});
+$("v5Reset").addEventListener("click",()=>{rx=58;rz=-34;zoom=1;updateStage()});
+$("v5Assemble").addEventListener("click",()=>{$("v5Explode").value=0;stage.querySelectorAll(".v5part").forEach(e=>{e.dataset.lifted="0";e.classList.remove("lifted","part-hidden","isolated-dim");setTransform(e)});isolate=false});
+$("v5Auto").addEventListener("click",()=>{auto=!auto;$("v5Auto").textContent=auto?"Pausar rotación":"Rotación automática";if(auto)tick();else cancelAnimationFrame(raf)});
+function tick(){if(!auto)return;rz+=.22;updateStage();raf=requestAnimationFrame(tick)}
+$("v5Focus").addEventListener("click",()=>{if(!selected)return;isolate=!isolate;stage.querySelectorAll(".v5part").forEach(e=>e.classList.toggle("isolated-dim",isolate && e.dataset.group!==selected.dataset.group));$("v5Focus").textContent=isolate?"Mostrar todo":"Aislar pieza"});
+$("v5Hide").addEventListener("click",()=>{if(!selected)return;let group=selected.dataset.group;stage.querySelectorAll(".v5part").forEach(e=>{if(e.dataset.group===group)e.classList.toggle("part-hidden")})});
+$("v5Lift").addEventListener("click",()=>{if(!selected)return;let group=selected.dataset.group;stage.querySelectorAll(".v5part").forEach(e=>{if(e.dataset.group===group){e.dataset.lifted=e.dataset.lifted==="1"?"0":"1";e.classList.toggle("lifted",e.dataset.lifted==="1");setTransform(e)}})});
+build(); const mc=document.getElementById("v7ModelCount"); if(mc) mc.textContent=model.options.length+" procesadores en 3D";
+})();
+</script>
+
+
+<script id="v8-full-catalog">
+(()=>{
+const byId=id=>document.getElementById(id);
+function catalog(){
+  const arr=(typeof getAllModels==="function"?getAllModels():(typeof models!=="undefined"?models:[])).slice();
+  return arr.sort((a,b)=>{
+    const pa=(typeof powerScore==="function"?powerScore(a):0);
+    const pb=(typeof powerScore==="function"?powerScore(b):0);
+    return pa-pb || a[2].localeCompare(b[2]);
+  });
+}
+function boostOf(m){
+  const nums=String(m?.[6]||"").match(/\d+(?:\.\d+)?/g)||[];
+  return nums.length?parseFloat(nums[nums.length-1]):0;
+}
+function generationBonus(m){
+  const gen=String(m?.[3]||"").toLowerCase();
+  if(/series 3|2026/.test(gen))return 9;
+  if(/9000|series 2/.test(gen))return 8;
+  if(/8000|14th/.test(gen))return 6;
+  if(/7000|13th/.test(gen))return 5;
+  if(/5000|12th/.test(gen))return 4;
+  if(/4000|11th/.test(gen))return 2;
+  if(/3000|10th/.test(gen))return 1;
+  return 0;
+}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function scoresFor(m){
+  const curated=window.PROC_SPECS?.[m[2]];
+  if(curated && Number.isFinite(+curated[6]) && Number.isFinite(+curated[7])){
+    return [clamp(+curated[6],1,100),clamp(+curated[7],1,100),"curado"];
+  }
+  const cores=parseInt(m[4])||1, threads=parseInt(m[5])||cores, boost=boostOf(m);
+  let single=50 + boost*7 + generationBonus(m);
+  if(/x3d/i.test(m[2])) single+=1;
+  if(typeof deviceType==="function" && deviceType(m)==="Laptop") single-=1;
+  single=clamp(Math.round(single),50,99);
+  let multi=single*.43 + cores*2.15 + threads*.75;
+  if(/hx/i.test(m[2]))multi+=3;
+  multi=clamp(Math.round(multi),20,100);
+  return [single,multi,"estimado"];
+}
+function groupName(m){
+  const dev=(typeof deviceType==="function"?deviceType(m):"");
+  const brand=m[0];
+  if(dev==="Laptop")return brand+" · Laptop";
+  if(dev.includes("Embedded"))return brand+" · Embedded / Workstation";
+  return brand+" · Desktop";
+}
+function fillSelect(sel,list,preferred){
+  if(!sel)return;
+  const current=preferred||sel.value;
+  sel.innerHTML="";
+  const groups=new Map();
+  list.forEach(m=>{
+    const g=groupName(m);
+    if(!groups.has(g))groups.set(g,[]);
+    groups.get(g).push(m);
+  });
+  ["AMD · Desktop","AMD · Laptop","AMD · Embedded / Workstation","Intel · Desktop","Intel · Laptop","Intel · Embedded / Workstation"].forEach(g=>{
+    const rows=groups.get(g); if(!rows?.length)return;
+    const og=document.createElement("optgroup"); og.label=g;
+    rows.forEach(m=>{const o=document.createElement("option");o.value=m[2];o.textContent=m[2];og.appendChild(o)});
+    sel.appendChild(og);
+  });
+  if([...sel.options].some(o=>o.value===current))sel.value=current;
+}
+function rowByName(name){return catalog().find(m=>m[2]===name)}
+function gpuOf(m){
+  const g=m?.[10]||m?.[9]||"—";
+  if(g==="No")return (document.documentElement.lang||"es").startsWith("en")?"No integrated graphics":(document.documentElement.lang||"es").startsWith("zh")?"无集成显卡":"Sin gráficos integrados";
+  return g;
+}
+function metaHTML(m,source){
+  if(!m)return "";
+  const dev=typeof deviceType==="function"?deviceType(m):"—";
+  const tier=typeof powerTier==="function"?powerTier(m):"—";
+  const src=source==="curado"?"índice curado":"índice estimado";
+  return `<span><b>${m[0]}</b></span><span>${m[1]}</span><span>${m[3]}</span><span>${dev}</span><span>Nivel: <b>${tier}</b></span><span>${src}</span>`;
+}
+function updateBenchmark(){
+  const sel=byId("coreBenchModel"); if(!sel)return;
+  const m=rowByName(sel.value); if(!m)return;
+  const [single,multi,src]=scoresFor(m);
+  byId("singleScore").textContent=single+"/100";
+  byId("multiScore").textContent=multi+"/100";
+  byId("singleBar").style.width=single+"%";
+  byId("multiBar").style.width=multi+"%";
+  byId("coreCount").textContent=m[4];
+  byId("threadCount").textContent=m[5];
+  if(byId("coreBenchMeta"))byId("coreBenchMeta").innerHTML=metaHTML(m,src);
+}
+function updateSpecsFull(){
+  const sel=byId("specModel"); if(!sel)return;
+  const m=rowByName(sel.value); if(!m)return;
+  const [single,multi,src]=scoresFor(m);
+  const vals=[m[4],m[5],m[6],m[7],m[8],gpuOf(m)];
+  ["spCores","spThreads","spFreq","spCache","spPower","spGPU"].forEach((id,i)=>{const el=byId(id);if(el)el.textContent=vals[i]||"—"});
+  byId("spSingle").textContent=single+"/100"; byId("spMulti").textContent=multi+"/100";
+  byId("singleBar2").style.width=single+"%"; byId("multiBar2").style.width=multi+"%";
+  if(byId("specMeta"))byId("specMeta").innerHTML=metaHTML(m,src);
+}
+function attachSearch(input,sel,count,updateFn){
+  if(!input||!sel)return;
+  const all=catalog();
+  const render=()=>{
+    const q=input.value.trim().toLowerCase();
+    const current=sel.value;
+    const filtered=all.filter(m=>!q || [m[0],m[1],m[2],m[3],deviceType(m)].join(" ").toLowerCase().includes(q));
+    fillSelect(sel,filtered,current);
+    if(count)count.textContent=filtered.length+" / "+all.length+" procesadores";
+    if(sel.options.length){
+      if(!sel.value)sel.selectedIndex=0;
+      updateFn();
+    }
+  };
+  input.addEventListener("input",render);
+  render();
+}
+function initFullCatalog(){
+  const all=catalog();
+  const benchSel=byId("coreBenchModel"), specSel=byId("specModel");
+  // Selección inicial: mantener el 9950X3D si existe.
+  fillSelect(benchSel,all,"Ryzen 9 9950X3D");
+  fillSelect(specSel,all,"Ryzen 9 9950X3D");
+  attachSearch(byId("coreBenchSearch"),benchSel,byId("coreBenchCount"),updateBenchmark);
+  attachSearch(byId("specSearch"),specSel,byId("specCount"),updateSpecsFull);
+  benchSel?.addEventListener("change",updateBenchmark);
+  specSel?.addEventListener("change",updateSpecsFull);
+  updateBenchmark(); updateSpecsFull();
+  window.updateCoreBench=updateBenchmark;
+  window.updSpecs=updateSpecsFull;
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(initFullCatalog,0));
+else setTimeout(initFullCatalog,0);
+})();
+</script>
+
+
+<script id="v9-arch-js">
+(()=>{
+ const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+ const pkgs=['#amdPackage','#intelPackage'].map(s=>$(s)).filter(Boolean);
+ const explode=$('#archExplode'), signal=$('#archSignal'), heat=$('#archHeat');
+ function setBtn(btn,on){ if(btn) btn.classList.toggle('active',on); }
+ explode&&explode.addEventListener('click',()=>{
+   const on=!pkgs[0]?.classList.contains('exploded');
+   pkgs.forEach(p=>p.classList.toggle('exploded',on)); setBtn(explode,on);
+ });
+ signal&&signal.addEventListener('click',()=>{ const on=!pkgs[0]?.classList.contains('signal'); pkgs.forEach(p=>p.classList.toggle('signal',on)); setBtn(signal,on); });
+ heat&&heat.addEventListener('click',()=>{ const on=!pkgs[0]?.classList.contains('heat'); pkgs.forEach(p=>p.classList.toggle('heat',on)); setBtn(heat,on); });
+ const laptop=$('#laptopCutaway'), lt=$('#laptopThermal');
+ lt&&lt.addEventListener('click',()=>{ laptop.classList.toggle('thermal-on'); lt.classList.toggle('active'); });
+ const mini=$('#miniLab'), me=$('#miniExplode');
+ me&&me.addEventListener('click',()=>{ mini.classList.toggle('exploded'); me.classList.toggle('active'); });
+ const cool=$('#coolingLab'), cp=$('#coolingPulse');
+ cp&&cp.addEventListener('click',()=>{ cool.classList.toggle('heat-on'); cp.classList.toggle('active'); });
+})();
+</script>
+<!-- V12 language QA: Spanish / English / Simplified Chinese -->
+
+<script id="v13-strict-language-engine">
+(()=>{
+const TRI=[["📱 Versión móvil:","📱 Mobile version:","📱 移动版："],["diseñada para abrirse en Android/iPhone desde el navegador. No necesita ocupar GB: todo el laboratorio y el catálogo están dentro de este archivo HTML.","designed to run on Android/iPhone directly in the browser. It does not need gigabytes: the lab and catalog are contained in this HTML file.","可直接在 Android/iPhone 浏览器中运行。不需要占用数 GB 空间：实验室和处理器目录都包含在这个 HTML 文件中。"],["Orden:","Order:","排序："],["de menor potencia a nivel EXTREME dentro de cada marca. La posición es orientativa y usa especificaciones del CPU; no es un benchmark universal, porque laptops y desktops cambian según refrigeración y límites de potencia.","from lower-power models to EXTREME tier within each brand. The position is illustrative and uses CPU specifications; it is not a universal benchmark because laptops and desktops vary with cooling and power limits.","在每个品牌内从较低性能型号排列到 EXTREME 级别。该顺序仅供参考，依据 CPU 规格计算；它不是通用基准测试，因为笔记本和台式机的表现会受到散热和功耗限制影响。"],["LABORATORIO DE ARQUITECTURA","ARCHITECTURE LAB","架构实验室"],["módulos","modules","模块"],["vistas técnicas","technical views","技术视图"],["modo visual","visual mode","视觉模式"],["Refrigeración","Cooling","散热系统"],["EXPLORADOR DEL CHIP","CHIP EXPLORER","芯片探索器"],["Del IHS al silicio","From the IHS to the silicon","从 IHS 到硅芯片"],["Separar capas","Explode layers","分离层级"],["Ruta de señal","Signal path","信号路径"],["Ruta térmica","Thermal path","热传导路径"],["Contactos","Contacts","触点"],["Sustrato","Substrate","基板"],["núcleos","cores","核心"],["caché apilada","stacked cache","堆叠缓存"],["interconexión","interconnect","互连"],["Vista educativa de una CPU Ryzen moderna: los núcleos pueden agruparse en CCD y conectarse a un I/O Die. En modelos X3D, una capa adicional de caché mejora ciertas cargas de juego y latencia.","Educational view of a modern Ryzen CPU: cores can be grouped into CCDs and connected to an I/O Die. On X3D models, an extra cache layer can improve some gaming and latency-sensitive workloads.","现代 Ryzen CPU 的教学视图：核心可分组在 CCD 中，并连接到 I/O Die。在 X3D 型号中，额外的缓存层可改善部分游戏和延迟敏感型负载。"],["Vista educativa de un diseño Intel moderno: la lógica de cómputo se combina con gráficos y otras funciones del sistema. En Core Ultra, varias funciones pueden organizarse en tiles con aceleración de IA.","Educational view of a modern Intel design: compute logic is combined with graphics and other system functions. In Core Ultra, several functions can be organized into tiles with AI acceleration.","现代 Intel 设计的教学视图：计算逻辑与图形和其他系统功能组合。在 Core Ultra 中，多种功能可通过 tiles 组织，并提供 AI 加速。"],["Estas ilustraciones son reconstrucciones educativas para entender el empaquetado y los bloques funcionales. No copian el floorplan exacto de cada modelo.","These illustrations are educational reconstructions for understanding packaging and functional blocks. They do not reproduce the exact floorplan of each model.","这些图示是用于理解封装与功能模块的教学重建，并不复制每个型号的真实物理版图。"],["LÍNEA DE TIEMPO","TIMELINE","时间线"],["Evolución de arquitecturas","Architecture evolution","架构演进"],["Las generaciones cambian la arquitectura, el nodo de fabricación, el empaquetado, los gráficos y la eficiencia. Esta línea de tiempo resume familias clave.","Generations change architecture, process node, packaging, graphics and efficiency. This timeline summarizes key families.","不同代际会改变架构、制程节点、封装、图形性能和能效。此时间线概括了关键系列。"],["Zen 3 · latencia refinada","Zen 3 · refined latency","Zen 3 · 延迟优化"],["Zen 5 · nueva generación","Zen 5 · new generation","Zen 5 · 新一代"],["AI PC · serie reciente","AI PC · recent series","AI PC · 新系列"],["Arquitectura","Architecture","架构"],["Nuevos núcleos, cachés, predicción y ejecución.","New cores, caches, prediction and execution.","新的核心、缓存、预测与执行设计。"],["Empaquetado","Packaging","封装"],["Chiplets, tiles, interconexiones y apilado 3D.","Chiplets, tiles, interconnects and 3D stacking.","Chiplet、tile、互连与 3D 堆叠。"],["IA y movilidad","AI and mobility","AI 与移动平台"],["NPUs dedicadas, mejores iGPU y plataformas más eficientes.","Dedicated NPUs, better iGPUs and more efficient platforms.","专用 NPU、更强的集成显卡以及更高效的平台。"],["PLATAFORMA MÓVIL","MOBILE PLATFORM","移动平台"],["Laptop moderna por dentro","Inside a modern laptop","现代笔记本内部结构"],["Mapa térmico","Thermal map","热力图"],["En laptops, CPU, gráficos, memoria, batería y refrigeración comparten un espacio reducido. Por eso el diseño térmico es tan importante como el propio procesador.","In laptops, the CPU, graphics, memory, battery and cooling system share a very limited space. That is why thermal design is as important as the processor itself.","在笔记本电脑中，CPU、图形、内存、电池和散热系统共享非常有限的空间，因此散热设计与处理器本身同样重要。"],["Normalmente integra CPU Zen, gráficos Radeon y, en las familias Ryzen AI, una NPU para tareas locales de IA.","It can combine Zen CPU cores, Radeon graphics and, in Ryzen AI families, an NPU for local AI workloads.","可集成 Zen CPU 核心、Radeon 图形，并在 Ryzen AI 系列中提供用于本地 AI 任务的 NPU。"],["Core y Core Ultra móviles combinan CPU, iGPU y, según la serie, NPU. Las variantes H y HX priorizan mayor rendimiento.","Mobile Core and Core Ultra combine CPU, iGPU and, depending on the series, an NPU. H and HX variants prioritize higher performance.","移动版 Core 与 Core Ultra 结合 CPU、iGPU，并根据系列提供 NPU。H 和 HX 型号更强调高性能。"],["SISTEMAS COMPACTOS","COMPACT SYSTEMS","紧凑型系统"],["Mini PC: pequeño por fuera, complejo por dentro","Mini PC: compact outside, complex inside","迷你电脑：体积小巧，内部结构复杂"],["Abrir carcasa","Open chassis","打开机壳"],["Las mini PCs pueden usar chips móviles, modelos de bajo consumo o soluciones embebidas. Todo depende del tamaño, la refrigeración y el uso previsto.","Mini PCs can use mobile chips, low-power models or embedded solutions. The configuration depends on size, cooling and intended use.","迷你电脑可以使用移动芯片、低功耗型号或嵌入式方案，具体取决于尺寸、散热和使用场景。"],["Cubierta superior","Top cover","上盖"],["Módulo térmico","Cooling module","散热模块"],["Chasis inferior","Bottom chassis","底部机壳"],["Oficina / estudio","Office / study","办公 / 学习"],["Silencio, bajo consumo y espacio mínimo.","Quiet operation, low power and minimal space.","静音、低功耗、占用空间小。"],["Creación / desarrollo","Creation / development","创作 / 开发"],["Más RAM, mejor SSD y refrigeración más exigente.","More RAM, faster SSD and stronger cooling.","更多内存、更快 SSD 和更强散热。"],["Embebido / edge","Embedded / edge","嵌入式 / 边缘计算"],["Conectividad, operación continua y formatos específicos.","Connectivity, continuous operation and specialized form factors.","强调连接性、持续运行和专用形态。"],["INGENIERÍA TÉRMICA","THERMAL ENGINEERING","散热工程"],["El rendimiento depende del calor","Performance depends on thermal management","性能取决于散热管理"],["Animar calor","Animate heat flow","显示热流动画"],["El calor sale del silicio, pasa por la interfaz térmica, el IHS o cold plate, los heatpipes y finalmente el radiador o el aire. Una mejor refrigeración permite sostener frecuencias altas durante más tiempo.","Heat leaves the silicon, passes through the thermal interface, IHS or cold plate, then heatpipes and finally the heatsink or airflow. Better cooling lets the processor sustain high frequencies for longer.","热量从硅芯片传出，经过导热界面、IHS 或冷板，再进入热管，最终由散热鳍片和气流带走。更好的散热能让处理器更长时间维持高频率。"],["interfaz térmica","thermal interface","导热界面"],["IHS / PLACA FRÍA","IHS / COLD PLATE","IHS / 冷板"],["ALETAS + AIRE","FINS + AIRFLOW","鳍片 + 气流"],["Fuente","Source","热源"],["Transferencia","Transfer","传导"],["Disipación","Dissipation","散热"],["*Valores ilustrativos. La temperatura real depende del procesador, el equipo, la carga y la refrigeración.","*Illustrative values. Real temperature depends on the processor, device, workload and cooling system.","*数值仅用于示意。实际温度取决于处理器、设备、负载和散热系统。"],["Visor 3D: desarma el procesador","3D viewer: disassemble the processor","3D 查看器：拆解处理器"],["Entra a una vista aparte y separa las capas para ver cómo está construido.","Open a separate view and separate the layers to see how the processor is built.","打开独立视图并分离各层，观察处理器的结构。"],["Abrir visor 3D","Open 3D viewer","打开 3D 查看器"],["Procesador 3D","3D processor","3D 处理器"],["Cerrar visor","Close viewer","关闭查看器"],["Marca","Brand","品牌"],["Desmontar","Disassemble","拆解"],["Rotar vista","Rotate view","旋转视图"],["Sustrato / base","Substrate / base","基板 / 底层"],["Interposer / conexión","Interposer / connection","中介层 / 连接层"],["Die / silicio","Die / silicon","Die / 硅芯片"],["Cubierta metálica","Metal heat spreader","金属散热顶盖"],["Núcleos y bloques internos","Cores and internal blocks","核心与内部模块"],["Vista 3D esquemática...","Schematic 3D view...","3D 结构示意图……"],["Laboratorio 3D interactivo del procesador","Interactive 3D processor lab","交互式 3D 处理器实验室"],["Arrastra para rotar. Usa la rueda para zoom. Haz clic en cualquier pieza para seleccionarla, aislarla, ocultarla o separarla.","Drag to rotate. Use the mouse wheel to zoom. Select any component to isolate, hide, or move it.","拖动可旋转，使用滚轮可缩放。选择任意部件后，可单独显示、隐藏或移动该部件。"],["Procesador","Processor","处理器"],["Catálogo 3D completo","Full 3D catalog","完整 3D 目录"],["Separación","Layer separation","层级分离"],["Rotación automática","Auto rotation","自动旋转"],["Pausar rotación","Pause rotation","暂停旋转"],["Restablecer cámara","Reset camera","重置视角"],["Ensamblar","Reassemble","重新组装"],["🖱️ Arrastrar = rotar · rueda = zoom · clic = seleccionar pieza","👆 Drag = rotate · pinch / wheel = zoom · tap / click = select part","👆 拖动 = 旋转 · 双指捏合 / 滚轮 = 缩放 · 轻触 / 点击 = 选择部件"],["Selecciona una pieza","Select a component","选择一个部件"],["Puedes interactuar con cada componente del procesador.","You can interact with every processor component.","你可以与处理器的每个部件进行交互。"],["Aislar pieza","Isolate component","仅显示该部件"],["Mostrar todo","Show all","显示全部"],["Ocultar / mostrar","Hide / show","隐藏 / 显示"],["Levantar pieza","Lift component","抬起部件"],["Objetos interactivos","Interactive components","可交互部件"],["Reconstrucción educativa 3D: representa capas y bloques funcionales; no pretende reproducir el floorplan físico exacto de cada chip.","Educational 3D reconstruction: it represents package layers and functional blocks and does not reproduce the exact physical floorplan of each chip.","教学用 3D 重建：用于展示封装层级和功能模块，并不复现每颗芯片的真实物理版图。"],["El índice de 0–100 es","The 0–100 index is","0–100 指数为"],["orientativo","illustrative","参考性"],[": sirve para visualizar diferencias dentro de esta app. Cuando existe un valor curado en la base de la app se usa ese valor; para el resto se estima a partir de frecuencia, generación, núcleos e hilos. No sustituye Cinebench, Geekbench ni pruebas de un equipo real.",": it is used to visualize differences inside this app. When a curated value exists in the app database, it is used; otherwise the score is estimated from frequency, generation, cores and threads. It does not replace Cinebench, Geekbench or testing on a real system.","：用于在本应用中直观展示差异。数据库中存在人工整理值时会直接使用；其余分数根据频率、代际、核心和线程进行估算。它不能替代 Cinebench、Geekbench 或真实设备测试。"],["Ryzen ↔ Intel por nivel","Ryzen ↔ Intel by tier","Ryzen ↔ Intel 级别对应"],["No significa que tengan el mismo rendimiento: es una equivalencia de categoría/nombre para orientarse.","This does not mean equal performance; it is only a category/name reference for orientation.","这并不代表性能相同；它只是用于理解产品定位和命名级别的参考。"],["Fuentes de referencia: páginas oficiales de AMD e Intel. Intel publica listas por generación y datos de gráficos integrados; AMD ofrece especificaciones completas de Ryzen y productos heredados.","Reference sources: official AMD and Intel product pages. Intel publishes generation-based processor information and integrated-graphics data; AMD provides detailed Ryzen and legacy product specifications.","参考来源：AMD 与 Intel 官方产品页面。Intel 提供按代际划分的处理器信息和集成显卡资料；AMD 提供 Ryzen 以及旧款产品的详细规格。"],["Consejo: un nombre como Ryzen 7 o Core i7 no determina por sí solo cuál es más rápido. Compara el modelo concreto, generación, núcleos, hilos, frecuencia, caché, consumo y gráficos.","Tip: a name such as Ryzen 7 or Core i7 does not by itself determine which processor is faster. Compare the exact model, generation, cores, threads, frequency, cache, power, and graphics.","提示：Ryzen 7 或 Core i7 这样的名称本身无法决定哪款处理器更快。应比较具体型号、代际、核心、线程、频率、缓存、功耗和图形配置。"],["Buscar procesador…","Search processors…","搜索处理器……"],["Buscar procesador","Search processor","搜索处理器"],["Orden de potencia","Performance tier","性能级别"],["BÁSICO","BASIC","入门级"],["MEDIO","MID-RANGE","中端"],["ALTO","HIGH-END","高端"],["ENTUSIASTA","ENTHUSIAST","发烧级"],["EXTREME","EXTREME","旗舰级"],["Laptop","Laptop","笔记本"],["Desktop","Desktop","台式机"],["Embedded / Workstation","Embedded / Workstation","嵌入式 / 工作站"],["Nivel:","Level:","级别："],["índice curado","curated index","人工整理指数"],["índice estimado","estimated index","估算指数"],["curado","curated","人工整理"],["estimado","estimated","估算"],["procesadores","processors","处理器"],["procesadores en 3D","processors in 3D","个处理器支持 3D"],["Pasta térmica","Thermal paste","导热材料"],["Material térmico / TIM","Thermal material / TIM","导热材料 / TIM"],["Capa térmica entre el silicio y la cubierta; aquí se representa para entender el apilado.","Thermal layer between the silicon and the heat spreader; shown here to explain the stack.","位于硅芯片与顶盖之间的导热层，此处用于说明封装堆叠结构。"],["Contactos del paquete","Package contacts","封装触点"],["Matriz de contactos eléctricos del encapsulado representada de forma educativa.","Educational representation of the package electrical-contact array.","封装电气触点阵列的教学示意。"],["IHS / cubierta metálica","IHS / metal heat spreader","IHS / 金属散热顶盖"],["Distribuye la presión y transfiere calor hacia el sistema de refrigeración.","Distributes pressure and transfers heat to the cooling system.","分散压力并将热量传递到散热系统。"],["Sustrato orgánico","Organic substrate","有机基板"],["Base del encapsulado; conecta los dies con la placa base.","Package base that connects the dies to the motherboard.","封装底层，用于将 die 与主板连接。"],["CCD / chiplet de CPU","CCD / CPU chiplet","CCD / CPU 小芯片"],["Contiene los núcleos de CPU y caché de alto nivel en este modelo esquemático.","Contains CPU cores and high-level cache in this schematic model.","在此结构示意中包含 CPU 核心和高级缓存。"],["Bloque de entrada/salida, memoria y enlaces del encapsulado.","Package block for I/O, memory and links.","负责封装中的输入输出、内存和互连。"],["Caché adicional apilada verticalmente sobre un CCD en los modelos X3D.","Additional cache vertically stacked on a CCD in X3D models.","X3D 型号中垂直堆叠在 CCD 上的额外缓存。"],["Bloque de cómputo que agrupa núcleos P y E en la reconstrucción educativa.","Compute block grouping P-cores and E-cores in the educational reconstruction.","教学重建中用于组合 P 核心与 E 核心的计算模块。"],["Bloque dedicado a gráficos integrados.","Block dedicated to integrated graphics.","用于集成图形的专用模块。"],["Bloques de plataforma y aceleración de IA representados de forma educativa.","Educational representation of platform and AI-acceleration blocks.","平台与 AI 加速模块的教学示意。"],["Microconexión","Micro-connection","微连接"],["Microconexiones / bumps","Micro-connections / bumps","微连接 / 凸点"],["Pequeñas conexiones eléctricas entre capas y componentes.","Small electrical connections between layers and components.","层与部件之间的小型电气连接。"],["Núcleo","Core","核心"],["Núcleo CPU","CPU core","CPU 核心"],["Unidad de ejecución representada individualmente para poder seleccionarla.","Execution unit represented individually so it can be selected.","单独表示的执行单元，可进行选择和交互。"],["Componente interactivo del encapsulado.","Interactive package component.","可交互的封装部件。"],["SUSTRATO","SUBSTRATE","基板"],["No se pudo cargar el motor 3D. Revisa la conexión a Internet y vuelve a abrir el laboratorio.","The 3D engine could not be loaded. Check the internet connection and reopen the lab.","无法加载 3D 引擎。请检查网络连接并重新打开实验室。"],["Comparador de generaciones, modelos y gráficos integrados","Processor generations, models, and integrated graphics comparison","处理器代际、型号与集成显卡对比"],["Puedes buscar por modelo, elegir fabricante, familia y generación, y filtrar si tiene gráficos integrados. La app usa fichas de modelos y familias para comparar; las especificaciones exactas cambian según el modelo.","Search by model, choose a manufacturer, family, and generation, and filter by integrated graphics. The app compares processors using model and family cards; exact specifications vary by model.","可按型号搜索，并选择品牌、系列和代际，也可按是否配备集成显卡进行筛选。应用通过型号与系列卡片进行对比；具体规格会因型号而异。"],["Todos","All","全部"],["Todas las familias","All families","全部系列"],["Todas las generaciones","All generations","全部代际"],["Gráficos: todos","Graphics: all","显卡：全部"],["Con gráficos integrados","With integrated graphics","配备集成显卡"],["Sin gráficos integrados","Without integrated graphics","无集成显卡"],["Cómo se construyen y dónde se usan","How processors are built and where they are used","处理器的构造方式与应用场景"],["Explora una vista técnica e interactiva del interior del chip, sus generaciones y los equipos donde se usan estos procesadores.","Explore an interactive technical view of chip internals, processor generations, and the devices that use these processors.","通过交互式技术视图探索芯片内部结构、处理器代际以及这些处理器的应用设备。"],["Interior del procesador","Inside the processor","处理器内部结构"],["Generaciones","Generations","处理器代际"],["Laptops","Laptops","笔记本电脑"],["Mini PCs","Mini PCs","迷你电脑"],["AMD: diseño con chiplets","AMD: chiplet architecture","AMD：Chiplet 小芯片架构"],["Intel: arquitectura híbrida y tiles","Intel: hybrid architecture and tiles","Intel：混合架构与 Tile 芯粒设计"],["Radiador + flujo de aire","Heatsink + airflow","散热鳍片 + 气流"],["Mononúcleo vs multinúcleo","Single-core vs multi-core","单核与多核性能"],["Compara el rendimiento de un solo núcleo frente al trabajo de todos los núcleos.","Compare the performance of one core with the combined work of all available cores.","对比单个核心的性能与全部核心协同工作的多核性能。"],["Mononúcleo","Single-core","单核"],["Multinúcleo","Multi-core","多核"],["Mide el trabajo realizado usando principalmente un núcleo. Es importante para muchas tareas que dependen del rendimiento por núcleo.","Measures work performed mainly by one CPU core. It matters for applications and games that depend heavily on per-core performance.","衡量主要由单个 CPU 核心完成的工作量。对于依赖单核性能的应用和游戏尤为重要。"],["Mide el trabajo repartido entre varios núcleos. Es útil para renderizado, compilación, edición y otras cargas paralelizables.","Measures workloads distributed across multiple CPU cores. It is useful for rendering, compiling, editing, and other highly parallel tasks.","衡量分配到多个 CPU 核心上的工作负载。适用于渲染、编译、视频编辑以及其他高度并行的任务。"],["Núcleos","Cores","核心"],["Hilos","Threads","线程"],["Nota","Note","说明"],["Las puntuaciones mostradas son orientativas para visualizar la diferencia; no sustituyen un benchmark de una configuración concreta.","The displayed scores are illustrative and intended to show relative differences; they do not replace benchmarks from a specific hardware configuration.","显示的分数仅用于直观展示相对差异，并不能替代针对具体硬件配置的真实基准测试。"],["Especificaciones del procesador","Processor specifications","处理器规格"],["Núcleos, hilos, frecuencia, caché, potencia y gráficos integrados.","Cores, threads, frequency, cache, power, and integrated graphics.","核心、线程、频率、缓存、功耗与集成显卡。"],["Frecuencia turbo","Frequency","频率"],["Caché","Cache","缓存"],["Potencia","Power","功耗"],["Gráficos integrados","Integrated graphics","集成显卡"],["Indicadores orientativos, no benchmark oficial.","Illustrative indicators, not official benchmark results.","仅为参考指标，并非官方基准测试结果。"],["Comparación directa","Direct comparison","直接对比"],["Elige cualquier modelo disponible en cada lado.","Choose any available processor model on each side.","在左右两侧分别选择任意可用的处理器型号。"],["No son equivalencias exactas","Not exact equivalents","并非严格等效"],["Nivel de referencia","Reference tier","参考级别"],["Nivel de referencia: Ryzen","Reference tier: Ryzen","参考级别：Ryzen"],["Portátil","Laptop","笔记本电脑"],["Escritorio","Desktop","台式机"],["Embebido / Estación de trabajo","Embedded / Workstation","嵌入式 / 工作站"],["👆 Táctil / Touch / 触控","👆 Touch optimized","👆 触控优化"],["5","5","5"],["3D","3D","3D"],["EXT","EXT","EXT"],["CCD · I/O · 3D V-Cache","CCD · I/O · 3D V-Cache","CCD · 输入输出 · 3D V-Cache"],["CCD 0","CCD 0","CCD 0"],["CCD 1","CCD 1","CCD 1"],["I/O DIE","I/O DIE","输入输出芯粒"],["DDR / PCIe","DDR / PCIe","DDR / PCIe"],["3D V-CACHE","3D V-CACHE","3D V-Cache 缓存"],["TIM","TIM","TIM 导热界面材料"],["IHS","IHS","IHS 散热顶盖"],["CCD","CCD","CCD 小芯片"],["I/O","I/O","输入输出"],["3D V-Cache","3D V-Cache","3D V-Cache 缓存"],["P-core · E-core · GPU · SoC","P-core · E-core · GPU · SoC","性能核 · 能效核 · GPU · SoC"],["COMPUTE","COMPUTE","计算模块"],["P + E cores","P + E cores","性能核 + 能效核"],["GPU","GPU","GPU 图形处理器"],["Xe / Arc","Xe / Arc","Xe / Arc 图形"],["SoC","SoC","SoC 系统级芯片"],["NPU · media","NPU · media","NPU · 媒体引擎"],["PCIe / links","PCIe / links","PCIe / 互连"],["FABRIC","FABRIC","互连结构"],["P-core","P-core","性能核"],["E-core","E-core","能效核"],["NPU / SoC","NPU / SoC","NPU / 系统级芯片"],["Zen 2 · chiplets","Zen 2 · chiplets","Zen 2 · Chiplet 小芯片"],["Zen 4 · DDR5 / PCIe 5","Zen 4 · DDR5 / PCIe 5","Zen 4 · DDR5 / PCIe 5"],["Core 12th","12th Gen Core","第 12 代 Core"],["Alder Lake · P+E","Alder Lake · P+E","Alder Lake · 性能核+能效核"],["Core 13th / 14th","13th / 14th Gen Core","第 13 / 14 代 Core"],["Raptor Lake","Raptor Lake","Raptor Lake 架构"],["Core Ultra S1","Core Ultra Series 1","Core Ultra 第 1 系列"],["Meteor Lake · tiles","Meteor Lake · tiles","Meteor Lake · Tile 芯粒"],["Core Ultra S2","Core Ultra Series 2","Core Ultra 第 2 系列"],["Arrow / Lunar Lake","Arrow / Lunar Lake","Arrow / Lunar Lake 架构"],["Core Ultra S3","Core Ultra Series 3","Core Ultra 第 3 系列"],["ARCH LAB","ARCHITECTURE LAB","架构实验室"],["CPU","CPU","CPU 处理器"],["RAM","RAM","内存"],["SSD","SSD","固态硬盘"],["BATTERY","BATTERY","电池"],["AMD Ryzen Laptop","AMD Ryzen Laptop","AMD Ryzen 笔记本平台"],["Intel Core Laptop","Intel Core Laptop","Intel Core 笔记本平台"],["SO-DIMM","SO-DIMM","SO-DIMM 内存"],["NVMe","NVMe","NVMe 固态硬盘"],["Wi‑Fi","Wi‑Fi","Wi‑Fi 无线网络"],["PCB","PCB","PCB 电路板"],["CPU DIE","CPU DIE","CPU 芯片裸片"],["HEATPIPES","HEATPIPES","热管"],["CPU / GPU / NPU","CPU / GPU / NPU","CPU / GPU / NPU"],["TIM → metal → heatpipe","TIM → metal → heatpipe","TIM → 金属层 → 热管"],["Ryzen 3 ↔ Core 3 / Core i3","Ryzen 3 ↔ Core 3 / Core i3","Ryzen 3 ↔ Core 3 / Core i3 级别"],["Ryzen 5 ↔ Core 5 / Core i5","Ryzen 5 ↔ Core 5 / Core i5","Ryzen 5 ↔ Core 5 / Core i5 级别"],["Ryzen 7 ↔ Core 7 / Core i7","Ryzen 7 ↔ Core 7 / Core i7","Ryzen 7 ↔ Core 7 / Core i7 级别"],["Ryzen 9 ↔ Core 9 / Core i9","Ryzen 9 ↔ Core 9 / Core i9","Ryzen 9 ↔ Core 9 / Core i9 级别"],["AMD Ryzen vs Intel Core — Extreme Touch Lab","AMD Ryzen vs Intel Core — Extreme Touch Lab","AMD Ryzen 对比 Intel Core — 极致触控实验室"],["AMD Ryzen vs Intel Core","AMD Ryzen vs Intel Core","AMD Ryzen 对比 Intel Core"],["Español","Español","西班牙语"],["English","English","英语"],["中文","Chinese","中文"],["AMD","AMD","AMD"],["Intel","Intel","Intel"],["AMD Ryzen","AMD Ryzen","AMD Ryzen"],["Intel Core","Intel Core","Intel Core"],["AMD RYZEN","AMD RYZEN","AMD RYZEN"],["INTEL CORE ULTRA","INTEL CORE ULTRA","INTEL CORE ULTRA"],["Ryzen AI / Core Ultra","Ryzen AI / Core Ultra","Ryzen AI / Core Ultra"],["—","—","—"],["Seleccionar idioma","Select language","选择语言"],["👆 Táctil optimizado","👆 Touch optimized","👆 触控优化"],["GPU Tile","GPU Tile","GPU 图形模块"],["SoC/NPU Tile","SoC/NPU Tile","SoC/NPU 系统与 AI 模块"],["I/O Die","I/O Die","输入输出芯粒"],["Compute Tile","Compute Tile","计算模块"],["Ryzen 9 9950X3D2 Dual Edition","Ryzen 9 9950X3D2 Dual Edition","Ryzen 9 9950X3D2 双缓存版"],["Zen 5 · 16C/32T · doble 3D V-Cache · 208 MB de caché total","Zen 5 · 16C/32T · dual 3D V-Cache · 208 MB total cache","Zen 5 · 16核/32线程 · 双层 3D V-Cache · 208 MB 总缓存"],["Portátil · 4× Zen 5 + 8× Zen 5c · Radeon 890M","Laptop · 4x Zen 5 + 8x Zen 5c · Radeon 890M","笔记本电脑 · 4× Zen 5 + 8× Zen 5c · Radeon 890M"],["Portátil · Zen 5/Zen 5c · Radeon 880M","Laptop · Zen 5/Zen 5c · Radeon 880M","笔记本电脑 · Zen 5/Zen 5c · Radeon 880M"],["Portátil · Zen 4 · Radeon 780M","Laptop · Zen 4 · Radeon 780M","笔记本电脑 · Zen 4 · Radeon 780M"],["Portátil HX · 8P + 16E · Intel Graphics","Laptop HX · 8P + 16E · Intel Graphics","HX 笔记本 · 8 性能核 + 16 能效核 · Intel 集成显卡"],["Portátil · núcleos híbridos · Intel Arc Graphics + NPU","Laptop · hybrid cores · Intel Arc Graphics + NPU","笔记本电脑 · 混合核心 · Intel Arc 图形 + NPU"],["Serie 2 de escritorio · 8P + 16E","Series 2 desktop · 8P + 16E","第 2 系列台式机 · 8 性能核 + 16 能效核"],["Serie 2 de escritorio · 8P + 12E","Series 2 desktop · 8P + 12E","第 2 系列台式机 · 8 性能核 + 12 能效核"],["Serie 2 de escritorio · 6P + 8E","Series 2 desktop · 6P + 8E","第 2 系列台式机 · 6 性能核 + 8 能效核"],["Serie 3 · 4P + 8E + 4LPE · Arc B390","Series 3 · 4P + 8E + 4LPE · Arc B390","第 3 系列 · 4 性能核 + 8 能效核 + 4 低功耗能效核 · Arc B390"],["Serie 3 · 4P + 8E + 4LPE","Series 3 · 4P + 8E + 4LPE","第 3 系列 · 4 性能核 + 8 能效核 + 4 低功耗能效核"],["Serie 3 · 4P + 4E + 4LPE · Arc B370","Series 3 · 4P + 4E + 4LPE · Arc B370","第 3 系列 · 4 性能核 + 4 能效核 + 4 低功耗能效核 · Arc B370"]];
+const IDX={es:0,en:1,zh:2};
+const normalize=s=>String(s??'').replace(/\s+/g,' ').trim();
+const reverse=new Map();
+for(const row of TRI)for(let i=0;i<3;i++)reverse.set(normalize(row[i]),row);
+
+function langNow(){
+  const v=document.getElementById('language')?.value || document.documentElement.lang || 'es';
+  return v==='zh'?'zh':v==='en'?'en':'es';
+}
+function exact(text,target){
+  const row=reverse.get(normalize(text));
+  return row?row[IDX[target]]:null;
+}
+function dynamic(text,target){
+  let x=String(text);
+  const e=exact(x,target); if(e!==null)return e;
+
+  // Device type / family / generation labels.
+  const families=[
+    [/^Core Ultra Mobile$/i,['Core Ultra móvil','Core Ultra Mobile','Core Ultra 移动版']],
+    [/^Ryzen Mobile$/i,['Ryzen móvil','Ryzen Mobile','Ryzen 移动版']],
+    [/^(Series|Serie|第)\s*([123])(?:\s*Mobile|\s*móvil|\s*系列\s*移动版)?$/i,null],
+    [/^(7000|8000) Mobile$/i,null]
+  ];
+  if(/^Series\s*([123])\s*Mobile$/i.test(x)||/^Serie\s*([123])\s*móvil$/i.test(x)||/^第\s*([123])\s*系列\s*移动版$/i.test(x)){
+    const n=(x.match(/[123]/)||[''])[0];
+    return target==='es'?`Serie ${n} móvil`:target==='en'?`Series ${n} Mobile`:`第 ${n} 系列 移动版`;
+  }
+  if(/^Series\s*([123])$/i.test(x)||/^Serie\s*([123])$/i.test(x)||/^第\s*([123])\s*系列$/i.test(x)){
+    const n=(x.match(/[123]/)||[''])[0];
+    return target==='es'?`Serie ${n}`:target==='en'?`Series ${n}`:`第 ${n} 系列`;
+  }
+  if(/^(7000|8000)\s*(Mobile|móvil|移动版)$/i.test(x)){
+    const n=(x.match(/7000|8000/)||[''])[0];
+    return target==='es'?`${n} móvil`:target==='en'?`${n} Mobile`:`${n} 移动版`;
+  }
+  for(const [re,row] of families){
+    if(row && re.test(x))return row[IDX[target]];
+  }
+
+  // Tier labels.
+  const tiers={
+    'BÁSICO':['BÁSICO','BASIC','入门级'],'BASIC':['BÁSICO','BASIC','入门级'],'入门级':['BÁSICO','BASIC','入门级'],
+    'MEDIO':['MEDIO','MID-RANGE','中端'],'MID-RANGE':['MEDIO','MID-RANGE','中端'],'中端':['MEDIO','MID-RANGE','中端'],
+    'ALTO':['ALTO','HIGH-END','高端'],'HIGH-END':['ALTO','HIGH-END','高端'],'高端':['ALTO','HIGH-END','高端'],
+    'ENTUSIASTA':['ENTUSIASTA','ENTHUSIAST','发烧级'],'ENTHUSIAST':['ENTUSIASTA','ENTHUSIAST','发烧级'],'发烧级':['ENTUSIASTA','ENTHUSIAST','发烧级'],
+    'EXTREME':['EXTREME','EXTREME','旗舰级'],'旗舰级':['EXTREME','EXTREME','旗舰级']
+  };
+  if(tiers[normalize(x)])return tiers[normalize(x)][IDX[target]];
+
+  // Device labels.
+  const dev={
+    'Desktop':['Escritorio','Desktop','台式机'],'Escritorio':['Escritorio','Desktop','台式机'],'台式机':['Escritorio','Desktop','台式机'],
+    'Laptop':['Portátil','Laptop','笔记本电脑'],'Portátil':['Portátil','Laptop','笔记本电脑'],'笔记本电脑':['Portátil','Laptop','笔记本电脑'],'笔记本':['Portátil','Laptop','笔记本电脑'],
+    'Embedded / Workstation':['Embebido / Estación de trabajo','Embedded / Workstation','嵌入式 / 工作站'],
+    'Embebido / Estación de trabajo':['Embebido / Estación de trabajo','Embedded / Workstation','嵌入式 / 工作站'],
+    '嵌入式 / 工作站':['Embebido / Estación de trabajo','Embedded / Workstation','嵌入式 / 工作站']
+  };
+  if(dev[normalize(x)])return dev[normalize(x)][IDX[target]];
+
+  // Common dynamic benchmark/meta phrases.
+  const common={
+    'Nivel:':['Nivel:','Level:','级别：'],'Level:':['Nivel:','Level:','级别：'],'级别：':['Nivel:','Level:','级别：'],
+    'índice curado':['índice curado','curated index','人工整理指数'],'curated index':['índice curado','curated index','人工整理指数'],'人工整理指数':['índice curado','curated index','人工整理指数'],
+    'índice estimado':['índice estimado','estimated index','估算指数'],'estimated index':['índice estimado','estimated index','估算指数'],'估算指数':['índice estimado','estimated index','估算指数'],
+    'No integrated graphics':['Sin gráficos integrados','No integrated graphics','无集成显卡'],'Sin gráficos integrados':['Sin gráficos integrados','No integrated graphics','无集成显卡'],'无集成显卡':['Sin gráficos integrados','No integrated graphics','无集成显卡'],
+    'Intel Graphics':['Intel Graphics','Intel Graphics','Intel 集成显卡'],'Intel 集成显卡':['Intel Graphics','Intel Graphics','Intel 集成显卡'],
+    'AMD Radeon Graphics':['AMD Radeon Graphics','AMD Radeon Graphics','AMD Radeon 集成显卡'],'AMD Radeon 集成显卡':['AMD Radeon Graphics','AMD Radeon Graphics','AMD Radeon 集成显卡'],
+    'Varies':['Depende del modelo','Varies','取决于具体型号'],'Depende del modelo':['Depende del modelo','Varies','取决于具体型号'],'取决于具体型号':['Depende del modelo','Varies','取决于具体型号'],
+    'Varies by model':['Depende del modelo','Varies by model','取决于具体型号']
+  };
+  if(common[normalize(x)])return common[normalize(x)][IDX[target]];
+
+  // Counts.
+  let m=x.match(/^(\d+)\s*\/\s*(\d+)\s*(?:procesadores|processors|个处理器)$/i);
+  if(m)return target==='es'?`${m[1]} / ${m[2]} procesadores`:target==='en'?`${m[1]} / ${m[2]} processors`:`${m[1]} / ${m[2]} 个处理器`;
+  m=x.match(/^(\d+)\s*(?:procesadores en 3D|processors in 3D|个处理器支持 3D)$/i);
+  if(m)return target==='es'?`${m[1]} procesadores en 3D`:target==='en'?`${m[1]} processors in 3D`:`${m[1]} 个处理器支持 3D`;
+
+  // Cache/power strings shown in specifications.
+  if(target==='zh'){
+    x=x.replace(/\bSmart Cache\b/gi,'智能缓存')
+       .replace(/\btotal cache\b/gi,'总缓存')
+       .replace(/\btotal\b/gi,'总计')
+       .replace(/\bbase\b/gi,'基础功耗')
+       .replace(/\bturbo\b/gi,'睿频功耗')
+       .replace(/\bclass\b/gi,'功耗级别')
+       .replace(/\bNo integrated graphics\b/gi,'无集成显卡');
+  } else if(target==='es'){
+    x=x.replace(/智能缓存/g,'Smart Cache').replace(/总缓存/g,'caché total').replace(/总计/g,'total')
+       .replace(/基础功耗/g,'base').replace(/睿频功耗/g,'turbo').replace(/功耗级别/g,'clase');
+  } else {
+    x=x.replace(/智能缓存/g,'Smart Cache').replace(/总缓存/g,'total cache').replace(/总计/g,'total')
+       .replace(/基础功耗/g,'base').replace(/睿频功耗/g,'turbo').replace(/功耗级别/g,'class');
+  }
+
+  // 3D model descriptions and technical shorthand that can be generated dynamically.
+  if(target==='es'){
+    x=x.replace(/^Laptop HX ·/,'Portátil HX ·').replace(/^Laptop ·/,'Portátil ·')
+       .replace(/hybrid cores/gi,'núcleos híbridos')
+       .replace(/^Series 2 desktop ·/,'Serie 2 de escritorio ·')
+       .replace(/^Series 3 ·/,'Serie 3 ·')
+       .replace(/dual 3D V-Cache/gi,'doble 3D V-Cache')
+       .replace(/total cache/gi,'caché total');
+  }else if(target==='zh'){
+    x=x.replace(/^Laptop HX ·/,'HX 笔记本 ·').replace(/^Laptop ·/,'笔记本电脑 ·')
+       .replace(/hybrid cores/gi,'混合核心')
+       .replace(/^Series 2 desktop ·/,'第 2 系列台式机 ·')
+       .replace(/^Series 3 ·/,'第 3 系列 ·')
+       .replace(/dual 3D V-Cache/gi,'双层 3D V-Cache')
+       .replace(/total cache/gi,'总缓存')
+       .replace(/Intel Graphics/g,'Intel 集成显卡');
+  }else{
+    x=x.replace(/^Portátil HX ·/,'Laptop HX ·').replace(/^Portátil ·/,'Laptop ·')
+       .replace(/núcleos híbridos/gi,'hybrid cores')
+       .replace(/^Serie 2 de escritorio ·/,'Series 2 desktop ·')
+       .replace(/^Serie 3 ·/,'Series 3 ·')
+       .replace(/doble 3D V-Cache/gi,'dual 3D V-Cache')
+       .replace(/caché total/gi,'total cache');
+  }
+  return x;
+}
+
+let busy=false;
+function translateNode(node,target){
+  if(!node || node.nodeType!==3 || !node.parentElement || node.parentElement.closest('script,style'))return;
+  const raw=node.nodeValue;
+  if(!raw || !raw.trim())return;
+  const lead=(raw.match(/^\s*/)||[''])[0], trail=(raw.match(/\s*$/)||[''])[0];
+  const body=raw.trim(), next=dynamic(body,target);
+  if(next!==body)node.nodeValue=lead+next+trail;
+}
+function translateAttributes(el,target){
+  if(!el || el.nodeType!==1)return;
+  for(const a of ['placeholder','aria-label','title']){
+    if(!el.hasAttribute(a))continue;
+    const v=el.getAttribute(a);
+    const n=dynamic(v,target);
+    if(n!==v)el.setAttribute(a,n);
+  }
+}
+function applyStrict(){
+  if(busy)return; busy=true;
+  const target=langNow();
+  document.documentElement.lang=target==='zh'?'zh-CN':target;
+  document.title=target==='zh'?'AMD Ryzen 对比 Intel Core — 极致触控实验室':target==='en'?'AMD Ryzen vs Intel Core — Extreme Touch Lab':'AMD Ryzen vs Intel Core — Laboratorio táctil extremo';
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  let n; while(n=walker.nextNode())translateNode(n,target);
+  document.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>translateAttributes(el,target));
+
+  const touch=document.querySelector('.touch-chip');
+  if(touch)touch.textContent=target==='zh'?'👆 触控优化':target==='en'?'👆 Touch optimized':'👆 Táctil optimizado';
+
+  const hint=document.querySelector('.v5hint');
+  if(hint)hint.textContent=target==='zh'?'👆 拖动 = 旋转 · 双指捏合 = 缩放 · 轻触 = 选择部件':target==='en'?'👆 Drag = rotate · pinch = zoom · tap = select part':'👆 Arrastrar = rotar · pellizcar = zoom · tocar = seleccionar pieza';
+
+  busy=false;
+}
+const sel=document.getElementById('language');
+if(sel){
+  sel.value='es';
+  sel.addEventListener('change',()=>setTimeout(applyStrict,15));
+}
+let timer=0;
+const observer=new MutationObserver(()=>{
+  if(busy)return;
+  clearTimeout(timer);timer=setTimeout(applyStrict,25);
+});
+observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+setTimeout(applyStrict,60);
+window.applyStrictLanguage=applyStrict;
+})();
+</script>
+
+
+<nav class="v15-bottom-nav" id="v15BottomNav" aria-label="Navegación móvil">
+ <button type="button" class="active" data-target="homeSection"><b>⌂</b><span data-v15-key="navHome">Inicio</span></button>
+ <button type="button" data-target="catalogSection"><b>⌕</b><span data-v15-key="navCatalog">Catálogo</span></button>
+ <button type="button" data-target="real3dSection"><b>◈</b><span>3D</span></button>
+ <button type="button" data-target="coreBench"><b>▥</b><span data-v15-key="navBench">Bench</span></button>
+ <button type="button" data-target="specsSection"><b>⚙</b><span data-v15-key="navSpecs">Ficha</span></button>
+</nav>
+<div class="v15-toast" id="v15Toast"></div>
+
+
+<script id="v15-pwa-mobile-js">
+(()=>{
+ const T={
+  es:{
+   install:"⬇ Instalar app", fullscreen:"⛶ Pantalla completa", exitFullscreen:"Salir de pantalla completa",
+   online:"En línea", offline:"Sin conexión", eyebrow:"● LABORATORIO MÓVIL DE CPU",
+   heroTitle:"Explora AMD e Intel como si tuvieras el procesador en la mano.",
+   heroText:"Catálogo, especificaciones, benchmarks y vistas 3D optimizadas para tocar, arrastrar y comparar desde el celular.",
+   explore:"Explorar catálogo", open3d:"Abrir laboratorio 3D", download:"Descargar para Chrome",
+   languages:"3 idiomas", touch:"gestos táctiles", offlineReady:"modo sin conexión",
+   installHelp:"En Android con Chrome puedes instalarla como una app y usarla desde la pantalla de inicio.",
+   installNow:"Instalar ahora", navHome:"Inicio", navCatalog:"Catálogo", navBench:"Bench", navSpecs:"Ficha",
+   installed:"La aplicación ya está instalada.", installUnavailable:"Para instalarla como app, ábrela desde un sitio HTTPS en Chrome. Mientras tanto puedes descargar el HTML.",
+   downloaded:"Archivo descargado. Puedes abrirlo directamente con Chrome.", offlineToast:"Ahora estás sin conexión. La versión instalada seguirá funcionando.",
+   onlineToast:"Conexión restaurada.", installReady:"Lista para instalar desde Chrome."
+  },
+  en:{
+   install:"⬇ Install app", fullscreen:"⛶ Full screen", exitFullscreen:"Exit full screen",
+   online:"Online", offline:"Offline", eyebrow:"● MOBILE CPU LAB",
+   heroTitle:"Explore AMD and Intel as if the processor were in your hand.",
+   heroText:"Catalog, specifications, benchmarks and 3D views optimized for touch, drag and comparison on your phone.",
+   explore:"Explore catalog", open3d:"Open 3D lab", download:"Download for Chrome",
+   languages:"3 languages", touch:"touch gestures", offlineReady:"offline mode",
+   installHelp:"On Android with Chrome, you can install it like an app and launch it from your home screen.",
+   installNow:"Install now", navHome:"Home", navCatalog:"Catalog", navBench:"Bench", navSpecs:"Specs",
+   installed:"The app is already installed.", installUnavailable:"To install it as an app, open it from an HTTPS website in Chrome. You can still download the HTML.",
+   downloaded:"File downloaded. You can open it directly in Chrome.", offlineToast:"You are offline. The installed version will keep working.",
+   onlineToast:"Connection restored.", installReady:"Ready to install from Chrome."
+  },
+  zh:{
+   install:"⬇ 安装应用", fullscreen:"⛶ 全屏", exitFullscreen:"退出全屏",
+   online:"在线", offline:"离线", eyebrow:"● 移动端 CPU 实验室",
+   heroTitle:"像把处理器拿在手里一样探索 AMD 与 Intel。",
+   heroText:"在手机上通过触摸、拖动和对比来查看处理器目录、规格、基准数据与 3D 结构。",
+   explore:"浏览处理器目录", open3d:"打开 3D 实验室", download:"下载并用 Chrome 打开",
+   languages:"3 种语言", touch:"触控手势", offlineReady:"离线模式",
+   installHelp:"在 Android 的 Chrome 中，你可以把它安装成应用，并从主屏幕直接打开。",
+   installNow:"立即安装", navHome:"首页", navCatalog:"目录", navBench:"性能", navSpecs:"规格",
+   installed:"应用已经安装。", installUnavailable:"若要像应用一样安装，请通过 Chrome 打开 HTTPS 网站版本。你也可以先下载 HTML 文件。",
+   downloaded:"文件已下载，可直接使用 Chrome 打开。", offlineToast:"当前处于离线状态。已安装版本仍可继续使用。",
+   onlineToast:"网络连接已恢复。", installReady:"已可通过 Chrome 安装。"
+  }
+ };
+ let deferredPrompt=null;
+ const $=q=>document.querySelector(q), $$=q=>[...document.querySelectorAll(q)];
+ const lang=()=>{const v=$("#language")?.value||"es";return v==="zh"?"zh":v==="en"?"en":"es"};
+ function tr(key){return T[lang()][key]||T.es[key]||key}
+ function applyV15Language(){
+   $$("[data-v15-key]").forEach(el=>{const k=el.dataset.v15Key;if(T[lang()][k])el.textContent=T[lang()][k]});
+   updateStatus(false);
+ }
+ $("#language")?.addEventListener("change",()=>setTimeout(applyV15Language,45));
+
+ function toast(msg){
+   const el=$("#v15Toast"); if(!el)return;
+   el.textContent=msg; el.classList.add("show"); clearTimeout(el._t);
+   el._t=setTimeout(()=>el.classList.remove("show"),2600);
+ }
+ function updateStatus(showToast=true){
+   const el=$("#v15Status"), txt=el?.querySelector("span"); if(!el||!txt)return;
+   const on=navigator.onLine; el.classList.toggle("offline",!on); txt.textContent=on?tr("online"):tr("offline");
+   if(showToast)toast(on?tr("onlineToast"):tr("offlineToast"));
+ }
+ addEventListener("online",()=>updateStatus(true)); addEventListener("offline",()=>updateStatus(true));
+
+ addEventListener("beforeinstallprompt",e=>{
+   e.preventDefault(); deferredPrompt=e;
+   $("#v15InstallBanner")?.classList.add("show");
+   toast(tr("installReady"));
+ });
+ addEventListener("appinstalled",()=>{
+   deferredPrompt=null; $("#v15InstallBanner")?.classList.remove("show"); toast(tr("installed"));
+ });
+ async function install(){
+   if(matchMedia("(display-mode: standalone)").matches){toast(tr("installed"));return}
+   if(deferredPrompt){
+     deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; return;
+   }
+   toast(tr("installUnavailable"));
+ }
+ $("#v15Install")?.addEventListener("click",install);
+ $("#v15InstallBannerBtn")?.addEventListener("click",install);
+
+ $("#v15Fullscreen")?.addEventListener("click",async()=>{
+   try{
+     if(!document.fullscreenElement)await document.documentElement.requestFullscreen?.();
+     else await document.exitFullscreen?.();
+   }catch(e){}
+ });
+ document.addEventListener("fullscreenchange",()=>{
+   const b=$("#v15Fullscreen"); if(b)b.textContent=document.fullscreenElement?tr("exitFullscreen"):tr("fullscreen");
+ });
+
+ function downloadStandalone(){
+   const clone=document.documentElement.cloneNode(true);
+   clone.querySelector('link[rel="manifest"]')?.remove();
+   clone.querySelectorAll('script').forEach(sc=>{
+     if(sc.textContent.includes("serviceWorker.register"))sc.remove();
+   });
+   const data="<!DOCTYPE html>\n"+clone.outerHTML;
+   const blob=new Blob([data],{type:"text/html;charset=utf-8"});
+   const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+   a.download="AMD_Intel_CPU_Lab_Offline.html";document.body.appendChild(a);a.click();a.remove();
+   setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast(tr("downloaded"));
+ }
+ $("#v15Download")?.addEventListener("click",downloadStandalone);
+
+ $$("[data-v15-go]").forEach(b=>b.addEventListener("click",()=>{
+   document.getElementById(b.dataset.v15Go)?.scrollIntoView({behavior:"smooth",block:"start"});
+ }));
+ $$("#v15BottomNav button").forEach(b=>b.addEventListener("click",()=>{
+   document.getElementById(b.dataset.target)?.scrollIntoView({behavior:"smooth",block:"start"});
+   if(navigator.vibrate)navigator.vibrate(10);
+ }));
+
+ const sections=["homeSection","catalogSection","real3dSection","coreBench","specsSection"].map(id=>document.getElementById(id)).filter(Boolean);
+ const io=new IntersectionObserver(entries=>{
+   const top=entries.filter(x=>x.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+   if(!top)return;
+   $$("#v15BottomNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===top.target.id));
+ },{rootMargin:"-25% 0px -58% 0px",threshold:[0,.15,.35,.6]});
+ sections.forEach(x=>io.observe(x));
+
+ const revealIO=new IntersectionObserver(entries=>entries.forEach(e=>{
+   if(e.isIntersecting){e.target.classList.add("visible");revealIO.unobserve(e.target)}
+ }),{threshold:.06});
+ $$(".compare,.arch-panel,.real3d-card,.corebench-card,.specs-card,.brand-group").forEach(el=>{el.classList.add("v15-reveal");revealIO.observe(el)});
+
+ function progress(){
+   const max=document.documentElement.scrollHeight-innerHeight;
+   $("#v15Progress").style.width=(max>0?(scrollY/max*100):0)+"%";
+ }
+ addEventListener("scroll",progress,{passive:true});progress();
+
+ // Touch lighting / realistic interaction.
+ $$(".package-view,.v5scene,.mini-lab,.laptop-cutaway,.cooling-lab,.v15-hero").forEach(el=>{
+   el.classList.add("v15-touch-light");
+   const move=e=>{
+     const p=e.touches?.[0]||e; const r=el.getBoundingClientRect();
+     el.style.setProperty("--mx",((p.clientX-r.left)/r.width*100)+"%");
+     el.style.setProperty("--my",((p.clientY-r.top)/r.height*100)+"%");
+   };
+   el.addEventListener("pointermove",move,{passive:true});el.addEventListener("touchmove",move,{passive:true});
+ });
+ const device=$("#v15Device"), chip=$("#v15Chip");
+ device?.addEventListener("pointermove",e=>{
+   const r=device.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+   chip.style.transform=`rotateX(${58-y*12}deg) rotateZ(${-32+x*14}deg) translateZ(0)`;
+ });
+ device?.addEventListener("pointerleave",()=>chip.style.transform="rotateX(58deg) rotateZ(-32deg)");
+
+ document.addEventListener("click",e=>{
+   if(e.target.closest("button") && navigator.vibrate)navigator.vibrate(7);
+ },{passive:true});
+
+ if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+   navigator.serviceWorker.register("./sw.js").catch(()=>{});
+ }
+ applyV15Language(); updateStatus(false);
+})();
+</script>
+
+
+<script id="v16-upgrade-js">
+(()=>{
+ const $=id=>document.getElementById(id);
+ if(!$('sortOrder')||typeof models==='undefined') return;
+ const L={
+  es:{sort:'Ordenar por potencia',level:'Nivel de potencia',focus:'Enfoque rápido',asc:'Menor a mayor',desc:'Mayor a menor',all:'Todos',basic:'Básico',mid:'Medio',high:'Alto',extreme:'Extremo',balanced:'Vista equilibrada',desktop:'Escritorio',laptop:'Portátiles',igpu:'Con gráficos integrados',jumpWeak:'Ir al menos potente',jumpStrong:'Ir al más potente',bestIntel:'Intel más potente',bestAMD:'AMD más potente',cheapIntel:'Intel menos potente',cheapAMD:'AMD menos potente',hint:'Usa estos controles para encontrar más rápido el procesador más básico o el más potente sin crear otra app.',powerOrder:'Orden de potencia',intelView:'Diseño Intel más premium',count:'modelos',
+      perfClass:'Clase de rendimiento'},
+  en:{sort:'Sort by power',level:'Performance level',focus:'Quick focus',asc:'Lowest to highest',desc:'Highest to lowest',all:'All',basic:'Entry',mid:'Mid',high:'High',extreme:'Extreme',balanced:'Balanced view',desktop:'Desktop',laptop:'Laptops',igpu:'With integrated graphics',jumpWeak:'Jump to weakest',jumpStrong:'Jump to strongest',bestIntel:'Strongest Intel',bestAMD:'Strongest AMD',cheapIntel:'Weakest Intel',cheapAMD:'Weakest AMD',hint:'Use these controls to find the most basic or most powerful processor faster without rebuilding the app.',powerOrder:'Power order',intelView:'More premium Intel design',count:'models',perfClass:'Performance class'},
+  zh:{sort:'按性能排序',level:'性能级别',focus:'快速视图',asc:'从低到高',desc:'从高到低',all:'全部',basic:'基础',mid:'中端',high:'高端',extreme:'旗舰',balanced:'均衡视图',desktop:'台式机',laptop:'笔记本',igpu:'带核显',jumpWeak:'跳到最弱',jumpStrong:'跳到最强',bestIntel:'最强 Intel',bestAMD:'最强 AMD',cheapIntel:'最弱 Intel',cheapAMD:'最弱 AMD',hint:'用这些控制项可以更快找到最基础或最强的处理器，而不需要重做应用。',powerOrder:'性能顺序',intelView:'更高级的 Intel 视觉样式',count:'个型号',perfClass:'性能等级'}
+ };
+ function currentLang(){return ($('language')?.value)||'es';}
+ function t(k){return (L[currentLang()]&&L[currentLang()][k])||L.es[k]||k;}
+ function localizeUpgrade(){
+   $('pt-sort-label').textContent=t('sort'); $('pt-level-label').textContent=t('level'); $('pt-focus-label').textContent=t('focus');
+   const so=$('sortOrder'); if(so){so.options[0].text=t('asc'); so.options[1].text=t('desc');}
+   const pl=$('powerLevel'); if(pl){pl.options[0].text=t('all'); pl.options[1].text=t('basic'); pl.options[2].text=t('mid'); pl.options[3].text=t('high'); pl.options[4].text=t('extreme');}
+   const fv=$('focusView'); if(fv){fv.options[0].text=t('balanced'); fv.options[1].text=t('desktop'); fv.options[2].text=t('laptop'); fv.options[3].text=t('igpu');}
+   $('jumpWeak').textContent=t('jumpWeak'); $('jumpStrong').textContent=t('jumpStrong'); $('bestIntel').textContent=t('bestIntel'); $('bestAMD').textContent=t('bestAMD'); $('cheapIntel').textContent=t('cheapIntel'); $('cheapAMD').textContent=t('cheapAMD'); $('proHint').textContent=t('hint');
+ }
+ function scoreOf(m){return typeof powerScore==='function'?powerScore(m):0;}
+ function perfBucket(m){ const s=scoreOf(m); if(s<95) return 'basic'; if(s<150) return 'mid'; if(s<220) return 'high'; return 'extreme'; }
+ function focusMatch(m){ const focus=$('focusView').value; if(focus==='all') return true; const d=(typeof deviceType==='function'?deviceType(m):'').toLowerCase(); const g=(m[9]||'').toLowerCase(); if(focus==='desktop') return d.includes('desktop')||d.includes('escritorio')||d.includes('台式'); if(focus==='laptop') return d.includes('laptop')||d.includes('portátil')||d.includes('笔记'); if(focus==='igpu') return g!=='no'; return true; }
+ const originalFiltered = filtered;
+ filtered=function(){
+   const q=$('search').value.toLowerCase(), b=$('brand').value, f=$('family').value, gen=$('generation').value, g=$('igpu').value;
+   let arr=getAllModels().filter(m=>(!q||m[2].toLowerCase().includes(q))&&(b==='all'||m[0]===b)&&(f==='all'||m[1]===f)&&(gen==='all'||m[3]===gen)&&(g==='all'||(g==='yes'?m[9]!=='No':m[9]==='No')));
+   const level=$('powerLevel').value; if(level!=='all') arr=arr.filter(m=>perfBucket(m)===level);
+   arr=arr.filter(focusMatch);
+   arr.sort((a,b)=>scoreOf(a)-scoreOf(b));
+   if($('sortOrder').value==='desc') arr.reverse();
+   return arr;
+ };
+ function intelEquivalent(m){
+   const f=(m[1]+' '+m[2]).toLowerCase();
+   if(f.includes('core ultra 9')||f.includes('core 9')||f.includes('i9')) return 'Ryzen 9';
+   if(f.includes('core ultra 7')||f.includes('core 7')||f.includes('i7')) return 'Ryzen 7';
+   if(f.includes('core ultra 5')||f.includes('core 5')||f.includes('i5')) return 'Ryzen 5';
+   return 'Ryzen 3';
+ }
+ card=function(m){
+   const t0=I[lang];
+   const score=scoreOf(m), pct=Math.max(12,Math.min(100,Math.round(score/2.8)));
+   const tier=typeof powerTier==='function'?powerTier(m):perfBucket(m);
+   const isIntel=m[0]==='Intel';
+   const levelLine=isIntel?`<div class="level-match"><small>${t0.levelMatch||'Nivel de referencia'}</small><b>${intelEquivalent(m)}</b></div>`:'';
+   const intelLine=isIntel?`<div class="intel-real"><small>${t('intelView')}</small><div class="meter"><i style="width:${pct}%"></i></div></div>`:'';
+   return `<article class="card ${m[0].toLowerCase()} ${isIntel?'intel-pro':''}" data-model="${m[2].replace(/"/g,'&quot;')}"><span class="badge">${m[0]} · ${m[1]}</span><h3>${m[2]}</h3>
+   <p>${t0.gen}: <b>${m[3]}</b></p><span class="device-badge">${deviceType(m)}</span><div class="power-rank"><small>${t('powerOrder')}</small><b>${tier}</b></div>${levelLine}${intelLine}<div class="spec">
+   <div><small>${t0.cores}</small><b>${m[4]}</b></div><div><small>${t0.threads}</small><b>${m[5]}</b></div>
+   <div><small>${t0.clock}</small><b>${m[6]}</b></div><div><small>${t0.cache}</small><b>${m[7]}</b></div>
+   <div><small>${t0.power}</small><b>${m[8]==='No'?'—':m[8]}</b></div><div><small>${t0.graphics}</small><b>${m[10]||(m[9]==='No'?t0.no:(m[9]==='Yes'?(lang==='es'?'Sí':lang==='zh'?'有':'Yes'):m[9]))}</b></div>
+   </div></article>`;
+ };
+ populateSelects=function(){
+   const sorted=[...models].sort((a,b)=>scoreOf(a)-scoreOf(b));
+   const a=sorted.filter(m=>m[0]==='AMD'), i=sorted.filter(m=>m[0]==='Intel');
+   const left=$('leftSelect'), right=$('rightSelect'); const prevL=left.value, prevR=right.value;
+   function fill(el,arr,prev){el.innerHTML=arr.map(m=>`<option value="${models.indexOf(m)}">${m[2]} · ${m[3]}</option>`).join(''); if([...el.options].some(o=>o.value===prev)) el.value=prev;}
+   fill(left,a,prevL); fill(right,i,prevR);
+ };
+ render=function(){
+   populateFamilies(); populateGenerations();
+   const arr=filtered();
+   const amd=arr.filter(m=>m[0]==='AMD'), intel=arr.filter(m=>m[0]==='Intel');
+   $('cards').innerHTML=arr.length?`<div class="brand-group"><div class="brand-headline"><div class="brand-title amd-title">AMD Ryzen</div><div class="count">${amd.length} ${t('count')}</div></div><div class="brand-grid">${amd.map(card).join('')}</div></div><div class="brand-group"><div class="brand-headline"><div class="brand-title intel-title">Intel Core / Core Ultra</div><div class="count">${intel.length} ${t('count')}</div></div><div class="brand-grid">${intel.map(card).join('')}</div></div>`:`<div class="empty">${I[lang].empty}</div>`;
+   populateSelects(); compare();
+ };
+ function flashByModelName(name){
+   const cards=[...document.querySelectorAll('.card[data-model]')];
+   const el=cards.find(c=>c.dataset.model===name); if(!el) return;
+   el.scrollIntoView({behavior:'smooth',block:'center'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1600);
+ }
+ function jump(which,brand){
+   let arr=filtered(); if(brand) arr=arr.filter(m=>m[0]===brand); if(!arr.length) return;
+   const target=which==='strong'?arr[arr.length-1]:arr[0]; flashByModelName(target[2]);
+   if(target[0]==='AMD') $('leftSelect').value=String(models.findIndex(m=>m[2]===target[2])); else $('rightSelect').value=String(models.findIndex(m=>m[2]===target[2]));
+   compare();
+   if(window.updateCoreBench){ const cb=$('coreBenchModel'); if(cb){ cb.value=target[2]; window.updateCoreBench(); } }
+   if(window.updSpecs){ const sp=$('specModel'); if(sp){ sp.value=target[2]; window.updSpecs(); } }
+ }
+ ['sortOrder','powerLevel','focusView','search','brand','family','generation','igpu'].forEach(id=>$(id)?.addEventListener('input',()=>{render();}));
+ $('jumpWeak').addEventListener('click',()=>jump('weak')); $('jumpStrong').addEventListener('click',()=>jump('strong')); $('bestIntel').addEventListener('click',()=>{ $('brand').value='Intel'; $('sortOrder').value='desc'; $('powerLevel').value='all'; render(); jump('strong','Intel'); }); $('bestAMD').addEventListener('click',()=>{ $('brand').value='AMD'; $('sortOrder').value='desc'; $('powerLevel').value='all'; render(); jump('strong','AMD'); }); $('cheapIntel').addEventListener('click',()=>{ $('brand').value='Intel'; $('sortOrder').value='asc'; $('powerLevel').value='all'; render(); jump('weak','Intel'); }); $('cheapAMD').addEventListener('click',()=>{ $('brand').value='AMD'; $('sortOrder').value='asc'; $('powerLevel').value='all'; render(); jump('weak','AMD'); });
+ $('language')?.addEventListener('change',()=>setTimeout(()=>{localizeUpgrade(); render();},60));
+ localizeUpgrade(); render();
+})();
+</script>
+</body>
+</html>
