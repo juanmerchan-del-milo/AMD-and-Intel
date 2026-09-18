@@ -1,4 +1,4 @@
-name: Build Windows and Linux desktop apps
+name: Build Windows, Linux and macOS desktop apps
 
 on:
   workflow_dispatch:
@@ -20,6 +20,9 @@ jobs:
           - os: ubuntu-latest
             command: npm run dist:linux
             artifact: linux
+          - os: macos-latest
+            command: npm run dist:mac
+            artifact: macos
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -36,4 +39,6 @@ jobs:
             release/*.exe
             release/*.AppImage
             release/*.tar.gz
+            release/*.dmg
+            release/*.zip
           if-no-files-found: error

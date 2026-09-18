@@ -1,6 +1,12 @@
 # AMD Intel CPU Lab — versión de escritorio 1.21.3
 
-Aplicación educativa para explorar y comparar procesadores AMD e Intel en Windows y Linux.
+Aplicación educativa para explorar y comparar procesadores AMD e Intel en Windows, Linux y macOS.
+
+## Compatibilidad
+
+- Windows 10 y 11 de 64 bits.
+- Distribuciones Linux x86-64 mediante AppImage o paquete comprimido.
+- macOS para Mac Intel y Apple Silicon (M1, M2, M3, M4 y posteriores).
 
 ## Mejoras de escritorio
 
@@ -33,6 +39,11 @@ Requiere Node.js. Instala las dependencias con `npm install` y abre la aplicaci�
 
 - Linux: `npm run dist:linux`
 - Windows: `npm run dist:win`
+- macOS (Intel y Apple Silicon): `npm run dist:mac`
 - Windows portátil desde Linux: `npm run pack:win`
+- Mac Intel portátil: `npm run pack:mac:x64`
+- Mac Apple Silicon portátil: `npm run pack:mac:arm64`
+
+Los paquetes locales de macOS no están firmados ni notarizados. Para una distribución pública sin avisos de Gatekeeper se necesita una cuenta Apple Developer y un certificado Developer ID.
 
 Los ejecutables generados se guardan en la carpeta `release`.
