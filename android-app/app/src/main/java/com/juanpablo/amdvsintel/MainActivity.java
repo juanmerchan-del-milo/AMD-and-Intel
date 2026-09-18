@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         webView.setHapticFeedbackEnabled(true);
         webView.setVerticalScrollBarEnabled(false);
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         setContentView(webView);
 
         WebSettings s = webView.getSettings();
@@ -37,6 +38,8 @@ public class MainActivity extends Activity {
         s.setLoadWithOverviewMode(true);
         s.setMediaPlaybackRequiresUserGesture(false);
         s.setJavaScriptCanOpenWindowsAutomatically(true);
+        s.setDefaultTextEncodingName("UTF-8");
+        s.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());

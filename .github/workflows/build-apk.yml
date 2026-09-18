@@ -1,4 +1,4 @@
-name: Build AMD vs Intel
+name: Build AMD vs Intel APK
 
 "on":
   workflow_dispatch:
@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Java 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
@@ -30,28 +30,15 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Build Android APK
+      - name: Build clean Android APK
         working-directory: android-app
-        run: gradle assembleDebug
+        run: gradle clean assembleDebug
 
-      - name: Upload Android APK
+      - name: Rename APK
+        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.0.apk
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-APK
-          path: android-app/app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Prepare Windows package
-        shell: bash
-        run: |
-          mkdir -p windows-package
-          cp index.html windows-package/AMD_vs_Intel.html
-          printf '@echo off\r\nstart "" "AMD_vs_Intel.html"\r\n' > windows-package/Abrir_AMD_vs_Intel.bat
-          printf 'AMD vs Intel - Windows\r\n\r\n1. Extrae esta carpeta.\r\n2. Haz doble clic en Abrir_AMD_vs_Intel.bat.\r\n3. Se abrira la aplicacion en tu navegador en Windows.\r\n' > windows-package/LEEME.txt
-          cp app-hero.png windows-package/app-hero.png || true
-          cp "ChatGPT Image 17 sept 2026, 20_25_33.png" windows-package/icono_AMD_vs_Intel.png || true
-
-      - name: Upload Windows package
-        uses: actions/upload-artifact@v4
-        with:
-          name: AMD-vs-Intel-Windows
-          path: windows-package/
+          name: AMD-vs-Intel-v1.1.0-APK
+          path: AMD-vs-Intel-v1.1.0.apk
