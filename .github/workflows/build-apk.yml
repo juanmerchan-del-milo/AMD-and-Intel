@@ -1,4 +1,4 @@
-name: Build AMD vs Intel APK
+name: Build AMD vs Intel
 
 "on":
   workflow_dispatch:
@@ -30,12 +30,27 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Build APK
+      - name: Build Android APK
         working-directory: android-app
         run: gradle assembleDebug
 
-      - name: Upload APK
+      - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
           name: AMD-vs-Intel-APK
           path: android-app/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Prepare Windows package
+        shell: bash
+        run: |
+          mkdir -p windows-package
+          cp index.html windows-package/AMD_vs_Intel.html
+          printf '@echo off\r\nstart "" "AMD_vs_Intel.html"\r\n' > windows-package/Abrir_AMD_vs_Intel.bat
+          printf 'AMD vs Intel - Windows\r\n\r\n1. Extrae esta carpeta.\r\n2. Haz doble clic en Abrir_AMD_vs_Intel.bat.\r\n3. Se abrira la aplicacion en tu navegador en Windows.\r\n' > windows-package/LEEME.txt
+          cp "ChatGPT Image 17 sept 2026, 20_25_33.png" windows-package/icono_AMD_vs_Intel.png || true
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMD-vs-Intel-Windows
+          path: windows-package/
