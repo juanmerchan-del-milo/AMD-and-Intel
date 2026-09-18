@@ -1858,3 +1858,36 @@ window.applyStrictLanguage=applyStrict;
 </script>
 </body>
 </html>
+<main>
+
+<div class="portada-imagen">
+  <img src="ChatGPT Image 17 sept 2026, 20_25_33.png" alt="AMD vs Intel">
+</div>
+<style>
+
+.portada-imagen{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px 0 10px;
+}
+
+.portada-imagen img{
+  width:clamp(150px,30vw,250px);
+  height:auto;
+  border-radius:28px;
+  box-shadow:0 18px 50px rgba(0,0,0,.45);
+  transition:transform .25s ease;
+}
+
+.portada-imagen img:hover{
+  transform:scale(1.04);
+}
+
+@media(max-width:600px){
+  .portada-imagen img{
+    width:180px;
+    border-radius:24px;
+  }
+}
