@@ -1,4 +1,4 @@
-name: Deploy AMD vs Intel Website
+name: Build AMD vs Intel Website
 
 on:
   workflow_dispatch:
@@ -8,40 +8,28 @@ on:
       - "site/**"
       - ".github/workflows/pages.yml"
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  package:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
 
       - name: Verify website
         run: |
           test -f site/index.html
           test -f site/manifest.webmanifest
           test -f site/sw.js
+          test -f site/app-hero.png
           grep -q "<title>AMD vs Intel</title>" site/index.html
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: site
+      - name: Build website package
+        run: |
+          cd site
+          zip -qr ../AMD-Intel-CPU-Lab-Web-FINAL.zip .
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Upload website
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMD-Intel-CPU-Lab-Web-FINAL
+          path: AMD-Intel-CPU-Lab-Web-FINAL.zip
