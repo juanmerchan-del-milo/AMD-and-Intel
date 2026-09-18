@@ -13,19 +13,33 @@ jobs:
     defaults:
       run:
         working-directory: android-app
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Descargar proyecto
+        uses: actions/checkout@v5
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
-      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Aceptar licencias Android
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+      - name: Instalar Android SDK 35
+        run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - run: gradle assembleDebug
-      - uses: actions/upload-artifact@v4
+
+      - name: Compilar APK
+        run: gradle assembleDebug
+
+      - name: Subir APK
+        uses: actions/upload-artifact@v4
         with:
           name: AMD-vs-Intel-APK
           path: android-app/app/build/outputs/apk/debug/app-debug.apk
