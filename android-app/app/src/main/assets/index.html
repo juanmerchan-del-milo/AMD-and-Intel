@@ -639,6 +639,87 @@ header .top{
 @keyframes v18Signal{50%{filter:brightness(2.4)}}
 @keyframes v18Heat{to{height:140px;filter:blur(12px)}}
 </style>
+
+<style id="ihs-final-fix">
+/* Final visual fix for "Del IHS al silicio" */
+#tab-inside .chip-card{
+  overflow:hidden!important;
+  padding-bottom:16px!important;
+}
+#tab-inside .package-view{
+  height:315px!important;
+  max-width:460px!important;
+  margin:0 auto 4px!important;
+  overflow:visible!important;
+}
+#tab-inside .package-view .ihs{
+  width:248px!important;
+  height:204px!important;
+  top:46%!important;
+  transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(105px) scale(.86)!important;
+  transform-origin:center center!important;
+}
+#tab-inside .package-view .tim{
+  width:218px!important;
+  height:168px!important;
+  top:49%!important;
+}
+#tab-inside .package-view .silicon{
+  width:212px!important;
+  height:162px!important;
+  top:50.5%!important;
+}
+#tab-inside .package-view .substrate{
+  width:260px!important;
+  height:220px!important;
+  top:52%!important;
+}
+#tab-inside .package-view .contacts{
+  width:264px!important;
+  height:224px!important;
+  top:52.5%!important;
+}
+#tab-inside .package-view .ihs strong{
+  font-size:14px!important;
+  letter-spacing:.9px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+#tab-inside .package-view .ihs small{
+  font-size:9px!important;
+  letter-spacing:.5px!important;
+  margin-top:3px!important;
+}
+#tab-inside .legend-pills{
+  position:relative!important;
+  z-index:30!important;
+  margin-top:4px!important;
+  gap:6px!important;
+}
+#tab-inside .arch-copy{
+  margin-top:10px!important;
+}
+@media(max-width:620px){
+  #tab-inside .package-view{
+    height:285px!important;
+    transform:scale(.82)!important;
+    margin:-4px -4% 6px!important;
+  }
+  #tab-inside .package-view .ihs{
+    width:238px!important;
+    height:192px!important;
+    top:45.5%!important;
+    transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(105px) scale(.82)!important;
+  }
+  #tab-inside .package-view .ihs strong{
+    font-size:13px!important;
+    letter-spacing:.8px!important;
+  }
+  #tab-inside .package-view .ihs small{
+    font-size:8px!important;
+  }
+}
+</style>
 </head>
 <body>
 <header>

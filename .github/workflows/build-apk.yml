@@ -1,4 +1,4 @@
-name: Build AMD vs Intel APK
+name: Build AMD vs Intel
 
 "on":
   workflow_dispatch:
@@ -30,15 +30,33 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Build clean Android APK
+      - name: Build Android APK
         working-directory: android-app
         run: gradle clean assembleDebug
 
-      - name: Rename APK
-        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.0.apk
+      - name: Prepare APK
+        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.1.apk
+
+      - name: Prepare Android project ZIP
+        run: zip -qr AMD-vs-Intel-Android-Project-v1.1.1.zip android-app -x "*/build/*" "*/.gradle/*"
+
+      - name: Prepare standalone app
+        run: cp index.html AMD-vs-Intel-App-v1.1.1.html
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-v1.1.0-APK
-          path: AMD-vs-Intel-v1.1.0.apk
+          name: AMD-vs-Intel-v1.1.1-APK
+          path: AMD-vs-Intel-v1.1.1.apk
+
+      - name: Upload Android project
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMD-vs-Intel-Android-Project-v1.1.1
+          path: AMD-vs-Intel-Android-Project-v1.1.1.zip
+
+      - name: Upload standalone app
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMD-vs-Intel-App-v1.1.1
+          path: AMD-vs-Intel-App-v1.1.1.html

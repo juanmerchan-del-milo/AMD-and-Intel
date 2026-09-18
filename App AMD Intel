@@ -562,6 +562,164 @@ header .top{
   .component-info{padding:10px 11px}
 }
 </style>
+
+<style id="v18-native-repair">
+/* === Android interaction repair === */
+.laptop-cutaway.fans-on .fan,
+.laptop-cutaway.power-mode .fan{
+  animation:v18Fan .55s linear infinite!important;
+  will-change:transform;
+}
+.laptop-cutaway.power-mode .fan{animation-duration:.38s!important}
+.laptop-cutaway.power-mode .lap-cpu{
+  box-shadow:0 0 30px #ff9c5f88!important;
+  filter:brightness(1.15)
+}
+.laptop-cutaway.power-mode .pipe{box-shadow:0 0 18px #ff934f!important}
+
+.mini-lab.airflow-on .blower{
+  animation:v18Fan .62s linear infinite!important;
+  will-change:transform
+}
+.mini-lab.airflow-on .mini-pipe{box-shadow:0 0 15px #ff9a5488!important}
+.mini-lab.airflow-on:after{
+  content:"AIRFLOW → → →";
+  position:absolute;left:14%;right:14%;top:10%;z-index:20;
+  color:#7bd8ff;font-weight:900;letter-spacing:4px;text-align:center;
+  text-shadow:0 0 12px #65cfff;
+  animation:v18Air 1s ease-in-out infinite;
+  pointer-events:none
+}
+
+.package-view.signal-mode .trace{
+  height:3px!important;
+  box-shadow:0 0 12px #7ce0ff!important;
+  filter:brightness(1.8);
+  animation:v18Signal .9s linear infinite!important
+}
+.package-view.signal-mode .silicon{box-shadow:0 0 38px #4ab9ff66!important}
+.package-view.heat-mode .heat-plume{
+  opacity:1!important;
+  animation:v18Heat 1s ease-in-out infinite alternate!important
+}
+.package-view.heat-mode .ihs{
+  box-shadow:inset 8px 8px 20px #fff8,inset -9px -11px 24px #3337,0 0 36px #ff6b3d66!important
+}
+
+.v18-info{
+  margin-top:12px;padding:12px 14px;
+  border:1px solid #31506f;border-radius:14px;
+  background:linear-gradient(145deg,#0b1728,#07111f);
+  min-height:82px
+}
+.v18-info b{display:block;margin-bottom:5px;color:#e8f3ff}
+.v18-info p{margin:0;color:#9fb0c7;line-height:1.48;font-size:12.5px}
+
+.interactive-target{cursor:pointer!important;outline:none}
+.interactive-target.v18-selected{
+  filter:brightness(1.25) saturate(1.15)!important;
+  box-shadow:0 0 0 2px #72baffaa,0 0 24px #4aa8ff55!important
+}
+
+#thermalSimV18{
+  display:grid;grid-template-columns:minmax(0,1fr) 82px;
+  gap:10px;align-items:center;margin:12px 0;padding:12px;
+  border:1px solid #304762;border-radius:14px;background:#08111f
+}
+#thermalSimV18 label{
+  display:flex;flex-direction:column;gap:7px;
+  color:#9eb0c5;font-size:12px
+}
+#thermalSimV18 input{width:100%;accent-color:#ff7c4f}
+.v18-temp{font-size:22px;font-weight:900;color:#ff936a;text-align:center}
+.v18-mode{grid-column:1/-1;width:100%}
+
+@keyframes v18Fan{to{transform:rotate(360deg)}}
+@keyframes v18Air{50%{transform:translateX(14px);opacity:.45}}
+@keyframes v18Signal{50%{filter:brightness(2.4)}}
+@keyframes v18Heat{to{height:140px;filter:blur(12px)}}
+</style>
+
+<style id="ihs-final-fix">
+/* Final visual fix for "Del IHS al silicio" */
+#tab-inside .chip-card{
+  overflow:hidden!important;
+  padding-bottom:16px!important;
+}
+#tab-inside .package-view{
+  height:315px!important;
+  max-width:460px!important;
+  margin:0 auto 4px!important;
+  overflow:visible!important;
+}
+#tab-inside .package-view .ihs{
+  width:248px!important;
+  height:204px!important;
+  top:46%!important;
+  transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(105px) scale(.86)!important;
+  transform-origin:center center!important;
+}
+#tab-inside .package-view .tim{
+  width:218px!important;
+  height:168px!important;
+  top:49%!important;
+}
+#tab-inside .package-view .silicon{
+  width:212px!important;
+  height:162px!important;
+  top:50.5%!important;
+}
+#tab-inside .package-view .substrate{
+  width:260px!important;
+  height:220px!important;
+  top:52%!important;
+}
+#tab-inside .package-view .contacts{
+  width:264px!important;
+  height:224px!important;
+  top:52.5%!important;
+}
+#tab-inside .package-view .ihs strong{
+  font-size:14px!important;
+  letter-spacing:.9px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+#tab-inside .package-view .ihs small{
+  font-size:9px!important;
+  letter-spacing:.5px!important;
+  margin-top:3px!important;
+}
+#tab-inside .legend-pills{
+  position:relative!important;
+  z-index:30!important;
+  margin-top:4px!important;
+  gap:6px!important;
+}
+#tab-inside .arch-copy{
+  margin-top:10px!important;
+}
+@media(max-width:620px){
+  #tab-inside .package-view{
+    height:285px!important;
+    transform:scale(.82)!important;
+    margin:-4px -4% 6px!important;
+  }
+  #tab-inside .package-view .ihs{
+    width:238px!important;
+    height:192px!important;
+    top:45.5%!important;
+    transform:translate(-50%,-50%) rotateX(62deg) rotateZ(-29deg) translateZ(105px) scale(.82)!important;
+  }
+  #tab-inside .package-view .ihs strong{
+    font-size:13px!important;
+    letter-spacing:.8px!important;
+  }
+  #tab-inside .package-view .ihs small{
+    font-size:8px!important;
+  }
+}
+</style>
 </head>
 <body>
 <header>
@@ -2382,5 +2540,262 @@ window.applyStrictLanguage=applyStrict;
 })();
 </script>
 
+
+<script id="v18-native-repair-js">
+(()=>{
+ const q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
+ const stop=e=>{e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()};
+ const info=(panel,id,title,text)=>{
+   if(!panel)return null;
+   let box=q("#"+id);
+   if(!box){
+     box=document.createElement("div");
+     box.id=id;box.className="v18-info";
+     box.innerHTML="<b></b><p></p>";
+     panel.appendChild(box)
+   }
+   box.querySelector("b").textContent=title;
+   box.querySelector("p").textContent=text;
+   return box
+ };
+ const setInfo=(box,t,d)=>{
+   if(!box)return;
+   box.querySelector("b").textContent=t;
+   box.querySelector("p").textContent=d
+ };
+ const bindBtn=(el,fn)=>{
+   if(!el||el.dataset.v18)return;
+   el.dataset.v18="1";
+   el.addEventListener("click",e=>{stop(e);fn(e)},true)
+ };
+ const ensureBtn=(parent,id,text)=>{
+   let b=q("#"+id);
+   if(!b&&parent){
+     b=document.createElement("button");
+     b.type="button";b.id=id;b.className="panel-btn";b.textContent=text;
+     parent.appendChild(b)
+   }
+   return b
+ };
+ const bindPart=(el,box,t,d)=>{
+   if(!el||el.dataset.v18part)return;
+   el.dataset.v18part="1";
+   el.classList.add("interactive-target");
+   el.addEventListener("click",e=>{
+     stop(e);
+     const panel=el.closest(".arch-panel");
+     if(panel)qa(".v18-selected",panel).forEach(x=>x.classList.remove("v18-selected"));
+     el.classList.add("v18-selected");
+     setInfo(box,t,d)
+   },true)
+ };
+
+ function tabs(){
+   qa(".arch-tabs button[data-tab]").forEach(b=>{
+     if(b.dataset.v18tab)return;
+     b.dataset.v18tab="1";
+     b.addEventListener("click",e=>{
+       stop(e);
+       qa(".arch-tabs button[data-tab]").forEach(x=>x.classList.toggle("active",x===b));
+       qa("#architectureSection .arch-panel").forEach(x=>x.classList.add("hidden"));
+       const p=q("#tab-"+b.dataset.tab);
+       if(p)p.classList.remove("hidden")
+     },true)
+   })
+ }
+
+ function inside(){
+   const p=q("#tab-inside");if(!p)return;
+   const box=info(p,"v18InsideInfo","Interior interactivo","Toca una pieza o usa los tres controles.");
+   const amd=q("#amdPackage"),intel=q("#intelPackage");
+   const ex=q("#archExplode"),sig=q("#archSignal"),heat=q("#archHeat");
+
+   bindBtn(ex,()=>{
+     const on=!(amd?.classList.contains("exploded")&&intel?.classList.contains("exploded"));
+     [amd,intel].forEach(x=>x?.classList.toggle("exploded",on));
+     ex.classList.toggle("active",on);
+     setInfo(box,on?"Capas separadas":"Capas ensambladas",
+       on?"IHS, TIM, silicio, sustrato y contactos quedan separados.":"El paquete vuelve a quedar unido.")
+   });
+
+   bindBtn(sig,()=>{
+     const on=!amd?.classList.contains("signal-mode");
+     [amd,intel].forEach(x=>{
+       x?.classList.toggle("signal-mode",on);
+       x?.classList.toggle("signal",on)
+     });
+     sig.classList.toggle("active",on);
+     setInfo(box,"Ruta de señal",on?"Se resaltan las trazas y bloques internos.":"Ruta de señal desactivada.")
+   });
+
+   bindBtn(heat,()=>{
+     const on=!amd?.classList.contains("heat-mode");
+     [amd,intel].forEach(x=>{
+       x?.classList.toggle("heat-mode",on);
+       x?.classList.toggle("heat",on)
+     });
+     heat.classList.toggle("active",on);
+     setInfo(box,"Ruta térmica",on?"El calor sube desde el silicio hasta TIM e IHS.":"Ruta térmica desactivada.")
+   });
+
+   [
+    ["#amdPackage .ihs","AMD · IHS","Cubierta metálica que protege el chip y lleva calor al disipador."],
+    ["#amdPackage .cache","AMD · 3D V-Cache","Caché apilada para reducir latencia en ciertas cargas."],
+    ["#amdPackage .ccd.left","AMD · CCD","Chiplet con núcleos y caché."],
+    ["#amdPackage .ccd.right","AMD · CCD","Segundo chiplet en diseños de más núcleos."],
+    ["#amdPackage .iod","AMD · I/O Die","Memoria, PCIe y comunicación entre chiplets."],
+    ["#intelPackage .compute","Intel · Compute Tile","Bloque de cómputo con P-cores y E-cores."],
+    ["#intelPackage .gpu","Intel · GPU","Bloque gráfico integrado."],
+    ["#intelPackage .soc","Intel · SoC/NPU","Funciones de plataforma y aceleración de IA."],
+    ["#intelPackage .io","Intel · I/O","Conexiones de entrada y salida."],
+    ["#intelPackage .ihs","Intel · IHS","Cubierta metálica y transferencia térmica."]
+   ].forEach(([s,t,d])=>qa(s).forEach(el=>bindPart(el,box,t,d)))
+ }
+
+ function laptop(){
+   const p=q("#tab-laptops"),lab=q("#laptopCutaway");if(!p||!lab)return;
+   const acts=q(".panel-actions",p),therm=q("#laptopThermal");
+   const fans=ensureBtn(acts,"laptopFans","Ventiladores");
+   const power=ensureBtn(acts,"laptopPower","Modo rendimiento");
+   const box=info(p,"v18LaptopInfo","Laptop interactiva",
+     "Toca componentes y activa mapa térmico, ventiladores o modo rendimiento.");
+
+   bindBtn(therm,()=>{
+     const on=!lab.classList.contains("thermal-on");
+     lab.classList.toggle("thermal-on",on);
+     therm.classList.toggle("active",on);
+     setInfo(box,"Mapa térmico",on?"Se muestran las zonas de mayor temperatura.":"Mapa térmico apagado.")
+   });
+
+   bindBtn(fans,()=>{
+     const on=!lab.classList.contains("fans-on");
+     lab.classList.toggle("fans-on",on);
+     fans.classList.toggle("active",on);
+     setInfo(box,"Ventiladores",on?"Los dos ventiladores están girando.":"Ventiladores detenidos.")
+   });
+
+   bindBtn(power,()=>{
+     const on=!lab.classList.contains("power-mode");
+     lab.classList.toggle("power-mode",on);
+     power.classList.toggle("active",on);
+     setInfo(box,"Modo rendimiento",on?
+       "CPU, heatpipes y ventiladores trabajan con mayor intensidad.":"Modo equilibrado.")
+   });
+
+   [
+    [".lap-cpu","CPU móvil","Equilibra rendimiento, consumo y calor."],
+    [".lap-ram","RAM","Memoria activa para programas y multitarea."],
+    [".lap-ssd","SSD NVMe","Almacenamiento rápido."],
+    [".fan","Ventilador","Mueve aire para sacar calor del chasis."],
+    [".pipe","Heatpipe","Lleva calor desde CPU/GPU hacia el disipador."],
+    [".battery","Batería","La eficiencia del procesador influye en la autonomía."]
+   ].forEach(([s,t,d])=>qa(s,lab).forEach(el=>bindPart(el,box,t,d)))
+ }
+
+ function mini(){
+   const p=q("#tab-minipcs"),lab=q("#miniLab");if(!p||!lab)return;
+   const acts=q(".panel-actions",p),open=q("#miniExplode");
+   const air=ensureBtn(acts,"miniAirflow","Flujo de aire");
+   const box=info(p,"v18MiniInfo","Mini PC interactiva",
+     "Abre la carcasa, activa el flujo de aire y toca los componentes.");
+
+   bindBtn(open,()=>{
+     const on=!lab.classList.contains("exploded");
+     lab.classList.toggle("exploded",on);
+     open.classList.toggle("active",on);
+     open.textContent=on?"Cerrar carcasa":"Abrir carcasa";
+     setInfo(box,on?"Carcasa abierta":"Carcasa cerrada",
+       on?"La cubierta se separa para ver refrigeración, placa y componentes.":"La mini PC vuelve a cerrarse.")
+   });
+
+   bindBtn(air,()=>{
+     const on=!lab.classList.contains("airflow-on");
+     lab.classList.toggle("airflow-on",on);
+     air.classList.toggle("active",on);
+     setInfo(box,"Flujo de aire",on?"El blower está girando y se muestra la ruta del aire.":"Flujo de aire apagado.")
+   });
+
+   [
+    [".mcpu","CPU","Procesador principal del sistema compacto."],
+    [".mram","SO-DIMM","Memoria compacta."],
+    [".mssd","SSD NVMe","Almacenamiento rápido."],
+    [".mwifi","Wi‑Fi","Conectividad inalámbrica."],
+    [".blower","Blower","Ventilador centrífugo del módulo térmico."],
+    [".mini-pipe","Heatpipe","Mueve calor desde CPU al disipador."],
+    [".ports","Puertos","Conexiones USB, vídeo, red y periféricos."]
+   ].forEach(([s,t,d])=>qa(s,lab).forEach(el=>bindPart(el,box,t,d)))
+ }
+
+ function cooling(){
+   const p=q("#tab-cooling"),lab=q("#coolingLab"),pulse=q("#coolingPulse");
+   if(!p||!lab)return;
+   const box=info(p,"v18CoolingInfo","Refrigeración interactiva",
+     "Toca cada capa, mueve la carga térmica y anima el calor.");
+
+   let sim=q("#thermalSimV18");
+   if(!sim){
+     sim=document.createElement("div");
+     sim.id="thermalSimV18";
+     sim.innerHTML=
+       '<label>Carga térmica<input id="v18HeatRange" type="range" min="20" max="100" value="62"></label>'+
+       '<div class="v18-temp"><span id="v18Temp">72</span>°C</div>'+
+       '<button type="button" class="panel-btn v18-mode" id="v18Mode">Modo rendimiento</button>';
+     const copy=q(".arch-copy",p);
+     copy?.insertAdjacentElement("afterend",sim)
+   }
+
+   const range=q("#v18HeatRange"),temp=q("#v18Temp"),mode=q("#v18Mode");
+   const update=()=>{
+     const load=Number(range.value),t=Math.round(34+load*.61);
+     temp.textContent=t;
+     setInfo(box,"Carga térmica: "+load+"%",
+       t<60?"Temperatura moderada.":
+       t<82?"Carga alta: heatpipes y ventilación deben trabajar más.":
+       "Zona muy caliente: el chip podría reducir frecuencia si supera su límite.")
+   };
+   range?.addEventListener("input",update);
+   update();
+
+   bindBtn(pulse,()=>{
+     const on=!lab.classList.contains("heat-on");
+     lab.classList.toggle("heat-on",on);
+     pulse.classList.toggle("active",on);
+     setInfo(box,"Animar calor",on?"Las flechas muestran el calor viajando hacia el aire.":"Animación pausada.")
+   });
+
+   bindBtn(mode,()=>{
+     const on=!lab.classList.contains("cool-performance");
+     lab.classList.toggle("cool-performance",on);
+     mode.classList.toggle("active",on);
+     mode.textContent=on?"Modo silencioso":"Modo rendimiento";
+     setInfo(box,on?"Modo rendimiento":"Modo silencioso",
+       on?"Más flujo de aire para sostener frecuencias altas.":"Menos ruido con menor capacidad de enfriamiento rápido.")
+   });
+
+   [
+    [".th.die","CPU Die","Fuente principal del calor."],
+    [".th.tim2","TIM","Material de transferencia térmica."],
+    [".th.ihs2","IHS / placa fría","Reparte el calor sobre una superficie mayor."],
+    [".th.pipes","Heatpipes","Transportan calor hacia las aletas."],
+    [".th.fin","Aletas + aire","Última etapa: el calor pasa al aire."]
+   ].forEach(([s,t,d])=>qa(s,lab).forEach(el=>bindPart(el,box,t,d)))
+ }
+
+ function boot(){
+   // Estado inicial consistente: el primer toque siempre activa una función visible.
+   ["#amdPackage","#intelPackage"].forEach(sel=>{
+     const el=q(sel);
+     if(el)el.classList.remove("exploded","signal-mode","signal","heat-mode","heat")
+   });
+   ["#archExplode","#archSignal","#archHeat"].forEach(sel=>q(sel)?.classList.remove("active"));
+   const cool=q("#coolingLab");
+   if(cool)cool.classList.remove("heat-on","cool-performance","cool-silent");
+   q("#coolingPulse")?.classList.remove("active");
+   tabs();inside();laptop();mini();cooling()
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
+ else boot();
+})();
+</script>
 </body>
 </html>
