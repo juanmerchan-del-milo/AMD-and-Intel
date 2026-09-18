@@ -684,6 +684,54 @@ header .top{
   #tab-inside .legend-pills{margin-top:2px!important}
 }
 </style>
+
+<style id="v114-igpu-3d">
+/* v1.1.4 — integrated graphics inside the 3D lab */
+.v5-model-meta{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  margin:0 0 14px;padding:10px 12px;border:1px solid #2f4664;border-radius:14px;
+  background:linear-gradient(145deg,#0a1526,#0b1220);
+  color:#b7c7da;box-shadow:inset 0 1px 0 #ffffff08
+}
+.v5-model-meta .meta-name{font-weight:900;color:#eef6ff;margin-right:auto}
+.v5-model-meta .meta-chip{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;
+  border:1px solid #314b68;background:#0d1a2b;font-size:11px;color:#b8c9dc
+}
+.v5-model-meta .meta-chip.gpu{border-color:#2a776f;background:linear-gradient(145deg,#0e2827,#0b1e23);color:#bff7ea}
+.v5-model-meta .meta-chip.no-gpu{border-color:#5a3c48;background:#211319;color:#d8aeb9}
+.v5-model-meta .gpu-dot{width:7px;height:7px;border-radius:50%;background:#55e2c6;box-shadow:0 0 10px #55e2c6}
+
+.gpu-v5{
+  border-color:#63dcc9!important;
+  background:
+    radial-gradient(circle at 25% 20%,#69ffe733,transparent 36%),
+    linear-gradient(135deg,#155d5c,#12364a 56%,#0c2030)!important;
+  box-shadow:inset 0 0 18px #8fffee1a,0 0 18px #39c7bd35,0 8px 16px #0009!important
+}
+.gpu-v5 .v5label{font-size:10px!important;line-height:1.15;text-align:center;max-width:92%;white-space:normal}
+.gpu-v5.selected{filter:brightness(1.45) saturate(1.22) drop-shadow(0 0 15px #64ffe5)!important}
+
+.igpu-badge-v5{
+  position:absolute;right:11px;top:11px;z-index:7;
+  padding:6px 8px;border-radius:999px;border:1px solid #3d766f;
+  background:#09211fd9;color:#aef2e6;font-size:10px;font-weight:800;
+  backdrop-filter:blur(6px);pointer-events:none
+}
+.v5scene.has-igpu{box-shadow:inset 0 0 0 1px #59d7c533,0 0 28px #1fbba316}
+.v5scene.has-igpu:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 72% 26%,#32d7bf18,transparent 28%)
+}
+.v5scene.no-igpu .igpu-badge-v5{display:none}
+
+@media(max-width:700px){
+  .v5-model-meta{padding:9px 10px;gap:6px}
+  .v5-model-meta .meta-name{width:100%;margin-right:0;font-size:13px}
+  .v5-model-meta .meta-chip{font-size:10px;padding:5px 8px}
+  .gpu-v5 .v5label{font-size:9px!important}
+}
+</style>
 </head>
 <body>
 <header>
@@ -1021,6 +1069,7 @@ header .top{
     <button type="button" id="v5Reset">Restablecer cámara</button>
     <button type="button" id="v5Assemble">Ensamblar</button>
   </div>
+  <div id="v5ModelMeta" class="v5-model-meta" aria-live="polite"></div>
   <div class="lab-layout">
     <div class="v5scene" id="v5Scene" tabindex="0" aria-label="Visor tridimensional interactivo">
       <div class="v5stage" id="v5Stage"></div>
@@ -1575,6 +1624,21 @@ if(!model||!stage)return;
      }
    });
  }
+ /* v1.1.4 sync integrated graphics */
+ if(typeof models!=="undefined"){
+   models.forEach(m=>{
+     const d=data[m[2]];
+     if(!d)return;
+     const g=String(m[9]??"No").trim();
+     d.gpu=g!=="" && g!=="No";
+     d.gpuName=d.gpu?g:"";
+     d.brand=m[0];
+     d.family=m[1];
+     d.generation=m[3];
+     d.device=(typeof deviceType==="function"?deviceType(m):"");
+     d.threads=parseInt(m[5])||d.cores||0;
+   });
+ }
  Object.keys(data).sort((a,b)=>{
    const ma=(typeof models!=="undefined"?models.find(x=>x[2]===a):null);
    const mb=(typeof models!=="undefined"?models.find(x=>x[2]===b):null);
@@ -1591,7 +1655,8 @@ const partInfo={
 "I/O Die":["I/O Die","Bloque de entrada/salida, memoria y enlaces del encapsulado."],
 "3D V-Cache":["3D V-Cache","Caché adicional apilada verticalmente sobre un CCD en los modelos X3D."],
 "Compute Tile":["Compute Tile","Bloque de cómputo que agrupa núcleos P y E en la reconstrucción educativa."],
-"GPU Tile":["GPU / Graphics Tile","Bloque dedicado a gráficos integrados."],
+"GPU Tile":["GPU / Graphics Tile","Bloque gráfico integrado del procesador; el nombre exacto depende del modelo seleccionado."],
+"GPU integrada":["Gráficos integrados","Bloque gráfico integrado dentro del encapsulado. En la vista se muestra con el nombre de la iGPU del modelo seleccionado."],
 "SoC/NPU Tile":["SoC / NPU","Bloques de plataforma y aceleración de IA representados de forma educativa."],
 "Microconexión":["Microconexiones / bumps","Pequeñas conexiones eléctricas entre capas y componentes."],
 "Núcleo":["Núcleo CPU","Unidad de ejecución representada individualmente para poder seleccionarla."]
@@ -1611,46 +1676,107 @@ function setTransform(e){
 }
 function build(){
  stage.innerHTML="";partsBox.innerHTML="";selected=null;isolate=false;
- const d=data[model.value]; $("v5PartTitle").textContent=model.value; $("v5PartDesc").textContent=d.desc;
+ const d=data[model.value];
+ const row=(typeof models!=="undefined"?models.find(m=>m[2]===model.value):null);
+ const gpuName=d.gpuName || (row && row[9]!=="No"?row[9]:"");
+ $("v5PartTitle").textContent=model.value;
+ $("v5PartDesc").textContent=d.desc;
+
+ const meta=$("v5ModelMeta");
+ if(meta){
+   const lang=(document.documentElement.lang||"es").toLowerCase();
+   const gpuLabel=lang.startsWith("en")?"Integrated graphics":lang.startsWith("zh")?"集成显卡":"Gráficos integrados";
+   const noGpu=lang.startsWith("en")?"No integrated graphics":lang.startsWith("zh")?"无集成显卡":"Sin gráficos integrados";
+   const coresLabel=lang.startsWith("en")?"cores":lang.startsWith("zh")?"核心":"núcleos";
+   meta.innerHTML=
+     '<span class="meta-name">'+model.value+'</span>'+
+     '<span class="meta-chip">'+d.cores+' '+coresLabel+'</span>'+
+     '<span class="meta-chip">'+(d.device|| (d.mobile?"Laptop":"Desktop"))+'</span>'+
+     (d.gpu
+       ?'<span class="meta-chip gpu"><i class="gpu-dot"></i>'+gpuLabel+': <b>'+gpuName+'</b></span>'
+       :'<span class="meta-chip no-gpu">'+noGpu+'</span>');
+ }
+
+ scene.classList.toggle("has-igpu",!!d.gpu);
+ scene.classList.toggle("no-igpu",!d.gpu);
+ let badge=scene.querySelector(".igpu-badge-v5");
+ if(!badge){badge=document.createElement("div");badge.className="igpu-badge-v5";scene.appendChild(badge)}
+ badge.textContent=d.gpu?("iGPU · "+gpuName):"";
+
  addPart("Sustrato","plate substrate-v5",0,0,0,310,310,"SUSTRATO","Sustrato");
- // Contactos inferiores y trazas: detalles visuales del encapsulado.
  for(let y=-112;y<=112;y+=28)for(let x=-112;x<=112;x+=28){
    if(Math.abs(x)<35 && Math.abs(y)<35) continue;
    addPart("Contactos","ball-v5",x,y,-8,9,9,"","Contactos");
  }
-
- // solder grid
  for(let y=-105;y<=105;y+=30)for(let x=-105;x<=105;x+=30)addPart("Microconexión","ball-v5",x,y,9,11,11,"","Microconexión");
+
  if(d.type==="amd" || d.type==="amdMobile"){
    const positions=d.ccds===2?[[-70,-50],[70,-50]]:[[0,-55]];
    positions.forEach((p,idx)=>{
      addPart("CCD","die-v5",p[0],p[1],34,110,92,"CCD "+(idx+1),"CCD");
      let n=Math.ceil(d.cores/d.ccds), cols=4;
-     for(let i=0;i<n;i++){let cx=p[0]-35+(i%cols)*23,cy=p[1]-25+Math.floor(i/cols)*27;addPart("Núcleo","core-v5",cx,cy,43,20,18,"","Núcleo")}
+     for(let i=0;i<n;i++){
+       let cx=p[0]-35+(i%cols)*23,cy=p[1]-25+Math.floor(i/cols)*27;
+       addPart("Núcleo","core-v5",cx,cy,43,20,18,"","Núcleo")
+     }
      if(d.x3d && (idx===0 || d.dualx3d))addPart("3D V-Cache","cache-v5",p[0],p[1],58,102,82,"V-CACHE","3D V-Cache");
    });
+
    if(d.type==="amdMobile"){
-     addPart("GPU Tile","tile-v5",68,62,34,82,68,"RADEON","GPU Tile");
-     addPart("SoC/NPU Tile","tile-v5",-52,66,34,105,68,"NPU / SOC","SoC/NPU Tile");
-   } else addPart("I/O Die","iod-v5",0,68,34,128,92,"I/O DIE","I/O Die");
+     if(d.gpu){
+       const g=addPart("GPU integrada","tile-v5 gpu-v5",70,60,38,94,72,gpuName||"RADEON","iGPU");
+       g.dataset.gpuName=gpuName;
+     }
+     if(d.npu)addPart("SoC/NPU Tile","tile-v5",-52,66,34,105,68,"NPU / SOC","SoC/NPU Tile");
+     else addPart("I/O Die","iod-v5",-45,68,34,104,68,"I/O","I/O Die");
+   }else{
+     addPart("I/O Die","iod-v5",0,68,34,138,94,"I/O DIE","I/O Die");
+     if(d.gpu){
+       const isG=/\b\d{4}G\b|8300G|8600G|8700G/i.test(model.value);
+       const gw=isG?94:74, gh=isG?72:54;
+       const gx=isG?68:72, gy=isG?56:76;
+       const g=addPart("GPU integrada","tile-v5 gpu-v5",gx,gy,47,gw,gh,gpuName||"RADEON","iGPU");
+       g.dataset.gpuName=gpuName;
+     }
+   }
  }else{
    addPart("Compute Tile","tile-v5",-48,-42,34,155,120,"COMPUTE","Compute Tile");
-   addPart("GPU Tile","tile-v5",73,-48,34,75,105,"GPU","GPU Tile");
-   addPart("SoC/NPU Tile","tile-v5",42,69,34,145,74,"SOC / NPU","SoC/NPU Tile");
-   let total=Math.min(d.p+d.e,24),cols=6;
-   for(let i=0;i<total;i++){let cx=-95+(i%cols)*20,cy=-75+Math.floor(i/cols)*22;let c=addPart("Núcleo","core-v5",cx,cy,46,17,15,"","Núcleo");if(i>=d.p)c.style.background="#34557d";}
+   if(d.gpu){
+     const g=addPart("GPU integrada","tile-v5 gpu-v5",73,-48,38,82,108,gpuName||"GPU","iGPU");
+     g.dataset.gpuName=gpuName;
+   }
+   if(d.npu)addPart("SoC/NPU Tile","tile-v5",42,69,34,145,74,"SOC / NPU","SoC/NPU Tile");
+   else addPart("I/O Die","iod-v5",40,68,34,135,70,"I/O / SOC","I/O Die");
+   let total=Math.min((d.p||0)+(d.e||0),24),cols=6;
+   for(let i=0;i<total;i++){
+     let cx=-95+(i%cols)*20,cy=-75+Math.floor(i/cols)*22;
+     let c=addPart("Núcleo","core-v5",cx,cy,46,17,15,"","Núcleo");
+     if(i>=(d.p||0))c.style.background="#34557d"
+   }
  }
  addPart("Pasta térmica","tile-v5",0,0,74,205,175,"TIM","Pasta térmica");
  addPart("IHS","plate ihs-v5",0,0,90,310,310,model.value,"IHS");
  stage.querySelectorAll(".v5part").forEach(setTransform);
  const groups=[...new Set([...stage.querySelectorAll(".v5part")].map(e=>e.dataset.group))];
- groups.forEach(g=>{let b=document.createElement("button");b.type="button";b.textContent=g;b.addEventListener("click",()=>{let e=stage.querySelector(`[data-group="${CSS.escape(g)}"]`);if(e)selectPart(e)});partsBox.appendChild(b)});
+ groups.forEach(g=>{
+   let b=document.createElement("button");
+   b.type="button";
+   b.textContent=g==="iGPU"?(gpuName||"iGPU"):g;
+   if(g==="iGPU")b.classList.add("gpu-part-btn");
+   b.addEventListener("click",()=>{let e=stage.querySelector(`[data-group="${CSS.escape(g)}"]`);if(e)selectPart(e)});
+   partsBox.appendChild(b)
+ });
  updateStage();
 }
 function selectPart(e){
  stage.querySelectorAll(".selected").forEach(x=>x.classList.remove("selected"));e.classList.add("selected");selected=e;
  let key=e.dataset.name,info=partInfo[key]||[key,"Componente interactivo del encapsulado."];
- $("v5PartTitle").textContent=info[0];$("v5PartDesc").textContent=info[1];
+ if(key==="GPU integrada" && e.dataset.gpuName){
+   $("v5PartTitle").textContent=e.dataset.gpuName;
+   $("v5PartDesc").textContent="Gráficos integrados del procesador seleccionado. Este bloque se representa de forma educativa dentro del encapsulado.";
+ }else{
+   $("v5PartTitle").textContent=info[0];$("v5PartDesc").textContent=info[1];
+ }
  [...partsBox.children].forEach(b=>b.classList.toggle("active",b.textContent===e.dataset.group));
 }
 function updateStage(){stage.style.transform=`translate(-50%,-50%) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${zoom})`}
