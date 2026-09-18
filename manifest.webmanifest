@@ -1,0 +1,19 @@
+{
+  "name": "AMD vs Intel",
+  "short_name": "AMD vs Intel",
+  "description": "Aplicación interactiva para comparar procesadores AMD e Intel.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#08101f",
+  "theme_color": "#08101f",
+  "icons": [
+    {
+      "src": "ChatGPT%20Image%2017%20sept%202026%2C%2020_25_33.png",
+      "sizes": "1536x1536",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
