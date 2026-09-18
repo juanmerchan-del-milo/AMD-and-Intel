@@ -1,4 +1,4 @@
-name: Build AMD vs Intel v1.1.5
+name: Build AMD vs Intel v1.1.6
 
 "on":
   workflow_dispatch:
@@ -10,10 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Java 17
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
@@ -21,31 +19,26 @@ jobs:
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.9"
       - name: Build Android APK
         working-directory: android-app
         run: gradle clean assembleDebug
-      - name: Prepare APK
-        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.5.apk
-      - name: Prepare Android project ZIP
-        run: zip -qr AMD-vs-Intel-Android-Project-v1.1.5.zip android-app -x "*/build/*" "*/.gradle/*"
-      - name: Prepare standalone app
-        run: cp index.html AMD-vs-Intel-App-v1.1.5.html
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Prepare files
+        run: |
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.6.apk
+          zip -qr AMD-vs-Intel-Android-Project-v1.1.6.zip android-app -x "*/build/*" "*/.gradle/*"
+          cp index.html AMD-vs-Intel-App-v1.1.6.html
+      - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-v1.1.5-APK
-          path: AMD-vs-Intel-v1.1.5.apk
-      - name: Upload Android project
-        uses: actions/upload-artifact@v4
+          name: AMD-vs-Intel-v1.1.6-APK
+          path: AMD-vs-Intel-v1.1.6.apk
+      - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-Android-Project-v1.1.5
-          path: AMD-vs-Intel-Android-Project-v1.1.5.zip
-      - name: Upload standalone app
-        uses: actions/upload-artifact@v4
+          name: AMD-vs-Intel-Android-Project-v1.1.6
+          path: AMD-vs-Intel-Android-Project-v1.1.6.zip
+      - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-App-v1.1.5
-          path: AMD-vs-Intel-App-v1.1.5.html
+          name: AMD-vs-Intel-App-v1.1.6
+          path: AMD-vs-Intel-App-v1.1.6.html
