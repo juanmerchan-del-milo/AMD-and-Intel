@@ -1891,3 +1891,51 @@ window.applyStrictLanguage=applyStrict;
     border-radius:24px;
   }
 }
+
+<div id="splashScreen">
+  <img src="icon-512.png" alt="AMD vs Intel">
+  <h1>AMD vs Intel</h1>
+</div>
+
+<style>
+
+#splashScreen{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#08101f;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:opacity .5s ease;
+}
+
+#splashScreen img{
+  width:180px;
+  height:180px;
+  border-radius:32px;
+  margin-bottom:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+#splashScreen h1{
+  color:white;
+  font-family:Arial,sans-serif;
+  font-size:28px;
+}
+
+</body>
+
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splashScreen");
+    splash.style.opacity = "0";
+
+    setTimeout(() => {
+      splash.style.display = "none";
+    }, 500);
+  }, 1500);
+});
+</script>
