@@ -1,2 +1,7 @@
-# AMD-and-Intel
-Mi app se trata de un proyecto personal sobre la comparativa entre AMD y Intel, si ven algo mal me avisan e intentare arreglarlo para mi sus opiniones son oro puro y si esta echo con chat gpt
+# AMD and Intel
+
+Esta aplicación es un proyecto personal dedicado a comparar procesadores AMD e Intel.
+
+Si encuentras algún error, avísame e intentaré corregirlo. Tus opiniones son muy valiosas para mí.
+
+El proyecto fue desarrollado con ayuda de ChatGPT.
