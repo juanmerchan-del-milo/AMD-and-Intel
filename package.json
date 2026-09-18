@@ -1,0 +1,57 @@
+{
+  "name": "amd-intel-cpu-lab",
+  "version": "1.21.3",
+  "description": "Laboratorio educativo de procesadores AMD e Intel para Windows y Linux.",
+  "desktopName": "amd-intel-cpu-lab.desktop",
+  "main": "desktop/main.cjs",
+  "author": "Juan Pablo Merchan Sigua",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js",
+    "dist:linux": "electron-builder --linux AppImage tar.gz --x64",
+    "dist:win": "electron-builder --win nsis --x64",
+    "pack:win": "electron-packager . \"AMD Intel CPU Lab\" --platform=win32 --arch=x64 --out=release/windows-portable --overwrite --icon=build/icon.ico --asar --prune --ignore='^/release($|/)' --ignore='^/\\.git($|/)'",
+    "pack:linux": "electron-packager . \"AMD Intel CPU Lab\" --platform=linux --arch=x64 --out=release/linux-portable --overwrite --icon=build/icon.png --asar --prune --ignore='^/release($|/)' --ignore='^/\\.git($|/)'"
+  },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.4.2",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.juanpablo.amdintel.desktop",
+    "productName": "AMD Intel CPU Lab",
+    "asar": true,
+    "compression": "maximum",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "index.html",
+      "app-hero.png",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "target": ["AppImage", "tar.gz"],
+      "category": "Education",
+      "syncDesktopName": true,
+      "icon": "build/icon.png",
+      "artifactName": "AMD-Intel-CPU-Lab-${version}-Linux-${arch}.${ext}"
+    },
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "build/icon.ico",
+      "artifactName": "AMD-Intel-CPU-Lab-${version}-Windows-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AMD Intel CPU Lab"
+    }
+  }
+}

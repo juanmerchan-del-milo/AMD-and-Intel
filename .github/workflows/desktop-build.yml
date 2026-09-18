@@ -1,0 +1,39 @@
+name: Build Windows and Linux desktop apps
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "desktop-v*"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            command: npm run dist:win
+            artifact: windows
+          - os: ubuntu-latest
+            command: npm run dist:linux
+            artifact: linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: ${{ matrix.command }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AMD-Intel-CPU-Lab-${{ matrix.artifact }}
+          path: |
+            release/*.exe
+            release/*.AppImage
+            release/*.tar.gz
+          if-no-files-found: error
