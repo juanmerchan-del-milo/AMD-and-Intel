@@ -465,6 +465,103 @@ header .top{
   .v5scene{height:455px!important}
 }
 </style>
+
+<style id="v17-interactive-architecture-footer">
+/* ===== zona visual final ===== */
+.final-visual{
+  max-width:1200px;margin:34px auto 18px;padding:0 5%;
+}
+.final-visual-card{
+  display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.2fr);
+  gap:24px;align-items:center;padding:18px;border-radius:24px;
+  border:1px solid #314663;
+  background:
+    radial-gradient(circle at 15% 10%,#2d72b233,transparent 38%),
+    linear-gradient(145deg,#0e1a2d,#080f1d);
+  box-shadow:0 18px 55px #0006;
+}
+.final-visual-media{position:relative;min-height:250px;border-radius:19px;overflow:hidden;background:#07111e}
+.final-visual-media img{width:100%;height:100%;min-height:250px;object-fit:cover;display:block;filter:saturate(.9) contrast(1.04)}
+.final-visual-media::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px #ffffff12,inset 0 -80px 90px #06101ad9;pointer-events:none}
+.final-visual-copy .kicker{font-size:10px;letter-spacing:1.8px;font-weight:900;color:#80bfff}
+.final-visual-copy h2{margin:8px 0 10px;font-size:clamp(24px,4vw,40px)}
+.final-visual-copy p{color:#a8b8ce;line-height:1.65;margin:0 0 12px}
+.final-visual-chips{display:flex;gap:7px;flex-wrap:wrap}
+.final-visual-chips span{font-size:10px;padding:6px 9px;border:1px solid #314a68;border-radius:999px;background:#091523;color:#bfd4eb}
+
+/* ===== interacción arquitectura ===== */
+.interactive-target{
+  cursor:pointer!important;
+  transition:filter .18s ease,box-shadow .18s ease,transform .18s ease!important;
+  -webkit-tap-highlight-color:transparent;
+}
+.interactive-target:hover,.interactive-target.selected-part{
+  filter:brightness(1.25) saturate(1.15)!important;
+  box-shadow:0 0 0 2px #72baffaa,0 0 24px #4aa8ff55!important;
+}
+.component-info{
+  margin-top:12px;padding:12px 14px;border:1px solid #31506f;border-radius:14px;
+  background:linear-gradient(145deg,#0b1728,#07111f);
+  min-height:86px
+}
+.component-info .eyebrow{font-size:9px;letter-spacing:1.4px;color:#75bfff;font-weight:900}
+.component-info h4{margin:5px 0 5px;font-size:17px}
+.component-info p{margin:0;color:#9fb0c7;line-height:1.48;font-size:12.5px}
+
+/* modos de interior */
+.package-view.signal-mode .trace{height:3px!important;background:linear-gradient(90deg,transparent,#77d5ff,#6fffc9,transparent)!important;box-shadow:0 0 12px #65d8ff;animation:v17Signal 1s linear infinite}
+.package-view.heat-mode .heat-plume{opacity:1!important;filter:blur(4px)}
+.package-view.heat-mode .ihs{box-shadow:inset 8px 8px 20px #fff8,inset -9px -11px 24px #3337,0 0 28px #ff764e55!important}
+@keyframes v17Signal{50%{filter:brightness(1.7)}}
+
+/* laptop interactiva */
+.laptop-cutaway .lap-cpu,.laptop-cutaway .lap-ram,.laptop-cutaway .lap-ssd,
+.laptop-cutaway .lap-vrm,.laptop-cutaway .fan,.laptop-cutaway .pipe,.laptop-cutaway .battery{
+  cursor:pointer
+}
+.laptop-cutaway.fans-on .fan span{animation:v17Fan .55s linear infinite}
+.laptop-cutaway.power-mode .lap-cpu{box-shadow:0 0 22px #ff824f99!important}
+.laptop-cutaway.power-mode .pipe{box-shadow:0 0 14px #ff9b57}
+@keyframes v17Fan{to{transform:rotate(360deg)}}
+
+/* mini pc interactiva */
+.mini-lab .mini-layer,.mini-lab .mcpu,.mini-lab .mram,.mini-lab .mssd,.mini-lab .mwifi,.mini-lab .ports{
+  cursor:pointer
+}
+.mini-lab.airflow-on::before{
+  content:"AIR → → →";position:absolute;left:12%;right:12%;top:14%;
+  color:#78d7ff;font-weight:900;letter-spacing:7px;text-align:center;
+  text-shadow:0 0 14px #44c8ff;z-index:20;animation:v17Air 1.2s ease-in-out infinite;pointer-events:none
+}
+.mini-lab.airflow-on .blower span{animation:v17Fan .6s linear infinite}
+@keyframes v17Air{50%{transform:translateX(18px);opacity:.45}}
+
+/* simulador térmico */
+.thermal-sim{
+  display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;
+  margin:10px 0 12px;padding:10px 12px;border:1px solid #304762;border-radius:13px;background:#08111f
+}
+.thermal-sim label{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#91a4bd}
+.thermal-sim input[type=range]{width:100%;accent-color:#ff7546}
+.thermal-temp{font-size:20px;font-weight:900;color:#ff986f;min-width:68px;text-align:center}
+.thermal-mode-btn{min-height:42px!important;padding:7px 10px!important}
+.cooling-lab{--heat-alpha:.55}
+.cooling-lab .th.die{box-shadow:0 0 34px rgba(255,78,53,var(--heat-alpha))}
+.cooling-lab .harrow{transition:opacity .2s,filter .2s}
+.cooling-lab.cool-performance .harrow{animation-duration:.62s!important}
+.cooling-lab.cool-silent .harrow{animation-duration:1.55s!important}
+.cooling-lab .th.interactive-target.selected-part{transform:translateX(-50%) rotateX(62deg) scale(1.04)!important}
+
+@media(max-width:760px){
+  .final-visual{padding:0 14px;margin-top:26px}
+  .final-visual-card{grid-template-columns:1fr;padding:12px;gap:14px}
+  .final-visual-media{min-height:210px}.final-visual-media img{min-height:210px}
+  .final-visual-copy h2{font-size:25px}
+  .thermal-sim{grid-template-columns:1fr 82px}
+  .thermal-mode-btn{grid-column:1/-1;width:100%}
+  .component-info{padding:10px 11px}
+}
+</style>
 </head>
 <body>
 <header>
@@ -887,6 +984,23 @@ header .top{
   <div id="comparison"></div>
  </section>
 </main>
+
+<section class="final-visual" id="finalVisual">
+ <div class="final-visual-card">
+  <div class="final-visual-media">
+   <img src="app-hero.png" alt="AMD vs Intel">
+  </div>
+  <div class="final-visual-copy">
+   <span class="kicker">AMD vs Intel · CPU LAB</span>
+   <h2>Compara, explora y entiende el procesador por dentro.</h2>
+   <p>Una sola aplicación para revisar modelos, especificaciones, arquitectura, refrigeración, laptops, mini PCs y vistas 3D desde teléfono o computadora.</p>
+   <div class="final-visual-chips">
+    <span>AMD Ryzen</span><span>Intel Core</span><span>Arquitectura</span><span>3D</span><span>Windows</span><span>Android</span>
+   </div>
+  </div>
+ </div>
+</section>
+
 <footer>
  <span data-i18n="sources">Fuentes de referencia: páginas oficiales de AMD e Intel. Intel publica listas por generación y datos de gráficos integrados; AMD ofrece especificaciones completas de Ryzen y productos heredados.</span>
  <br><br>
@@ -2093,86 +2207,180 @@ window.applyStrictLanguage=applyStrict;
   }
 })();
 </script>
+
+<script id="v17-full-interactivity">
+(()=>{
+ const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+ const setInfo=(box,title,text)=>{
+   if(!box)return;
+   const h=q("h4",box),p=q("p",box);
+   if(h)h.textContent=title;if(p)p.textContent=text;
+ };
+ const makeInfo=(parent,id,title,text)=>{
+   if(!parent)return null;
+   let box=document.getElementById(id);
+   if(!box){
+     box=document.createElement("div");box.id=id;box.className="component-info";
+     box.innerHTML='<span class="eyebrow">TOCA UNA PIEZA</span><h4></h4><p></p>';
+     parent.appendChild(box);
+   }
+   setInfo(box,title,text);return box;
+ };
+ const bind=(el,box,title,text)=>{
+   if(!el||el.dataset.v17bound)return;
+   el.dataset.v17bound="1";el.classList.add("interactive-target");
+   el.setAttribute("tabindex","0");
+   const go=()=>{
+     const scope=el.closest(".arch-panel")||document;
+     qa(".selected-part",scope).forEach(x=>x.classList.remove("selected-part"));
+     el.classList.add("selected-part");setInfo(box,title,text);
+   };
+   el.addEventListener("click",e=>{e.stopPropagation();go()});
+   el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+ };
+
+ /* Tabs: garantiza que todos funcionen aunque cambie la versión */
+ qa(".arch-tabs [data-tab]").forEach(btn=>{
+   btn.addEventListener("click",()=>{
+     qa(".arch-tabs [data-tab]").forEach(b=>b.classList.toggle("active",b===btn));
+     qa("#architectureSection .arch-panel").forEach(p=>p.classList.add("hidden"));
+     const panel=document.getElementById("tab-"+btn.dataset.tab);
+     if(panel)panel.classList.remove("hidden");
+   });
+ });
+
+ /* Interior AMD + Intel */
+ const inside=document.getElementById("tab-inside");
+ const insideBox=makeInfo(inside,"insideInfo","Explora cada pieza","Toca cualquier capa o bloque de AMD o Intel para ver qué función cumple.");
+ [
+  ["#amdPackage .ihs","AMD · IHS","La cubierta metálica reparte presión y transfiere el calor al sistema de refrigeración."],
+  ["#amdPackage .cache","AMD · 3D V-Cache","Caché apilada verticalmente que puede reducir latencia y mejorar ciertas cargas, especialmente algunos juegos."],
+  ["#amdPackage .ccd.left","AMD · CCD 0","Chiplet con núcleos de CPU y caché. En modelos de muchos núcleos puede trabajar junto a otro CCD."],
+  ["#amdPackage .ccd.right","AMD · CCD 1","Segundo chiplet de CPU presente en diseños de mayor número de núcleos."],
+  ["#amdPackage .iod","AMD · I/O Die","Coordina memoria, enlaces PCIe y comunicaciones entre chiplets."],
+  ["#amdPackage .substrate","AMD · Sustrato","Base del encapsulado que conecta eléctricamente los dies con la placa base."],
+  ["#amdPackage .contacts","AMD · Contactos","Puntos eléctricos que llevan alimentación y señales entre CPU y placa madre."],
+  ["#intelPackage .ihs","Intel · IHS","Cubierta metálica que ayuda a sacar el calor desde los tiles hacia el disipador."],
+  ["#intelPackage .compute","Intel · Compute Tile","Zona de cómputo donde se agrupan núcleos de alto rendimiento y eficiencia."],
+  ["#intelPackage .gpu","Intel · GPU Tile","Bloque gráfico integrado para pantalla, vídeo y aceleración visual."],
+  ["#intelPackage .soc","Intel · SoC / NPU","Integra funciones de plataforma y, según la familia, aceleración de IA."],
+  ["#intelPackage .io","Intel · I/O","Gestiona enlaces y conexiones de entrada/salida del procesador."],
+  ["#intelPackage .substrate","Intel · Sustrato","Conecta los diferentes bloques del paquete con la placa base."],
+  ["#intelPackage .contacts","Intel · Contactos","Interfaz eléctrica entre el procesador y el socket o placa."]
+ ].forEach(([sel,t,d])=>bind(q(sel),insideBox,t,d));
+
+ const amdPkg=q("#amdPackage"),intelPkg=q("#intelPackage");
+ const explode=q("#archExplode"),signal=q("#archSignal"),heat=q("#archHeat");
+ explode?.addEventListener("click",()=>{
+   const on=!(amdPkg?.classList.contains("exploded")&&intelPkg?.classList.contains("exploded"));
+   [amdPkg,intelPkg].forEach(p=>p?.classList.toggle("exploded",on));
+   explode.classList.toggle("active",on);
+   setInfo(insideBox,on?"Capas separadas":"Capas ensambladas",on?"Ahora puedes distinguir mejor IHS, TIM, silicio, sustrato y contactos.":"El paquete vuelve a verse como un conjunto.");
+ });
+ signal?.addEventListener("click",()=>{
+   const on=!amdPkg?.classList.contains("signal-mode");
+   [amdPkg,intelPkg].forEach(p=>p?.classList.toggle("signal-mode",on));
+   signal.classList.toggle("active",on);
+   setInfo(insideBox,"Ruta de señal",on?"Las líneas iluminadas representan de forma educativa cómo viajan señales entre bloques y sustrato.":"Ruta de señal desactivada.");
+ });
+ heat?.addEventListener("click",()=>{
+   const on=!amdPkg?.classList.contains("heat-mode");
+   [amdPkg,intelPkg].forEach(p=>p?.classList.toggle("heat-mode",on));
+   heat.classList.toggle("active",on);
+   setInfo(insideBox,"Ruta térmica",on?"El calor sube desde el silicio hacia TIM e IHS antes de llegar al sistema de refrigeración.":"Ruta térmica desactivada.");
+ });
+
+ /* Laptop */
+ const laptopPanel=document.getElementById("tab-laptops");
+ const laptop=q("#laptopCutaway");
+ const laptopBox=makeInfo(laptopPanel,"laptopInfo","Laptop moderna","Toca CPU, RAM, SSD, ventiladores, heatpipes o batería.");
+ [
+  [".lap-cpu","CPU móvil","Equilibra rendimiento, temperatura y consumo. Puede integrar CPU, iGPU y NPU en el mismo paquete."],
+  [".lap-ram","RAM","Mantiene datos de trabajo disponibles para la CPU. Capacidad y ancho de banda afectan multitarea."],
+  [".lap-ssd","SSD NVMe","Almacenamiento rápido para sistema, programas y archivos."],
+  [".lap-vrm","VRM","Regula la energía que recibe el procesador y otros componentes."],
+  [".fan","Ventilador","Mueve aire a través del disipador para expulsar el calor del chasis."],
+  [".pipe","Heatpipe","Transporta calor desde CPU/GPU hasta las aletas de refrigeración."],
+  [".battery","Batería","Almacena energía; la eficiencia del procesador influye directamente en la autonomía."]
+ ].forEach(([sel,t,d])=>qa(sel,laptop).forEach(el=>bind(el,laptopBox,t,d)));
+ const lt=q("#laptopThermal");
+ if(lt){
+   lt.addEventListener("click",()=>{
+     const on=!laptop.classList.contains("thermal-on");
+     laptop.classList.toggle("thermal-on",on);lt.classList.toggle("active",on);
+     setInfo(laptopBox,"Mapa térmico",on?"Las zonas resaltadas muestran dónde suele concentrarse el calor alrededor de CPU y alimentación.":"Mapa térmico desactivado.");
+   });
+   if(!q("#laptopFans",lt.parentElement)){
+     const fans=document.createElement("button");fans.id="laptopFans";fans.type="button";fans.className="panel-btn";fans.textContent="Ventiladores";
+     const power=document.createElement("button");power.id="laptopPower";power.type="button";power.className="panel-btn";power.textContent="Modo rendimiento";
+     lt.parentElement.append(fans,power);
+     fans.addEventListener("click",()=>{const on=!laptop.classList.contains("fans-on");laptop.classList.toggle("fans-on",on);fans.classList.toggle("active",on);setInfo(laptopBox,"Ventiladores",on?"Los ventiladores están simulando una carga alta y mayor flujo de aire.":"Ventilación en estado normal.");});
+     power.addEventListener("click",()=>{const on=!laptop.classList.contains("power-mode");laptop.classList.toggle("power-mode",on);power.classList.toggle("active",on);setInfo(laptopBox,"Modo rendimiento",on?"Mayor potencia suele producir más calor, por eso la refrigeración debe responder con más velocidad.":"Modo equilibrado.");});
+   }
+ }
+
+ /* Mini PC */
+ const miniPanel=document.getElementById("tab-minipcs"),mini=q("#miniLab");
+ const miniBox=makeInfo(miniPanel,"miniInfo","Mini PC por dentro","Toca la CPU, memoria, SSD, Wi‑Fi, módulo térmico o carcasa.");
+ [
+  [".mcpu","CPU","Procesador compacto, normalmente de consumo moderado para mantener temperatura y ruido controlados."],
+  [".mram","SO-DIMM","Memoria de formato compacto usada en laptops y muchas mini PCs."],
+  [".mssd","SSD NVMe","Almacenamiento rápido en poco espacio."],
+  [".mwifi","Wi‑Fi","Módulo de conectividad inalámbrica del equipo."],
+  [".ports","Puertos","Conectan pantallas, periféricos, red, almacenamiento y energía."],
+  [".mini-layer.cooler","Módulo térmico","Combina ventilador, heatpipe y disipador para sacar calor del procesador."],
+  [".mini-layer.top","Cubierta","Protege el equipo y dirige parte del flujo de aire."],
+  [".mini-layer.bottom","Chasis inferior","Sostiene el conjunto y deja entradas o salidas de aire según el diseño."]
+ ].forEach(([sel,t,d])=>qa(sel,mini).forEach(el=>bind(el,miniBox,t,d)));
+
+ const miniExplode=q("#miniExplode");
+ miniExplode?.addEventListener("click",()=>{
+   const on=!mini.classList.contains("exploded");mini.classList.toggle("exploded",on);
+   miniExplode.classList.toggle("active",on);miniExplode.textContent=on?"Cerrar carcasa":"Abrir carcasa";
+   setInfo(miniBox,on?"Mini PC abierta":"Mini PC cerrada",on?"Las capas se separan para mostrar cubierta, refrigeración, placa y chasis.":"Las piezas vuelven a su posición.");
+ });
+ if(miniExplode?.parentElement && !q("#miniAirflow",miniExplode.parentElement)){
+   const air=document.createElement("button");air.id="miniAirflow";air.type="button";air.className="panel-btn";air.textContent="Flujo de aire";
+   miniExplode.parentElement.appendChild(air);
+   air.addEventListener("click",()=>{const on=!mini.classList.contains("airflow-on");mini.classList.toggle("airflow-on",on);air.classList.toggle("active",on);setInfo(miniBox,"Flujo de aire",on?"La animación representa aire atravesando el módulo térmico para expulsar calor.":"Flujo de aire desactivado.");});
+ }
+
+ /* Refrigeración */
+ const coolPanel=document.getElementById("tab-cooling"),cool=q("#coolingLab");
+ const coolBox=makeInfo(coolPanel,"coolInfo","Cómo sale el calor","Toca CPU DIE, TIM, IHS, heatpipes o aletas para seguir el recorrido térmico.");
+ [
+  [".th.die","CPU DIE","Aquí nace la mayor parte del calor durante una carga intensa."],
+  [".th.tim2","TIM","Material térmico que rellena pequeñas imperfecciones para mejorar la transferencia de calor."],
+  [".th.ihs2","IHS / placa fría","Reparte el calor sobre una superficie mayor antes de llevarlo al disipador."],
+  [".th.pipes","Heatpipes","Transportan energía térmica hacia el radiador o las aletas."],
+  [".th.fin","Aletas + aire","Aumentan la superficie y permiten que el aire retire el calor del sistema."]
+ ].forEach(([sel,t,d])=>bind(q(sel,cool),coolBox,t,d));
+
+ if(coolPanel && !q("#thermalSim",coolPanel)){
+   const sim=document.createElement("div");sim.id="thermalSim";sim.className="thermal-sim";
+   sim.innerHTML='<label>Carga térmica <input id="thermalLoad" type="range" min="20" max="100" value="62"></label><div class="thermal-temp"><span id="thermalTemp">72</span>°C</div><button type="button" class="panel-btn thermal-mode-btn" id="thermalMode">Modo rendimiento</button>';
+   coolPanel.insertBefore(sim,cool);
+   const range=q("#thermalLoad",sim),temp=q("#thermalTemp",sim),mode=q("#thermalMode",sim);
+   const update=()=>{
+     const load=Number(range.value),t=Math.round(34+load*.61);
+     temp.textContent=t;cool.style.setProperty("--heat-alpha",String(.22+load/135));
+     setInfo(coolBox,"Carga térmica: "+load+"%",t<60?"Temperatura moderada: el sistema tiene margen térmico.":t<82?"Carga alta: ventiladores y heatpipes deben mover más calor.":"Zona muy caliente: un equipo real podría bajar frecuencia si alcanza su límite térmico.");
+   };
+   range.addEventListener("input",update);update();
+   mode.addEventListener("click",()=>{
+     const perf=!cool.classList.contains("cool-performance");
+     cool.classList.toggle("cool-performance",perf);cool.classList.toggle("cool-silent",!perf);
+     mode.textContent=perf?"Modo silencioso":"Modo rendimiento";mode.classList.toggle("active",perf);
+     setInfo(coolBox,perf?"Modo rendimiento":"Modo silencioso",perf?"Más flujo de aire para sostener frecuencia durante más tiempo.":"Menos ruido, pero con menor capacidad para evacuar calor rápidamente.");
+   });
+ }
+ const pulse=q("#coolingPulse");
+ pulse?.addEventListener("click",()=>{
+   const on=!cool.classList.contains("heat-on");cool.classList.toggle("heat-on",on);pulse.classList.toggle("active",on);
+   setInfo(coolBox,"Animación térmica",on?"Las flechas muestran el recorrido del calor desde el silicio hasta el aire.":"Animación pausada.");
+ });
+})();
+</script>
+
 </body>
 </html>
-<main>
-
-<div class="portada-imagen">
-  <img src="ChatGPT Image 17 sept 2026, 20_25_33.png" alt="AMD vs Intel">
-</div>
-<style>
-
-.portada-imagen{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px 0 10px;
-}
-
-.portada-imagen img{
-  width:clamp(150px,30vw,250px);
-  height:auto;
-  border-radius:28px;
-  box-shadow:0 18px 50px rgba(0,0,0,.45);
-  transition:transform .25s ease;
-}
-
-.portada-imagen img:hover{
-  transform:scale(1.04);
-}
-
-@media(max-width:600px){
-  .portada-imagen img{
-    width:180px;
-    border-radius:24px;
-  }
-}
-
-<div id="splashScreen">
-  <img src="icon-512.png" alt="AMD vs Intel">
-  <h1>AMD vs Intel</h1>
-</div>
-
-<style>
-
-#splashScreen{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  background:#08101f;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  transition:opacity .5s ease;
-}
-
-#splashScreen img{
-  width:180px;
-  height:180px;
-  border-radius:32px;
-  margin-bottom:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
-
-#splashScreen h1{
-  color:white;
-  font-family:Arial,sans-serif;
-  font-size:28px;
-}
-
-</body>
-
-<script>
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const splash = document.getElementById("splashScreen");
-    splash.style.opacity = "0";
-
-    setTimeout(() => {
-      splash.style.display = "none";
-    }, 500);
-  }, 1500);
-});
-</script>
