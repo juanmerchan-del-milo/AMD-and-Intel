@@ -735,22 +735,16 @@ header .top{
 
 <style id="v116-smooth-scroll">
 html{scroll-behavior:auto!important}
-body{-webkit-overflow-scrolling:touch;overflow-anchor:none}
+body{-webkit-overflow-scrolling:touch}
 .v15-bottom-nav{
-  transform:translateZ(0)!important;
   backface-visibility:hidden;
   -webkit-backface-visibility:hidden;
-  contain:layout paint style;
+  transform:translate3d(-50%,0,0)!important;
+  will-change:transform;
 }
-.real3d-card,.specs-card,.corebench-card,.visual-shell{
-  content-visibility:auto;
-  contain-intrinsic-size:800px;
-}
-@media(max-width:700px){
-  .final-visual-card,.chip-card,.arch-panel,.spec-box{
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-  }
+.real3d-card,.specs-card,.corebench-card,.visual-shell,.chip-card{
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
 }
 </style>
 </head>
@@ -1518,9 +1512,24 @@ function init(){
   buildChip(modelSel.value);animate();
 }
 function resize3d(){if(renderer){renderer.setSize(Math.max(host.clientWidth,300),Math.max(host.clientHeight,300));camera.aspect=Math.max(host.clientWidth,300)/Math.max(host.clientHeight,300);camera.updateProjectionMatrix();}}
-function animate(){requestAnimationFrame(animate);if(auto&&root)root.rotation.y+=.004;controls&&controls.update();renderer&&renderer.render(scene,camera);}
-openBtn&&openBtn.addEventListener("click",()=>{lab.classList.add("open");setTimeout(()=>{init();resize3d();},60);});
-closeBtn&&closeBtn.addEventListener("click",()=>lab.classList.remove("open"));
+let webglRAF=0;
+function animate(){
+  if(webglRAF)return;
+  const frame=()=>{
+    if(!lab.classList.contains("open") || document.hidden){webglRAF=0;return;}
+    if(auto&&root)root.rotation.y+=.004;
+    controls&&controls.update();
+    renderer&&renderer.render(scene,camera);
+    webglRAF=requestAnimationFrame(frame);
+  };
+  webglRAF=requestAnimationFrame(frame);
+}
+function stopWebGL(){
+  if(webglRAF){cancelAnimationFrame(webglRAF);webglRAF=0;}
+}
+openBtn&&openBtn.addEventListener("click",()=>{lab.classList.add("open");setTimeout(()=>{init();resize3d();animate();},60);});
+closeBtn&&closeBtn.addEventListener("click",()=>{lab.classList.remove("open");stopWebGL();});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stopWebGL();else if(lab.classList.contains("open"))animate();});
 slider&&slider.addEventListener("input",updateExplode);
 modelSel&&modelSel.addEventListener("change",()=>buildChip(modelSel.value));
 autoBtn&&autoBtn.addEventListener("click",()=>{auto=!auto;autoBtn.classList.toggle("active",auto);});
@@ -2991,5 +3000,6 @@ window.applyStrictLanguage=applyStrict;
  document.addEventListener('amdIntelLanguageApplied',apply,{passive:true});
 })();
 </script>
+<script id="v117-performance-marker">window.APP_BUILD="1.1.7";</script>
 </body>
 </html>
