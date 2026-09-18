@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMD Ryzen vs Intel Core — V15 Mobile PWA · ES/EN/中文</title>
+<title>AMD vs Intel</title>
 <style>
 :root{--bg:#0b1020;--card:#141b2f;--card2:#10172a;--text:#eef3ff;--muted:#aab6d3;--line:#293452;--accent:#62a8ff;--amd:#39d98a;--intel:#5ea7ff;--warn:#ffd166}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(135deg,#080c18,#111a31);color:var(--text)}
@@ -291,6 +291,65 @@ header{box-shadow:0 14px 40px #0007}
 .card.flash{outline:2px solid #7ed0ff;transform:translateY(-3px);transition:all .25s ease;box-shadow:0 0 0 3px #7ed0ff25,0 18px 42px #0007}
 @media(max-width:900px){.pro-tools{grid-template-columns:1fr 1fr}.pro-tools .span-all{grid-column:1/-1}}
 @media(max-width:650px){.pro-tools{grid-template-columns:1fr}.pro-tools .span-all{grid-column:auto}.quick-actions{padding:0 2px}.quick-actions button{flex:1 1 calc(50% - 8px)}}
+</style>
+
+<style id="responsive-mobile-windows-fix">
+:root{--safe-top:env(safe-area-inset-top,0px);}
+html,body{max-width:100%;overflow-x:hidden;}
+body{padding-top:0;}
+header{padding-top:max(20px,calc(var(--safe-top) + 16px))!important;}
+.top{row-gap:14px!important;align-items:flex-start!important;}
+.top>div:first-child{min-width:0;flex:1 1 320px;}
+.top h1{line-height:1.08;word-break:normal;}
+.lang{flex-wrap:wrap;row-gap:10px;}
+.v15-header-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;align-items:stretch;}
+.v15-action,.v15-status{min-height:52px;border-radius:16px;}
+.v15-status{display:flex;align-items:center;justify-content:center;}
+main{max-width:1360px;margin:36px auto;padding:0 24px;}
+.v15-hero{margin-top:10px;}
+
+@media(min-width:761px){
+  header{padding:24px 28px 20px!important;}
+  .top{display:grid!important;grid-template-columns:minmax(300px,1.15fr) minmax(300px,.85fr);column-gap:26px;align-items:center!important;}
+  .top>div:first-child{grid-column:1 / 2;}
+  .lang{grid-column:2 / 3;justify-content:flex-end;align-items:center;}
+  .v15-header-actions{grid-column:1 / 3;grid-template-columns:repeat(3,minmax(180px,240px));justify-content:start;}
+  .v15-hero-grid{grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr)!important;gap:38px!important;}
+  .v15-device{height:330px!important;}
+  .v15-chip{width:215px!important;height:215px!important;}
+  .v15-orbit{width:270px!important;height:270px!important;}
+  .brand-grid{grid-template-columns:repeat(auto-fit,minmax(285px,1fr))!important;}
+  .visual-grid,.arch-grid{grid-template-columns:1fr 1fr!important;}
+  .v15-bottom-nav{display:none!important;}
+}
+
+@media(max-width:760px){
+  body{padding-bottom:calc(var(--v15-nav-h) + env(safe-area-inset-bottom) + 38px)!important;}
+  header{padding:calc(var(--safe-top) + 20px) 14px 16px!important;}
+  .top{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:15px!important;}
+  .top>div:first-child .sub{display:block!important;font-size:12px;line-height:1.4;margin-top:7px!important;}
+  .top h1{font-size:20px!important;padding-top:2px;}
+  .lang{width:100%!important;display:grid!important;grid-template-columns:30px 1fr;align-items:center!important;gap:10px!important;}
+  .lang .touch-chip{grid-column:1 / -1;justify-self:end;margin-top:2px;}
+  .lang select{width:100%!important;min-width:0!important;min-height:54px!important;border-radius:16px!important;}
+  .v15-header-actions{grid-template-columns:1fr 1fr!important;gap:12px!important;}
+  .v15-header-actions>.v15-status{grid-column:1 / -1;}
+  .v15-action{min-height:56px!important;padding:13px 10px!important;font-size:15px!important;}
+  .v15-status{min-height:46px!important;}
+  main{padding:0 14px!important;margin-top:20px!important;}
+  .v15-hero{padding:22px 16px 28px!important;border-radius:22px!important;}
+  .v15-hero-grid{grid-template-columns:1fr!important;gap:20px!important;}
+  .v15-device{height:230px!important;order:-1;margin-top:10px;}
+  .v15-quick{display:grid!important;grid-template-columns:1fr 1fr;gap:12px!important;}
+  .v15-quick button{width:100%;min-height:52px!important;}
+  .v15-bottom-nav{left:10px!important;right:10px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;}
+}
+
+@media(max-width:520px){
+  header{padding-top:calc(var(--safe-top) + 22px)!important;}
+  .lang .touch-chip{font-size:11px;padding:8px 10px;}
+  .v15-quick{grid-template-columns:1fr!important;}
+}
 </style>
 </head>
 <body>
@@ -1854,6 +1913,22 @@ window.applyStrictLanguage=applyStrict;
  $('jumpWeak').addEventListener('click',()=>jump('weak')); $('jumpStrong').addEventListener('click',()=>jump('strong')); $('bestIntel').addEventListener('click',()=>{ $('brand').value='Intel'; $('sortOrder').value='desc'; $('powerLevel').value='all'; render(); jump('strong','Intel'); }); $('bestAMD').addEventListener('click',()=>{ $('brand').value='AMD'; $('sortOrder').value='desc'; $('powerLevel').value='all'; render(); jump('strong','AMD'); }); $('cheapIntel').addEventListener('click',()=>{ $('brand').value='Intel'; $('sortOrder').value='asc'; $('powerLevel').value='all'; render(); jump('weak','Intel'); }); $('cheapAMD').addEventListener('click',()=>{ $('brand').value='AMD'; $('sortOrder').value='asc'; $('powerLevel').value='all'; render(); jump('weak','AMD'); });
  $('language')?.addEventListener('change',()=>setTimeout(()=>{localizeUpgrade(); render();},60));
  localizeUpgrade(); render();
+})();
+</script>
+
+<script id="native-platform-adapter">
+(()=>{
+  const isAndroid=/Android/i.test(navigator.userAgent);
+  const isNativeAsset=isAndroid && location.protocol==="file:" && location.href.includes("/android_asset/");
+  if(isNativeAsset){
+    const install=document.getElementById("v15Install");
+    const installBanner=document.getElementById("v15InstallBanner");
+    const download=document.getElementById("v15Download");
+    if(install) install.style.display="none";
+    if(installBanner) installBanner.style.display="none";
+    if(download) download.style.display="none";
+    document.documentElement.classList.add("android-native-app");
+  }
 })();
 </script>
 </body>
