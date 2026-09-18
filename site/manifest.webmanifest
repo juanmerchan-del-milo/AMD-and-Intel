@@ -1,0 +1,20 @@
+{
+  "name": "AMD vs Intel",
+  "short_name": "AMD vs Intel",
+  "description": "Comparador interactivo de procesadores AMD e Intel con catálogo, benchmarks, arquitectura y laboratorio 3D.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#08101f",
+  "theme_color": "#08101f",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "./app-hero.png",
+      "sizes": "1536x1536",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
