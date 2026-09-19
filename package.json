@@ -10,9 +10,9 @@
   "scripts":{
     "start":"electron .",
     "check":"node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js",
-    "dist:linux":"electron-builder --linux AppImage tar.gz --x64",
-    "dist:win":"electron-builder --win nsis portable --x64",
-    "dist:mac":"electron-builder --mac dmg zip --x64 --arm64"
+    "dist:linux":"electron-builder --linux AppImage tar.gz --x64 --publish never",
+    "dist:win":"electron-builder --win nsis portable --x64 --publish never",
+    "dist:mac":"electron-builder --mac dmg zip --x64 --arm64 --publish never"
   },
   "devDependencies":{"@electron/packager":"20.3.0","electron":"44.4.2","electron-builder":"26.15.3"},
   "build":{
