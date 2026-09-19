@@ -1,49 +1,46 @@
-# AMD Intel CPU Lab — versión de escritorio 1.21.3
+# PC Lab Builder 3D — escritorio 1.24.0
 
-Aplicación educativa para explorar y comparar procesadores AMD e Intel en Windows, Linux y macOS.
+Aplicación educativa sin conexión para construir una PC en 3D, revisar compatibilidad preliminar y explorar el laboratorio AMD/Intel.
 
-## Compatibilidad
+## Plataformas
 
-- Windows 10 y 11 de 64 bits.
-- Distribuciones Linux x86-64 mediante AppImage o paquete comprimido.
-- macOS para Mac Intel y Apple Silicon (M1, M2, M3, M4 y posteriores).
+- Windows 10/11 x64: instalador y ejecutable portátil.
+- Linux x86-64: AppImage y archivo `tar.gz`.
+- macOS: DMG y ZIP para Intel x64 y Apple Silicon arm64.
 
-## Mejoras de escritorio
+## Funciones de escritorio
 
-- Laboratorio 3D con aceleración gráfica y tres perfiles visuales.
-- Menú nativo, navegación rápida y pantalla completa.
-- Atajos de teclado para catálogo, laboratorio, rendimiento y zoom.
-- Capturas PNG y exportación directa a PDF.
-- Funcionamiento completamente sin conexión.
-- Recuperación del proceso gráfico y renderizado seguro opcional.
-- Persistencia del tamaño de ventana, zoom y perfil de rendimiento.
-- Seguridad reforzada: aislamiento del contenido, sin acceso de Node.js y permisos bloqueados.
+- Constructor 3D, catálogo, nomenclatura, equipos guardados y CPU Lab en una sola aplicación.
+- Perfil de rendimiento, equilibrado o calidad; aceleración gráfica y modo de renderizado seguro.
+- Captura PNG, exportación PDF, pantalla completa, zoom y navegación mediante menú nativo.
+- Contenido local: no necesita descargar bibliotecas desde un CDN.
+- Aislamiento de contexto de Electron, sin integración de Node.js en la página y permisos del navegador bloqueados.
 
-## Atajos principales
+## Atajos
 
 | Acción | Atajo |
 |---|---|
+| Constructor | `Inicio` |
+| Catálogo | `Ctrl/Cmd+1` |
+| Guía | `Ctrl/Cmd+2` |
+| Equipos guardados | `Ctrl/Cmd+3` |
+| CPU Lab | `Ctrl/Cmd+4` |
+| Captura | `Ctrl/Cmd+Mayús+S` |
+| Exportar PDF | `Ctrl/Cmd+Mayús+E` |
 | Pantalla completa | `F11` |
-| Buscar procesador | `Ctrl+F` |
-| Catálogo | `Ctrl+1` |
-| Laboratorio 3D | `Ctrl+2` |
-| Rendimiento | `Ctrl+3` |
-| Especificaciones | `Ctrl+4` |
-| Guardar captura | `Ctrl+Shift+S` |
-| Exportar PDF | `Ctrl+Shift+E` |
-| Restablecer zoom | `Ctrl+0` |
+| Restablecer zoom | `Ctrl/Cmd+0` |
 
 ## Desarrollo
 
-Requiere Node.js. Instala las dependencias con `npm install` y abre la aplicación con `npm start`.
+Requiere Node.js 22 o posterior.
 
-- Linux: `npm run dist:linux`
-- Windows: `npm run dist:win`
-- macOS (Intel y Apple Silicon): `npm run dist:mac`
-- Windows portátil desde Linux: `npm run pack:win`
-- Mac Intel portátil: `npm run pack:mac:x64`
-- Mac Apple Silicon portátil: `npm run pack:mac:arm64`
+```bash
+npm ci
+npm test
+npm run check
+npm start
+```
 
-Los paquetes locales de macOS no están firmados ni notarizados. Para una distribución pública sin avisos de Gatekeeper se necesita una cuenta Apple Developer y un certificado Developer ID.
+Paquetes: `npm run dist:win`, `npm run dist:linux` y `npm run dist:mac`.
 
-Los ejecutables generados se guardan en la carpeta `release`.
+Las compilaciones públicas de macOS no están firmadas ni notarizadas. Gatekeeper puede solicitar confirmación; eliminar ese aviso requiere una cuenta Apple Developer y un certificado Developer ID.

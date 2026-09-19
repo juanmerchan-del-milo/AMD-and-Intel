@@ -1,10 +1,12 @@
 const fs=require("fs");
 const path=require("path");
+const pkg=require("../package.json");
 const kind=(process.argv[2]||"").toLowerCase();
 if(!["installer","portable"].includes(kind))throw new Error("Expected installer or portable");
 const dir=path.join(__dirname,"..","release");
-const src=path.join(dir,"AMD-Intel-CPU-Lab-1.23.1-Windows-x64.exe");
-const dest=path.join(dir,"AMD-Intel-CPU-Lab-1.23.1-Windows-"+(kind==="installer"?"Installer":"Portable")+"-x64.exe");
+const base=`PC-Lab-Builder-3D-${pkg.version}-Windows`;
+const src=path.join(dir,`${base}-x64.exe`);
+const dest=path.join(dir,`${base}-${kind==="installer"?"Installer":"Portable"}-x64.exe`);
 if(!fs.existsSync(src))throw new Error("Windows build not found: "+src);
 if(fs.existsSync(dest))fs.rmSync(dest,{force:true});
 fs.renameSync(src,dest);

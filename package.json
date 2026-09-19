@@ -1,15 +1,16 @@
 {
-  "name":"amd-intel-cpu-lab",
-  "version":"1.23.1",
-  "description":"Laboratorio educativo de procesadores AMD e Intel para Windows, Linux, macOS, Android, iPhone/iPad y web.",
-  "desktopName":"amd-intel-cpu-lab.desktop",
+  "name":"pc-lab-builder-3d",
+  "version":"1.24.0",
+  "description":"Constructor 3D educativo de PC con catálogo de CPU, GPU, RAM, almacenamiento, placas, fuentes y refrigeración.",
+  "desktopName":"pc-lab-builder-3d.desktop",
   "main":"desktop/main.cjs",
   "author":"Juan Pablo Merchan Sigua",
   "license":"MIT",
   "private":true,
   "scripts":{
     "start":"electron .",
-    "check":"node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js && node --check v18-fixes.js",
+    "test":"node --test tests/*.test.cjs",
+    "check":"node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js && node --check catalog.js && node --check cpus.js && node --check catalog-extended.js && node --check i18n.js && node --check glossary.js && node --check engine.js && node --check viewer.js && node --check app.js && node --check pwa.js && node --check v18-fixes.js && node --check lab-124-fixes.js && node --check sw.js",
     "dist:linux":"electron-builder --linux AppImage tar.gz --x64 --publish never",
     "dist:win":"electron-builder --win nsis --x64 --publish never && node desktop/rename-win.cjs installer && electron-builder --win portable --x64 --publish never && node desktop/rename-win.cjs portable",
     "dist:mac":"electron-builder --mac dmg zip --x64 --arm64 --publish never"
@@ -17,15 +18,15 @@
   "devDependencies":{"@electron/packager":"20.3.0","electron":"44.4.2","electron-builder":"26.15.3"},
   "build":{
     "appId":"com.juanpablo.amdintel.desktop",
-    "productName":"AMD Intel CPU Lab",
+    "productName":"PC Lab Builder 3D",
     "asar":true,
     "compression":"maximum",
     "directories":{"output":"release"},
-    "files":["index.html","v18-fixes.js","pwa.js","app-hero.png","desktop/**/*","package.json"],
-    "linux":{"target":["AppImage","tar.gz"],"category":"Education","syncDesktopName":true,"icon":"build/icon.png","artifactName":"AMD-Intel-CPU-Lab-${version}-Linux-${arch}.${ext}"},
-    "win":{"icon":"build/icon.ico","artifactName":"AMD-Intel-CPU-Lab-${version}-Windows-x64.${ext}"},
-    "mac":{"target":["dmg","zip"],"category":"public.app-category.education","icon":"build/icon.icns","identity":null,"hardenedRuntime":false,"artifactName":"AMD-Intel-CPU-Lab-${version}-macOS-${arch}.${ext}"},
-    "dmg":{"title":"AMD Intel CPU Lab ${version}"},
-    "nsis":{"oneClick":false,"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true,"createStartMenuShortcut":true,"shortcutName":"AMD Intel CPU Lab"}
+    "files":["index.html","cpu-lab.html","styles.css","catalog.js","cpus.js","catalog-extended.js","i18n.js","glossary.js","engine.js","viewer.js","app.js","v18-fixes.js","lab-124-fixes.js","pwa.js","manifest.webmanifest","vendor/**/*","icons/**/*","licenses/**/*","app-hero.png","desktop/**/*","package.json"],
+    "linux":{"target":["AppImage","tar.gz"],"category":"Education","syncDesktopName":true,"icon":"build/icon.png","artifactName":"PC-Lab-Builder-3D-${version}-Linux-${arch}.${ext}"},
+    "win":{"icon":"build/icon.ico","artifactName":"PC-Lab-Builder-3D-${version}-Windows-x64.${ext}"},
+    "mac":{"target":["dmg","zip"],"category":"public.app-category.education","icon":"build/icon.icns","identity":null,"hardenedRuntime":false,"artifactName":"PC-Lab-Builder-3D-${version}-macOS-${arch}.${ext}"},
+    "dmg":{"title":"PC Lab Builder 3D ${version}"},
+    "nsis":{"oneClick":false,"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true,"createStartMenuShortcut":true,"shortcutName":"PC Lab Builder 3D"}
   }
 }

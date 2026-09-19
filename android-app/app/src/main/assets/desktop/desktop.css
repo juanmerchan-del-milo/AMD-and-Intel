@@ -1,0 +1,17 @@
+:root{--desktop-rail:92px}
+.desktop-app body{padding-left:var(--desktop-rail)}
+#desktopDock{position:fixed;left:0;top:0;bottom:0;width:var(--desktop-rail);z-index:10000;display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:12px 9px;background:linear-gradient(180deg,#060c16f5,#081221f2);border-right:1px solid #29415f;box-shadow:12px 0 36px #0007;backdrop-filter:blur(18px);color:#dfeaff;font-family:Inter,Segoe UI,Arial,sans-serif}
+.desktop-brand{display:grid;justify-items:center;gap:4px;padding:8px 2px 12px;border-bottom:1px solid #263b56}.desktop-brand b{font-size:10px;letter-spacing:1.4px}.desktop-brand small{color:#7890ad;font-size:9px}.desktop-dot{width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,#44d29b,#5ea7ff);box-shadow:0 0 18px #5ea7ff66}
+.desktop-nav{display:grid;gap:6px}.desktop-nav button,#desktopDock .desktop-actions button{border:1px solid transparent;background:transparent;color:#8fa5c0;border-radius:12px;min-height:52px;padding:6px;display:grid;place-items:center;font:700 19px/1 Inter,Segoe UI,Arial;cursor:pointer}.desktop-nav button span{font-size:9px;margin-top:4px}.desktop-nav button:hover,#desktopDock .desktop-actions button:hover{color:#fff;background:#13243a;border-color:#34577a}
+.desktop-profile{display:grid;gap:5px;color:#8298b3;font-size:9px;text-align:center}.desktop-profile select{width:100%;min-width:0;padding:7px 3px;border-radius:9px;border:1px solid #2d4868;background:#0a1524;color:#d9e6f6;font-size:9px}
+.desktop-actions{display:grid;grid-template-columns:1fr 1fr;gap:5px}.desktop-actions button{min-height:38px!important;font-size:11px!important}.desktop-actions button:last-child{grid-column:1/-1}
+.desktop-system{margin-top:auto;text-align:center;padding:8px 2px;border-top:1px solid #263b56}.desktop-system span,.desktop-system small{display:block}.desktop-system span{font-size:9px;color:#a9bad0}.desktop-system small{font-size:8px;color:#5ed7a5;margin-top:4px}
+.desktop-app header{padding-left:max(5%,28px)}
+.desktop-app .v5scene{min-height:560px}.desktop-app .webgl-scene{height:640px}
+.desktop-app[data-performance-profile="performance"] *{scroll-behavior:auto!important}
+.desktop-app[data-performance-profile="performance"] .v15-touch-light::before,.desktop-app[data-performance-profile="performance"] .v5stage:after{display:none!important}
+.desktop-app[data-performance-profile="performance"] .card,.desktop-app[data-performance-profile="performance"] .arch-panel,.desktop-app[data-performance-profile="performance"] .real3d-card{box-shadow:none!important}
+.desktop-app[data-performance-profile="performance"] .v15-reveal{transition-duration:.12s!important}
+.desktop-app[data-performance-profile="quality"] .v5scene{image-rendering:auto}.desktop-app[data-performance-profile="quality"] .v5part.selected{filter:brightness(1.4) drop-shadow(0 0 16px #a9d6ff)}
+@media(max-width:1100px){:root{--desktop-rail:72px}#desktopDock{width:var(--desktop-rail);padding-inline:6px}.desktop-brand b{font-size:8px}}
+@media print{#desktopDock,.v15-bottom-nav,.v15-progress,.v15-header-actions{display:none!important}.desktop-app body{padding-left:0!important;background:#fff!important;color:#111!important}}

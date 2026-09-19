@@ -5,37 +5,58 @@ on:
   push:
     branches: [main]
     paths:
-      - "index.html"
-      - "v18-fixes.js"
-      - "pwa.js"
-      - "manifest.webmanifest"
-      - "sw.js"
-      - "app-hero.png"
+      - "*.html"
+      - "*.css"
+      - "*.js"
+      - "*.json"
+      - "vendor/**"
+      - "icons/**"
+      - "licenses/**"
       - "desktop/**"
       - "android-app/**"
-      - "package.json"
+      - "build/**"
       - "site/**"
+      - "tests/**"
       - ".github/workflows/release-all.yml"
 
 permissions:
   contents: write
+
+concurrency:
+  group: release-v1.24.0
+  cancel-in-progress: true
 
 jobs:
   web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validate application
+        run: npm run check && npm test
       - name: Package Web/PWA
         run: |
           cd site
-          zip -qr ../AMD-Intel-CPU-Lab-1.23.1-Web-PWA.zip .
+          zip -qr ../PC-Lab-Builder-3D-1.24.0-Web-PWA.zip .
           cd ..
-          printf '%s\n'             'AMD Intel CPU Lab v1.23.1 - iPhone/iPad'             ''             'Cuando GitHub Pages este habilitado:'             '1. Abre en Safari: https://juanmerchan-del-milo.github.io/AMD-and-Intel/'             '2. Toca Compartir.'             '3. Selecciona Anadir a pantalla de inicio.'             > iPhone-iPad-INSTALL.txt
+          printf '%s\n' \
+            'PC Lab Builder 3D v1.24.0 - iPhone/iPad' \
+            '' \
+            '1. Abre en Safari: https://juanmerchan-del-milo.github.io/AMD-and-Intel/' \
+            '2. Toca Compartir.' \
+            '3. Selecciona Añadir a pantalla de inicio.' \
+            '' \
+            'Una IPA nativa requiere firma Apple Developer. La PWA es la versión instalable sin esa cuenta.' \
+            > iPhone-iPad-INSTALL.txt
       - uses: actions/upload-artifact@v4
         with:
           name: web-pwa
           path: |
-            AMD-Intel-CPU-Lab-1.23.1-Web-PWA.zip
+            PC-Lab-Builder-3D-1.24.0-Web-PWA.zip
             iPhone-iPad-INSTALL.txt
 
   android:
@@ -56,11 +77,14 @@ jobs:
       - name: Build Android APK
         working-directory: android-app
         run: gradle clean assembleRelease
-      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.23.1-Android.apk
+      - name: Verify and name APK
+        run: |
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs android-app/app/build/outputs/apk/release/app-release.apk
+          cp android-app/app/build/outputs/apk/release/app-release.apk PC-Lab-Builder-3D-1.24.0-Android.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android
-          path: AMD-Intel-CPU-Lab-1.23.1-Android.apk
+          path: PC-Lab-Builder-3D-1.24.0-Android.apk
 
   desktop:
     strategy:
@@ -84,8 +108,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Check JavaScript
-        run: npm run check
+      - name: Check JavaScript and compatibility engine
+        run: npm run check && npm test
       - name: Build desktop package
         run: ${{ matrix.command }}
         env:
@@ -115,5 +139,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete v1.23.1 --yes --cleanup-tag || true
-          gh release create v1.23.1 dist/*             --title "AMD Intel CPU Lab v1.23.1"             --target "$GITHUB_SHA"             --notes "Correccion estable basada en la version reparada: banner sin imagen rota, idiomas ES/EN/ZH sincronizados, comparacion directa corregida, metadatos 3D corregidos y Generaciones visible. Incluye Android, Windows Installer/Portable, Linux, macOS Intel/Apple Silicon y Web/PWA."
+          gh release delete v1.24.0 --yes --cleanup-tag || true
+          gh release create v1.24.0 dist/* \
+            --title "PC Lab Builder 3D v1.24.0" \
+            --target "$GITHUB_SHA" \
+            --notes "Constructor 3D unificado y catálogo ampliado de CPU, GPU, DDR1-DDR5, almacenamiento SATA/PCIe 1.0-5.0, placas, fuentes, refrigeración y gabinetes. Repara Generaciones, NPU, portátiles y mini PC; separa plataformas y marcas en el laboratorio; mejora el zoom táctil y el rendimiento 3D. Incluye Android, Windows Installer/Portable, Linux, macOS Intel/Apple Silicon y Web/PWA para iPhone/iPad. La compatibilidad y potencia son orientativas: confirma BIOS, QVL, conectores y dimensiones antes de comprar."

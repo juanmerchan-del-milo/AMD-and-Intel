@@ -1,10 +1,30 @@
-const CACHE="amd-intel-cpu-lab-v1.23.1";
-const CORE=["./","./index.html","./manifest.webmanifest","./icon.svg","./app-hero.png","./v18-fixes.js","./pwa.js"];
-self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)));self.skipWaiting()});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))));self.clients.claim()});
-self.addEventListener("fetch",e=>{
- if(e.request.method!=="GET")return;
- const u=new URL(e.request.url);if(u.origin!==self.location.origin)return;
- if(e.request.mode==="navigate"){e.respondWith(fetch(e.request).then(r=>{const x=r.clone();caches.open(CACHE).then(c=>c.put("./index.html",x));return r}).catch(()=>caches.match("./index.html")));return}
- e.respondWith(caches.match(e.request).then(x=>x||fetch(e.request).then(r=>{if(r&&r.ok){const y=r.clone();caches.open(CACHE).then(c=>c.put(e.request,y))}return r})))
+/* Offline shell. Manufacturer links and user configurations are never cached. */
+'use strict';
+const CACHE='pc-lab-builder-1.24.0-r2';
+const FILES=[
+  './','./index.html','./styles.css','./catalog.js','./cpus.js','./catalog-extended.js',
+  './i18n.js','./glossary.js','./engine.js','./viewer.js','./app.js',
+  './cpu-lab.html','./v18-fixes.js','./lab-124-fixes.js','./pwa.js',
+  './desktop/desktop.css','./desktop/renderer.js',
+  './manifest.webmanifest','./vendor/three.min.js','./vendor/OrbitControls.js','./app-hero.png',
+  './icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png',
+  './icons/apple-touch-icon.png'
+];
+self.addEventListener('install',event=>event.waitUntil(
+  caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())
+));
+self.addEventListener('activate',event=>event.waitUntil(
+  caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('pc-lab-builder-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())
+));
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;
+  const path=new URL(event.request.url).pathname;
+  if(!FILES.some(file=>new URL(file,self.registration.scope).pathname===path))return;
+  event.respondWith(caches.open(CACHE).then(async cache=>{
+    const cached=await cache.match(event.request,{ignoreSearch:true});
+    if(cached)return cached;
+    const response=await fetch(event.request);
+    if(response.ok)cache.put(event.request,response.clone());
+    return response;
+  }));
 });

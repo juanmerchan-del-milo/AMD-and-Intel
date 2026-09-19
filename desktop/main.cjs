@@ -1,8 +1,9 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain, shell, session } = require('electron');
 const fs = require('node:fs');
 const path = require('node:path');
+const { fileURLToPath } = require('node:url');
 
-const APP_NAME = 'AMD Intel CPU Lab';
+const APP_NAME = 'PC Lab Builder 3D';
 const PROFILES = new Set(['performance', 'balanced', 'quality']);
 let mainWindow = null;
 let rendererRecoveryAttempts = 0;
@@ -73,7 +74,7 @@ async function captureScreenshot() {
   if (!mainWindow) return { canceled: true };
   const result = await dialog.showSaveDialog(mainWindow, {
     title: 'Guardar captura del laboratorio',
-    defaultPath: path.join(app.getPath('pictures'), `AMD-Intel-Lab-${Date.now()}.png`),
+    defaultPath: path.join(app.getPath('pictures'), `PC-Lab-Builder-${Date.now()}.png`),
     filters: [{ name: 'Imagen PNG', extensions: ['png'] }]
   });
   if (result.canceled || !result.filePath) return { canceled: true };
@@ -86,7 +87,7 @@ async function exportPdf() {
   if (!mainWindow) return { canceled: true };
   const result = await dialog.showSaveDialog(mainWindow, {
     title: 'Exportar catálogo en PDF',
-    defaultPath: path.join(app.getPath('documents'), 'AMD-Intel-CPU-Lab.pdf'),
+    defaultPath: path.join(app.getPath('documents'), 'PC-Lab-Builder-3D.pdf'),
     filters: [{ name: 'Documento PDF', extensions: ['pdf'] }]
   });
   if (result.canceled || !result.filePath) return { canceled: true };
@@ -103,6 +104,20 @@ function relaunchSafe() {
   const args = process.argv.slice(1).filter(arg => arg !== '--software-rendering');
   app.relaunch({ args: [...args, '--software-rendering'] });
   app.exit(0);
+}
+
+async function openBuilder(view = 'builder') {
+  if (!mainWindow) return;
+  const indexPath = path.join(__dirname, '..', 'index.html');
+  let currentPath = '';
+  try { currentPath = fileURLToPath(mainWindow.webContents.getURL()); } catch {}
+  if (path.resolve(currentPath) !== path.resolve(indexPath)) await mainWindow.loadFile(indexPath);
+  sendCommand('view', view);
+}
+
+async function openCpuLab() {
+  if (!mainWindow) return;
+  await mainWindow.loadFile(path.join(__dirname, '..', 'cpu-lab.html'));
 }
 
 function buildMenu() {
@@ -130,11 +145,12 @@ function buildMenu() {
     {
       label: 'Navegación',
       submenu: [
-        { label: 'Inicio', accelerator: 'Home', click: () => sendCommand('section', 'homeSection') },
-        { label: 'Catálogo', accelerator: 'CmdOrCtrl+1', click: () => sendCommand('section', 'catalogSection') },
-        { label: 'Laboratorio 3D', accelerator: 'CmdOrCtrl+2', click: () => sendCommand('section', 'real3dSection') },
-        { label: 'Rendimiento', accelerator: 'CmdOrCtrl+3', click: () => sendCommand('section', 'coreBench') },
-        { label: 'Especificaciones', accelerator: 'CmdOrCtrl+4', click: () => sendCommand('section', 'specsSection') }
+        { label: 'Constructor 3D', accelerator: 'Home', click: () => openBuilder('builder') },
+        { label: 'Catálogo completo', accelerator: 'CmdOrCtrl+1', click: () => openBuilder('catalog') },
+        { label: 'Guía de nomenclatura', accelerator: 'CmdOrCtrl+2', click: () => openBuilder('learn') },
+        { label: 'Equipos guardados', accelerator: 'CmdOrCtrl+3', click: () => openBuilder('saved') },
+        { type: 'separator' },
+        { label: 'Laboratorio AMD / Intel', accelerator: 'CmdOrCtrl+4', click: openCpuLab }
       ]
     },
     {
@@ -166,7 +182,7 @@ function buildMenu() {
             type: 'info',
             title: APP_NAME,
             message: `${APP_NAME} ${app.getVersion()}`,
-            detail: 'Laboratorio educativo de procesadores AMD e Intel para Windows y Linux.'
+            detail: 'Constructor educativo de PC en 3D y laboratorio AMD/Intel para Windows, Linux y macOS.'
           })
         }
       ]
@@ -212,9 +228,16 @@ function createWindow() {
     return { action: 'deny' };
   });
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    const current = new URL(mainWindow.webContents.getURL());
-    const next = new URL(url);
-    if (next.protocol !== 'file:' || next.pathname !== current.pathname) event.preventDefault();
+    try {
+      const next = new URL(url);
+      const allowed = new Set([
+        path.resolve(path.join(__dirname, '..', 'index.html')),
+        path.resolve(path.join(__dirname, '..', 'cpu-lab.html'))
+      ]);
+      if (next.protocol !== 'file:' || !allowed.has(path.resolve(fileURLToPath(next)))) event.preventDefault();
+    } catch {
+      event.preventDefault();
+    }
   });
 
   mainWindow.webContents.on('before-input-event', (event, input) => {
