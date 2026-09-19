@@ -22,8 +22,8 @@ jobs:
       - name: Build release APK
         working-directory: android-app
         run: gradle clean assembleRelease
-      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.22.0-Android.apk
+      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.23.0-Android.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: AMD-Intel-CPU-Lab-1.22.0-Android
-          path: AMD-Intel-CPU-Lab-1.22.0-Android.apk
+          name: AMD-Intel-CPU-Lab-1.23.0-Android
+          path: AMD-Intel-CPU-Lab-1.23.0-Android.apk

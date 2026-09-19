@@ -26,17 +26,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Package web and iPhone/iPad PWA
+      - name: Package Web/PWA and iPhone instructions
         run: |
           cd site
-          zip -qr ../AMD-Intel-CPU-Lab-1.22.0-Web-PWA.zip .
+          zip -qr ../AMD-Intel-CPU-Lab-1.23.0-Web-PWA.zip .
           cd ..
-          printf '%s\n'             'AMD Intel CPU Lab v1.22.0 - iPhone/iPad'             ''             '1. Abre en Safari: https://juanmerchan-del-milo.github.io/AMD-and-Intel/'             '2. Toca Compartir.'             '3. Selecciona Añadir a pantalla de inicio.'             ''             'Una IPA nativa para un iPhone real requiere firma Apple Developer.'             > iPhone-iPad-INSTALL.txt
+          printf '%s\n'             'AMD Intel CPU Lab v1.23.0 - iPhone/iPad'             ''             'Cuando GitHub Pages este habilitado:'             '1. Abre en Safari: https://juanmerchan-del-milo.github.io/AMD-and-Intel/'             '2. Toca Compartir.'             '3. Selecciona Anadir a pantalla de inicio.'             ''             'Una IPA nativa para un iPhone real requiere firma Apple Developer.'             > iPhone-iPad-INSTALL.txt
       - uses: actions/upload-artifact@v4
         with:
           name: web-pwa
           path: |
-            AMD-Intel-CPU-Lab-1.22.0-Web-PWA.zip
+            AMD-Intel-CPU-Lab-1.23.0-Web-PWA.zip
             iPhone-iPad-INSTALL.txt
 
   android:
@@ -57,11 +57,11 @@ jobs:
       - name: Build Android APK
         working-directory: android-app
         run: gradle clean assembleRelease
-      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.22.0-Android.apk
+      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.23.0-Android.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android
-          path: AMD-Intel-CPU-Lab-1.22.0-Android.apk
+          path: AMD-Intel-CPU-Lab-1.23.0-Android.apk
 
   desktop:
     strategy:
@@ -85,6 +85,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Check JavaScript
+        run: npm run check
       - name: Build desktop package
         run: ${{ matrix.command }}
         env:
@@ -114,5 +116,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete v1.22.0 --yes --cleanup-tag || true
-          gh release create v1.22.0 dist/*             --title "AMD Intel CPU Lab v1.22.0"             --target "$GITHUB_SHA"             --notes "Android APK, Windows, Linux, macOS Intel/Apple Silicon y Web/PWA para iPhone/iPad. Incluye correcciones de NPU, portátiles, mini PCs y generaciones. Windows/macOS no están firmados comercialmente, por lo que el sistema puede mostrar una advertencia al abrirlos por primera vez."
+          gh release delete v1.23.0 --yes --cleanup-tag || true
+          gh release create v1.23.0 dist/*             --title "AMD Intel CPU Lab v1.23.0"             --target "$GITHUB_SHA"             --notes "Version multiplataforma con el laboratorio 3D organizado por AMD, Intel, moviles/portatiles, escritorio, Mini PC/compactos, NPU/IA e iGPU. Tambien repara la pestana Generaciones. Incluye Android APK, Windows Installer y Portable, Linux AppImage/tar.gz, macOS Intel y Apple Silicon, y Web/PWA para iPhone/iPad."

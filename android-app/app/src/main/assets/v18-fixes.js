@@ -17,3 +17,194 @@ function localize(){let t=T(),gi=lc()==="es"?0:lc()==="en"?1:2,g=q("#tab-gens"),
 function apply(){try{populateFamilies();populateGenerations();populateSelects();compare()}catch(e){}localize();try{window.updSpecs?.()}catch(e){}npuBox()}
 q("#language")?.addEventListener("change",()=>setTimeout(apply,180));q("#specModel")?.addEventListener("change",()=>setTimeout(npuBox,20));q("#leftSelect")?.addEventListener("change",compare);q("#rightSelect")?.addEventListener("change",compare);document.addEventListener("amdIntelLanguageApplied",()=>setTimeout(apply,150));setTimeout(()=>{try{window.render?.()}catch(e){}apply()},400);setTimeout(apply,1000);
 })();
+
+/* v1.23.0 - Generations visibility + 3D catalog separation */
+(function(){
+  window.APP_BUILD="1.23.0";
+  const q=function(s,r){return (r||document).querySelector(s)};
+  const qa=function(s,r){return Array.from((r||document).querySelectorAll(s))};
+  const lang=function(){
+    const x=(q("#language")?.value||document.documentElement.lang||"es").toLowerCase();
+    return x.startsWith("en")?"en":x.startsWith("zh")?"zh":"es";
+  };
+  const TX={
+    es:{brand:"Marca",platform:"Plataforma",feature:"Funciones",all:"Todos",mobile:"Móviles / portátiles",desktop:"Escritorio",mini:"Mini PC / compactos",npu:"NPU / IA",igpu:"iGPU",processors:"Procesadores",show:"Mostrando",models:"modelos 3D",none:"No hay modelos para esta combinación.",miniNote:"Mini PC es una categoría orientativa: incluye chips móviles, embebidos y modelos de menor consumo que pueden aparecer en equipos compactos."},
+    en:{brand:"Brand",platform:"Platform",feature:"Features",all:"All",mobile:"Mobile / laptops",desktop:"Desktop",mini:"Mini PCs / compact",npu:"NPU / AI",igpu:"iGPU",processors:"Processors",show:"Showing",models:"3D models",none:"No models match this combination.",miniNote:"Mini PC is an approximate category: it includes mobile, embedded and lower-power chips that may be used in compact systems."},
+    zh:{brand:"品牌",platform:"平台",feature:"功能",all:"全部",mobile:"移动 / 笔记本",desktop:"台式机",mini:"迷你电脑 / 紧凑型",npu:"NPU / AI",igpu:"iGPU",processors:"处理器",show:"显示",models:"个 3D 型号",none:"此筛选组合没有可用型号。",miniNote:"迷你电脑为近似分类：包含移动、嵌入式以及可能用于紧凑型设备的较低功耗芯片。"}
+  };
+  const t=function(){return TX[lang()]};
+
+  function repairArchitecturePanels(){
+    qa("#architectureSection .arch-panel").forEach(function(p){p.classList.add("visible")});
+    const gens=q("#tab-gens");
+    if(gens)gens.classList.add("visible");
+  }
+  qa(".arch-tabs [data-tab], .visual-tabs [data-tab]").forEach(function(btn){
+    if(btn.dataset.v1230VisibleFix)return;
+    btn.dataset.v1230VisibleFix="1";
+    btn.addEventListener("click",function(){
+      setTimeout(function(){
+        const panel=document.getElementById("tab-"+btn.dataset.tab);
+        if(panel)panel.classList.add("visible");
+        repairArchitecturePanels();
+      },0);
+    },true);
+  });
+  repairArchitecturePanels();
+
+  const select=q("#v5Model");
+  const card=q("#real3dSection .real3d-card");
+  if(!select||!card)return;
+
+  let browser=q("#v23Browser3D");
+  if(!browser){
+    const controls=q("#real3dSection .lab-controls");
+    browser=document.createElement("div");
+    browser.id="v23Browser3D";
+    browser.className="v23-3d-browser";
+    browser.setAttribute("aria-label","3D catalog filters");
+    browser.innerHTML=
+      '<div class="v23-filter-row" data-v23-row="brand">'+
+        '<span class="v23-filter-label" id="v23BrandLabel">Marca</span>'+
+        '<button type="button" class="v23-filter active" data-v23-brand="all">Todos</button>'+
+        '<button type="button" class="v23-filter" data-v23-brand="AMD">AMD</button>'+
+        '<button type="button" class="v23-filter" data-v23-brand="Intel">Intel</button>'+
+      '</div>'+
+      '<div class="v23-filter-row" data-v23-row="platform">'+
+        '<span class="v23-filter-label" id="v23PlatformLabel">Plataforma</span>'+
+        '<button type="button" class="v23-filter active" data-v23-platform="all">Todos</button>'+
+        '<button type="button" class="v23-filter" data-v23-platform="mobile">Móviles / portátiles</button>'+
+        '<button type="button" class="v23-filter" data-v23-platform="desktop">Escritorio</button>'+
+        '<button type="button" class="v23-filter" data-v23-platform="mini">Mini PC / compactos</button>'+
+      '</div>'+
+      '<div class="v23-filter-row" data-v23-row="feature">'+
+        '<span class="v23-filter-label" id="v23FeatureLabel">Funciones</span>'+
+        '<button type="button" class="v23-filter active" data-v23-feature="all">Todos</button>'+
+        '<button type="button" class="v23-filter" data-v23-feature="npu">NPU / IA</button>'+
+        '<button type="button" class="v23-filter" data-v23-feature="igpu">iGPU</button>'+
+      '</div>'+
+      '<div class="v23-filter-summary" id="v23FilterSummary" aria-live="polite"></div>'+
+      '<div class="v23-filter-note" id="v23MiniNote"></div>';
+    if(controls)controls.insertAdjacentElement("beforebegin",browser);
+  }
+
+  if(!q("#v1230-3d-style")){
+    const st=document.createElement("style");
+    st.id="v1230-3d-style";
+    st.textContent=[
+      ".v23-3d-browser{margin:14px 0 12px;padding:12px;border:1px solid #2d4665;border-radius:15px;background:linear-gradient(145deg,#091321,#07101c);display:grid;gap:9px}",
+      ".v23-filter-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-width:0}",
+      ".v23-filter-label{min-width:92px;color:#8298b2;font-size:11px;font-weight:900;letter-spacing:.7px;text-transform:uppercase}",
+      ".v23-filter{min-height:40px!important;padding:8px 12px!important;border-radius:999px!important;border:1px solid #304b6c!important;background:#0c1727!important;color:#9db3cd!important;font-size:12px!important;font-weight:800!important;white-space:nowrap}",
+      ".v23-filter.active{border-color:#65adff!important;color:#f6f9ff!important;background:#173252!important;box-shadow:0 0 0 1px #65adff33 inset}",
+      ".v23-filter-summary{padding-top:2px;color:#91a6bf;font-size:11px;line-height:1.4}",
+      ".v23-filter-note{color:#687f99;font-size:10px;line-height:1.4}",
+      "#v5Model optgroup{font-weight:900;background:#0c1524;color:#9db8d6}",
+      "#v5Model option{font-weight:500}",
+      "@media(max-width:720px){.v23-3d-browser{padding:10px}.v23-filter-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.v23-filter-label{grid-column:1/-1;min-width:0}.v23-filter{width:100%;min-height:44px!important;white-space:normal}.v23-filter-row[data-v23-row=brand]{grid-template-columns:repeat(3,minmax(0,1fr))}.v23-filter-row[data-v23-row=brand] .v23-filter-label{grid-column:1/-1}}"
+    ].join("\n");
+    document.head.appendChild(st);
+  }
+
+  const state={brand:"all",platform:"all",feature:"all"};
+  function rows(){
+    try{if(typeof getAllModels==="function")return getAllModels().slice()}catch(e){}
+    try{if(typeof models!=="undefined")return models.slice()}catch(e){}
+    return [];
+  }
+  function device(row){
+    try{if(typeof deviceType==="function")return deviceType(row)}catch(e){}
+    const s=[row?.[1],row?.[2],row?.[3]].join(" ");
+    if(/Mobile|Ryzen AI|(?:HX|HS|H|U)\b/i.test(s))return "Laptop";
+    if(/PE\b|Embedded/i.test(s))return "Embedded";
+    return "Desktop";
+  }
+  function watts(row){
+    const m=String(row?.[8]||"").match(/(\d+(?:\.\d+)?)/);
+    return m?Number(m[1]):999;
+  }
+  function isMini(row){
+    const d=device(row);
+    return d==="Laptop"||d==="Embedded"||watts(row)<=65;
+  }
+  function hasNpu(row){
+    const s=[row?.[1],row?.[2],row?.[3]].join(" ");
+    return /Ryzen AI|Ryzen 7 7840HS|Ryzen 7 8845HS|Ryzen 5 8600G|Core Ultra/i.test(s);
+  }
+  function hasIgpu(row){return String(row?.[9]||"No").trim()!=="No"}
+  function score(row){
+    try{return typeof powerScore==="function"?powerScore(row):0}catch(e){return 0}
+  }
+  function matches(row){
+    if(state.brand!=="all"&&row[0]!==state.brand)return false;
+    const d=device(row);
+    if(state.platform==="mobile"&&d!=="Laptop")return false;
+    if(state.platform==="desktop"&&d!=="Desktop")return false;
+    if(state.platform==="mini"&&!isMini(row))return false;
+    if(state.feature==="npu"&&!hasNpu(row))return false;
+    if(state.feature==="igpu"&&!hasIgpu(row))return false;
+    return true;
+  }
+  function fill3D(){
+    const old=select.value;
+    const filtered=rows().filter(matches).sort(function(a,b){return score(a)-score(b)||String(a[2]).localeCompare(String(b[2]),undefined,{numeric:true})});
+    select.innerHTML="";
+    ["AMD","Intel"].forEach(function(brand){
+      const subset=filtered.filter(function(r){return r[0]===brand});
+      if(!subset.length)return;
+      const group=document.createElement("optgroup");
+      group.label=brand;
+      subset.forEach(function(row){
+        const o=document.createElement("option");
+        o.value=row[2];
+        o.textContent=row[2]+" · "+row[3];
+        group.appendChild(o);
+      });
+      select.appendChild(group);
+    });
+    if(Array.from(select.options).some(function(o){return o.value===old}))select.value=old;
+    else if(select.options.length)select.selectedIndex=0;
+    select.disabled=!filtered.length;
+    const tx=t();
+    const count=q("#v7ModelCount");
+    if(count)count.textContent=filtered.length+" "+tx.models;
+    const summary=q("#v23FilterSummary");
+    if(summary)summary.textContent=filtered.length?tx.show+" "+filtered.length+" "+tx.models+".":tx.none;
+    if(filtered.length)select.dispatchEvent(new Event("change",{bubbles:true}));
+  }
+  function activate(kind,value){
+    state[kind]=value;
+    qa("[data-v23-"+kind+"]",browser).forEach(function(b){b.classList.toggle("active",b.getAttribute("data-v23-"+kind)===value)});
+    fill3D();
+  }
+  browser.addEventListener("click",function(e){
+    const b=e.target.closest("button");
+    if(!b)return;
+    if(b.hasAttribute("data-v23-brand"))activate("brand",b.getAttribute("data-v23-brand"));
+    else if(b.hasAttribute("data-v23-platform"))activate("platform",b.getAttribute("data-v23-platform"));
+    else if(b.hasAttribute("data-v23-feature"))activate("feature",b.getAttribute("data-v23-feature"));
+  });
+
+  function localize3D(){
+    const x=t();
+    const set=function(id,v){const e=q("#"+id);if(e)e.textContent=v};
+    set("v23BrandLabel",x.brand);
+    set("v23PlatformLabel",x.platform);
+    set("v23FeatureLabel",x.feature);
+    set("v23MiniNote",x.miniNote);
+    qa('[data-v23-brand="all"],[data-v23-platform="all"],[data-v23-feature="all"]',browser).forEach(function(e){e.textContent=x.all});
+    const text=function(sel,v){const e=q(sel,browser);if(e)e.textContent=v};
+    text('[data-v23-platform="mobile"]',x.mobile);
+    text('[data-v23-platform="desktop"]',x.desktop);
+    text('[data-v23-platform="mini"]',x.mini);
+    text('[data-v23-feature="npu"]',x.npu);
+    text('[data-v23-feature="igpu"]',x.igpu);
+    const lab=select.closest("label");
+    if(lab&&lab.firstChild&&lab.firstChild.nodeType===3)lab.firstChild.nodeValue=x.processors+" ";
+    fill3D();
+  }
+  q("#language")?.addEventListener("change",function(){setTimeout(localize3D,120)});
+  document.addEventListener("amdIntelLanguageApplied",function(){setTimeout(localize3D,150)});
+  setTimeout(function(){repairArchitecturePanels();localize3D()},250);
+  setTimeout(function(){repairArchitecturePanels();localize3D()},900);
+})();

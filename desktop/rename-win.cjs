@@ -1,0 +1,11 @@
+const fs=require("fs");
+const path=require("path");
+const kind=(process.argv[2]||"").toLowerCase();
+if(!["installer","portable"].includes(kind))throw new Error("Expected installer or portable");
+const dir=path.join(__dirname,"..","release");
+const src=path.join(dir,"AMD-Intel-CPU-Lab-1.23.0-Windows-x64.exe");
+const dest=path.join(dir,"AMD-Intel-CPU-Lab-1.23.0-Windows-"+(kind==="installer"?"Installer":"Portable")+"-x64.exe");
+if(!fs.existsSync(src))throw new Error("Windows build not found: "+src);
+if(fs.existsSync(dest))fs.rmSync(dest,{force:true});
+fs.renameSync(src,dest);
+console.log("Saved",path.basename(dest));
