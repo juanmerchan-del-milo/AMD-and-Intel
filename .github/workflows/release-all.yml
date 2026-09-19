@@ -1,0 +1,118 @@
+name: Build all platforms and publish release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "v18-fixes.js"
+      - "pwa.js"
+      - "manifest.webmanifest"
+      - "sw.js"
+      - "app-hero.png"
+      - "desktop/**"
+      - "android-app/**"
+      - "package.json"
+      - "package-lock.json"
+      - "site/**"
+      - ".github/workflows/release-all.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package web and iPhone/iPad PWA
+        run: |
+          cd site
+          zip -qr ../AMD-Intel-CPU-Lab-1.22.0-Web-PWA.zip .
+          cd ..
+          printf '%s\n'             'AMD Intel CPU Lab v1.22.0 - iPhone/iPad'             ''             '1. Abre en Safari: https://juanmerchan-del-milo.github.io/AMD-and-Intel/'             '2. Toca Compartir.'             '3. Selecciona Añadir a pantalla de inicio.'             ''             'Una IPA nativa para un iPhone real requiere firma Apple Developer.'             > iPhone-iPad-INSTALL.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-pwa
+          path: |
+            AMD-Intel-CPU-Lab-1.22.0-Web-PWA.zip
+            iPhone-iPad-INSTALL.txt
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Install Android SDK 35
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - name: Build Android APK
+        working-directory: android-app
+        run: gradle clean assembleRelease
+      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.22.0-Android.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: AMD-Intel-CPU-Lab-1.22.0-Android.apk
+
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            command: npm run dist:win
+            artifact: windows
+          - os: ubuntu-latest
+            command: npm run dist:linux
+            artifact: linux
+          - os: macos-latest
+            command: npm run dist:mac
+            artifact: macos
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build desktop package
+        run: ${{ matrix.command }}
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: |
+            release/*.exe
+            release/*.AppImage
+            release/*.tar.gz
+            release/*.dmg
+            release/*.zip
+          if-no-files-found: error
+
+  release:
+    needs: [web, android, desktop]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - run: find dist -maxdepth 2 -type f -print
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete v1.22.0 --yes --cleanup-tag || true
+          gh release create v1.22.0 dist/*             --title "AMD Intel CPU Lab v1.22.0"             --target "$GITHUB_SHA"             --notes "Android APK, Windows, Linux, macOS Intel/Apple Silicon y Web/PWA para iPhone/iPad. Incluye correcciones de NPU, portátiles, mini PCs y generaciones. Windows/macOS no están firmados comercialmente, por lo que el sistema puede mostrar una advertencia al abrirlos por primera vez."

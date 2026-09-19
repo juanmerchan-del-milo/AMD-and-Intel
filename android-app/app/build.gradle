@@ -3,7 +3,6 @@ plugins { id 'com.android.application' }
 android {
     namespace 'com.juanpablo.amdvsintel'
     compileSdk 35
-
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -12,15 +11,13 @@ android {
             keyPassword 'amdintel123'
         }
     }
-
     defaultConfig {
         applicationId 'com.juanpablo.amdvsintel'
         minSdk 24
         targetSdk 35
-        versionCode 11
-        versionName '1.1.9'
+        versionCode 12200
+        versionName '1.22.0'
     }
-
     buildTypes {
         debug {
             debuggable true
@@ -31,6 +28,7 @@ android {
         release {
             minifyEnabled false
             shrinkResources false
+            signingConfig signingConfigs.debug
         }
     }
 }

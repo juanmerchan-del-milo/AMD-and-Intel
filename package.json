@@ -1,70 +1,31 @@
 {
-  "name": "amd-intel-cpu-lab",
-  "version": "1.21.3",
-  "description": "Laboratorio educativo de procesadores AMD e Intel para Windows, Linux y macOS.",
-  "desktopName": "amd-intel-cpu-lab.desktop",
-  "main": "desktop/main.cjs",
-  "author": "Juan Pablo Merchan Sigua",
-  "license": "MIT",
-  "private": true,
-  "scripts": {
-    "start": "electron .",
-    "check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js",
-    "dist:linux": "electron-builder --linux AppImage tar.gz --x64",
-    "dist:win": "electron-builder --win nsis --x64",
-    "dist:mac": "electron-builder --mac dmg zip --x64 --arm64",
-    "pack:win": "electron-packager . \"AMD Intel CPU Lab\" --platform=win32 --arch=x64 --out=release/windows-portable --overwrite --icon=build/icon.ico --asar --prune --ignore='^/release($|/)' --ignore='^/\\.git($|/)'",
-    "pack:linux": "electron-packager . \"AMD Intel CPU Lab\" --platform=linux --arch=x64 --out=release/linux-portable --overwrite --icon=build/icon.png --asar --prune --ignore='^/release($|/)' --ignore='^/\\.git($|/)'",
-    "pack:mac:x64": "electron-packager . \"AMD Intel CPU Lab\" --platform=darwin --arch=x64 --out=release/macos-portable --overwrite --icon=build/icon.icns --app-bundle-id=com.juanpablo.amdintel.desktop --app-category-type=public.app-category.education --asar --prune --ignore='^/release($|/)' --ignore='^/build($|/)' --ignore='^/\\.github($|/)' --ignore='^/README-DESKTOP\\.md$' --ignore='^/\\.git(ignore)?$'",
-    "pack:mac:arm64": "electron-packager . \"AMD Intel CPU Lab\" --platform=darwin --arch=arm64 --out=release/macos-portable --overwrite --icon=build/icon.icns --app-bundle-id=com.juanpablo.amdintel.desktop --app-category-type=public.app-category.education --asar --prune --ignore='^/release($|/)' --ignore='^/build($|/)' --ignore='^/\\.github($|/)' --ignore='^/README-DESKTOP\\.md$' --ignore='^/\\.git(ignore)?$'"
+  "name":"amd-intel-cpu-lab",
+  "version":"1.22.0",
+  "description":"Laboratorio educativo de procesadores AMD e Intel para Windows, Linux, macOS, Android, iPhone/iPad y web.",
+  "desktopName":"amd-intel-cpu-lab.desktop",
+  "main":"desktop/main.cjs",
+  "author":"Juan Pablo Merchan Sigua",
+  "license":"MIT",
+  "private":true,
+  "scripts":{
+    "start":"electron .",
+    "check":"node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/renderer.js",
+    "dist:linux":"electron-builder --linux AppImage tar.gz --x64",
+    "dist:win":"electron-builder --win nsis portable --x64",
+    "dist:mac":"electron-builder --mac dmg zip --x64 --arm64"
   },
-  "devDependencies": {
-    "@electron/packager": "20.3.0",
-    "electron": "44.4.2",
-    "electron-builder": "26.15.3"
-  },
-  "build": {
-    "appId": "com.juanpablo.amdintel.desktop",
-    "productName": "AMD Intel CPU Lab",
-    "asar": true,
-    "compression": "maximum",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "index.html",
-      "app-hero.png",
-      "desktop/**/*",
-      "package.json"
-    ],
-    "linux": {
-      "target": ["AppImage", "tar.gz"],
-      "category": "Education",
-      "syncDesktopName": true,
-      "icon": "build/icon.png",
-      "artifactName": "AMD-Intel-CPU-Lab-${version}-Linux-${arch}.${ext}"
-    },
-    "win": {
-      "target": ["nsis", "portable"],
-      "icon": "build/icon.ico",
-      "artifactName": "AMD-Intel-CPU-Lab-${version}-Windows-${arch}.${ext}"
-    },
-    "mac": {
-      "target": ["dmg", "zip"],
-      "category": "public.app-category.education",
-      "icon": "build/icon.icns",
-      "identity": null,
-      "artifactName": "AMD-Intel-CPU-Lab-${version}-macOS-${arch}.${ext}"
-    },
-    "dmg": {
-      "title": "AMD Intel CPU Lab ${version}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "AMD Intel CPU Lab"
-    }
+  "devDependencies":{"@electron/packager":"20.3.0","electron":"44.4.2","electron-builder":"26.15.3"},
+  "build":{
+    "appId":"com.juanpablo.amdintel.desktop",
+    "productName":"AMD Intel CPU Lab",
+    "asar":true,
+    "compression":"maximum",
+    "directories":{"output":"release"},
+    "files":["index.html","v18-fixes.js","pwa.js","app-hero.png","desktop/**/*","package.json"],
+    "linux":{"target":["AppImage","tar.gz"],"category":"Education","syncDesktopName":true,"icon":"build/icon.png","artifactName":"AMD-Intel-CPU-Lab-${version}-Linux-${arch}.${ext}"},
+    "win":{"target":["nsis","portable"],"icon":"build/icon.ico","artifactName":"AMD-Intel-CPU-Lab-${version}-Windows-${arch}.${ext}"},
+    "mac":{"target":["dmg","zip"],"category":"public.app-category.education","icon":"build/icon.icns","identity":null,"hardenedRuntime":false,"artifactName":"AMD-Intel-CPU-Lab-${version}-macOS-${arch}.${ext}"},
+    "dmg":{"title":"AMD Intel CPU Lab ${version}"},
+    "nsis":{"oneClick":false,"allowToChangeInstallationDirectory":true,"createDesktopShortcut":true,"createStartMenuShortcut":true,"shortcutName":"AMD Intel CPU Lab"}
   }
 }

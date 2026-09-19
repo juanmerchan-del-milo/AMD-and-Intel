@@ -1,9 +1,7 @@
-name: Build AMD vs Intel v1.1.9
+name: Build Android APK
 
-"on":
+on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
   build:
@@ -21,23 +19,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.9"
-      - name: Build APK
+      - name: Build release APK
         working-directory: android-app
-        run: gradle clean assembleDebug
-      - name: Prepare artifacts
-        run: |
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk AMD-vs-Intel-v1.1.9.apk
-          zip -qr AMD-vs-Intel-Android-Project-v1.1.9.zip android-app -x "*/build/*" "*/.gradle/*"
-          cp index.html AMD-vs-Intel-App-v1.1.9.html
+        run: gradle clean assembleRelease
+      - run: cp android-app/app/build/outputs/apk/release/app-release.apk AMD-Intel-CPU-Lab-1.22.0-Android.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: AMD-vs-Intel-v1.1.9-APK
-          path: AMD-vs-Intel-v1.1.9.apk
-      - uses: actions/upload-artifact@v4
-        with:
-          name: AMD-vs-Intel-Android-Project-v1.1.9
-          path: AMD-vs-Intel-Android-Project-v1.1.9.zip
-      - uses: actions/upload-artifact@v4
-        with:
-          name: AMD-vs-Intel-App-v1.1.9
-          path: AMD-vs-Intel-App-v1.1.9.html
+          name: AMD-Intel-CPU-Lab-1.22.0-Android
+          path: AMD-Intel-CPU-Lab-1.22.0-Android.apk
