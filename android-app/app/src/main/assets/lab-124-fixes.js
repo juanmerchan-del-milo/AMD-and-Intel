@@ -1,8 +1,8 @@
-/* Final 1.24.0 CPU Lab repair layer: one tab controller, expanded history,
+/* Final 1.25.0 CPU Lab repair layer: one tab controller, expanded history,
    explicit current models, and a reliable way back to the PC builder. */
 (() => {
   'use strict';
-  window.APP_BUILD = '1.24.0';
+  window.APP_BUILD = '1.25.0';
   const q = (selector, root = document) => root.querySelector(selector);
   const qa = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const language = () => {
@@ -10,9 +10,9 @@
     return value.startsWith('en') ? 'en' : value.startsWith('zh') ? 'zh' : 'es';
   };
   const text = {
-    es:{back:'Volver al constructor 3D',version:'CPU LAB · 1.24.0',historyA:'K8 · DDR/DDR1',historyI:'Prescott · DDR/DDR1'},
-    en:{back:'Back to the 3D builder',version:'CPU LAB · 1.24.0',historyA:'K8 · DDR/DDR1',historyI:'Prescott · DDR/DDR1'},
-    zh:{back:'返回 3D 装机工具',version:'CPU LAB · 1.24.0',historyA:'K8 · DDR/DDR1',historyI:'Prescott · DDR/DDR1'}
+    es:{back:'Volver al constructor 3D',version:'CPU LAB · 1.25.0',historyA:'K8 · DDR/DDR1',historyI:'Prescott · DDR/DDR1'},
+    en:{back:'Back to the 3D builder',version:'CPU LAB · 1.25.0',historyA:'K8 · DDR/DDR1',historyI:'Prescott · DDR/DDR1'},
+    zh:{back:'返回 3D 装机工具',version:'CPU LAB · 1.25.0',historyA:'K8 · DDR/DDR1',historyI:'Prescott · DDR/DDR1'}
   };
 
   function extendModels() {

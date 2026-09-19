@@ -1,4 +1,4 @@
-/* PC Lab Builder 1.24.0. Reference designs and explicitly labelled generic profiles.
+/* PC Lab Builder 1.25.0. Reference designs and explicitly labelled generic profiles.
    Not a complete worldwide SKU database. Dimensions/connectors may differ by vendor. */
 (function(root){
 'use strict';

@@ -20,7 +20,7 @@ q("#language")?.addEventListener("change",()=>setTimeout(apply,180));q("#specMod
 
 /* v1.23.0 - Generations visibility + 3D catalog separation */
 (function(){
-  window.APP_BUILD="1.24.0";
+  window.APP_BUILD="1.25.0";
   const q=function(s,r){return (r||document).querySelector(s)};
   const qa=function(s,r){return Array.from((r||document).querySelectorAll(s))};
   const lang=function(){
@@ -212,7 +212,7 @@ q("#language")?.addEventListener("change",()=>setTimeout(apply,180));q("#specMod
 
 /* v1.23.1 - stable final UI repair layer */
 (function(){
-  window.APP_BUILD="1.24.0";
+  window.APP_BUILD="1.25.0";
   const q=(s,r=document)=>r.querySelector(s);
   const qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const code=()=>{

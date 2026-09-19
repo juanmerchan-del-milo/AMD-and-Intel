@@ -23,7 +23,7 @@
   dock.id = 'desktopDock';
   dock.setAttribute('aria-label', 'Herramientas de escritorio');
   dock.innerHTML = `
-    <div class="desktop-brand"><span class="desktop-dot"></span><b>PC LAB</b><small id="desktopVersion">1.24.0</small></div>
+    <div class="desktop-brand"><span class="desktop-dot"></span><b>PC LAB</b><small id="desktopVersion">1.25.0</small></div>
     <div class="desktop-nav">
       <button type="button" data-view-go="builder" title="Constructor 3D">⌂<span>Constructor</span></button>
       <button type="button" data-view-go="catalog" title="Catálogo">▦<span>Catálogo</span></button>

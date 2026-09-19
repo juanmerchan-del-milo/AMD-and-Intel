@@ -1,4 +1,4 @@
-/* PC Lab Builder 1.24.0 — historical, mobile and compact-system expansion.
+/* PC Lab Builder 1.25.0 — historical, mobile and compact-system expansion.
    Mobile/BGA processors are reference records only: they are soldered to a
    laptop or mini-PC board and cannot be selected as desktop build parts. */
 (function (root) {
@@ -111,6 +111,15 @@
     }
   });
 
+  // Preserve the historical ID used in saved builds, but replace incorrect
+  // generic PCIe assumptions with a documented Socket 478 / 865G board.
+  const legacyBoard=DB.motherboard.find(board=>board.socket==='Socket 478');
+  Object.assign(legacyBoard,{
+    name:'P4i65G',brand:'ASRock',kind:'reference',reviewed:true,form:'mATX',
+    dimms:2,maxRam:2,sata:2,pcie:0,gpuSlot:'AGP',igpu:'Intel Extreme Graphics 2',
+    source:'https://www.asrock.com/mb/Intel/P4i65G/index.asp'
+  });
+
   /* “SSD 1.0–5.0” means PCIe link generation, not an SSD generation.
      AIC profiles represent the historical link without inventing a retail SKU. */
   [
@@ -144,5 +153,5 @@
     ...gpu
   }));
 
-  root.PC_CATALOG_VERSION = '1.24.0';
+  root.PC_CATALOG_VERSION = '1.25.0';
 })(typeof window !== 'undefined' ? window : globalThis);

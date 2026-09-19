@@ -14,6 +14,7 @@
 <link rel="icon" href="./icons/icon-192.png">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./workshop.css">
 <link rel="stylesheet" href="./desktop/desktop.css">
 </head>
 <body>
@@ -28,8 +29,8 @@
 <symbol id="i-case" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 5h8m-8 3h8m-8 3h8m-8 8h3"/><circle cx="15" cy="17" r="1"/></symbol>
 </defs></svg>
 <header class="topbar">
- <a href="./index.html" class="logo" aria-label="PC Lab"><span class="logo-mark"><svg><use href="#i-cpu"/></svg></span><span>PC<span class="muted">LAB</span><small>BUILDER / 1.24.0</small></span></a>
- <nav id="mainNav" aria-label="Navegación principal"><button class="active" data-view="builder" data-t="builder"></button><button data-view="catalog" data-t="catalog"></button><button data-view="learn" data-t="learn"></button><button data-view="saved" data-t="saved"></button></nav>
+ <a href="./index.html" class="logo" aria-label="PC Lab"><span class="logo-mark"><svg><use href="#i-cpu"/></svg></span><span>PC<span class="muted">LAB</span><small>BUILDER / 1.25.0</small></span></a>
+ <nav id="mainNav" aria-label="Navegación principal"><button class="active" data-view="builder" data-t="builder"></button><button data-view="workshop" data-w="workshop">Taller 3D</button><button data-view="catalog" data-t="catalog"></button><button data-view="learn" data-t="learn"></button><button data-view="saved" data-t="saved"></button></nav>
  <div class="header-actions"><span class="offline-dot" aria-hidden="true"></span><a id="downloadApps" class="header-action" href="https://github.com/juanmerchan-del-milo/AMD-and-Intel/releases/latest" target="_blank" rel="noopener" data-pwa-label="downloads">Descargas</a><button id="installApp" class="header-action" type="button" data-pwa-label="install">Instalar</button><select id="language" aria-label="Language / Idioma / 语言"><option value="es">ES</option><option value="en">EN</option><option value="zh">中文</option></select></div>
 </header>
 <main>
@@ -43,11 +44,30 @@
   </div>
  </section>
  <section id="selectionArea" class="panel"><div class="catalog-heading"><div><span class="eyebrow" id="catalogKicker"></span><h2 id="catalogTitle"></h2></div><button id="addCustom" class="btn" data-t="addCustom"></button></div><div id="categoryTabs" class="category-tabs"></div><div class="filters"><input type="search" id="search" data-placeholder="search" aria-label="Search"><select id="brandFilter" aria-label="Brand"></select><select id="platformFilter" aria-label="Platform" hidden></select><select id="sort" aria-label="Sort"><option value="name" data-t="modelOrder"></option><option value="watts" data-t="powerOrder"></option><option value="capacity" data-t="capacityOrder"></option></select><label class="filter-check"><input type="checkbox" id="fitFilter"><span data-t="fitFilter"></span></label></div><div class="catalog-stats"><span id="resultCount"></span><span data-t="wattsNotSpeed"></span></div><div id="products" class="product-grid"></div><p class="fine" data-t="catalogNote"></p></section>
+ <section id="workshopView" class="view workshop-view" hidden aria-labelledby="workshopTitle">
+  <div class="workshop-heading"><div><span class="eyebrow" data-w="kicker"></span><h2 id="workshopTitle" data-w="title"></h2><p data-w="subtitle"></p></div><button id="workshopBack" data-w="back"></button></div>
+  <div class="workshop-layout">
+   <section class="workshop-stage panel">
+    <div class="workshop-model-heading"><small data-w="family"></small><h3 id="workshopName"></h3><p id="workshopSpecs"></p></div>
+    <div id="workshopViewport" role="img" aria-label="Taller 3D"><div id="workshopFallback" data-w="fallback" hidden></div></div>
+    <div class="workshop-toolbar"><button id="workshopZoomIn" data-w="zoomIn"></button><button id="workshopZoomOut" data-w="zoomOut"></button><button id="workshopReset" data-w="reset"></button><button id="workshopTop" data-w="front"></button><button id="workshopBottom" data-w="rear"></button><button id="workshopRotate" data-w="rotate" aria-pressed="false"></button><button id="workshopLow" data-w="low" aria-pressed="false"></button></div>
+    <p class="scene-hint" data-w="gesture"></p>
+    <div class="workshop-stepper"><div class="range-row"><label for="workshopRange" data-w="layers"></label><input type="range" id="workshopRange" min="0" max="4" step="1" value="0"><output id="workshopOutput" for="workshopRange">0 / 4</output></div><p id="workshopStatus" class="step-status" role="status" aria-live="polite"></p><div class="workshop-step-buttons"><button id="workshopPrev" data-w="previous"></button><button id="workshopNext" data-w="next"></button><button id="workshopAssemble" data-w="assemble"></button><button id="workshopDisassemble" data-w="disassemble" class="primary"></button></div></div>
+    <div class="workshop-notes"><p data-w="note"></p><p id="workshopKitNote" data-w="kit" hidden></p><p class="safety" data-w="safety"></p><div class="workshop-references"><a id="workshopReference" target="_blank" rel="noopener noreferrer" data-w="reference"></a><a id="workshopSource" target="_blank" rel="noopener noreferrer" data-w="source"></a></div></div>
+   </section>
+   <aside class="workshop-sidebar panel">
+    <div class="workshop-selects"><label><span data-w="category"></span><select id="workshopCategory"><option value="gpu" data-w="gpu"></option><option value="ram" data-w="ram"></option></select></label><label><span data-w="model"></span><select id="workshopModel"></select></label><label id="workshopCoverLabel" class="cover-toggle" hidden><input type="checkbox" id="workshopCover" checked><span data-w="coverOption"></span></label></div>
+    <h3 data-w="parts"></h3><div id="workshopParts"></div>
+    <div class="workshop-description" aria-live="polite"><h4 id="workshopPartName"></h4><p id="workshopPartText"></p><button id="workshopIsolate" data-w="focus" aria-pressed="false"></button></div>
+    <button id="workshopUse" class="primary workshop-use" data-w="use"></button>
+   </aside>
+  </div>
+ </section>
  <section id="learnView" class="view panel" hidden><div class="section-title"><span class="eyebrow" data-t="learnKicker"></span><h2 data-t="learn"></h2></div><div id="glossary" class="glossary"></div><h3 data-t="source"></h3><div id="sources" class="source-links"></div></section>
  <section id="savedView" class="view panel" hidden><div class="section-title"><span class="eyebrow" data-t="savedKicker"></span><h2 data-t="saved"></h2><p class="fine" data-t="savedLocal"></p></div><div id="savedList" class="saved-list"></div></section>
- <footer><a href="./cpu-lab.html" data-t="cpuLab"></a><p data-t="coverage"></p><p data-t="verifyNotice"></p><small>PC LAB · 1.24.0 · <span data-t="readOnly"></span></small></footer>
+ <footer><a href="./cpu-lab.html" data-t="cpuLab"></a><p data-t="coverage"></p><p data-t="verifyNotice"></p><small>PC LAB · 1.25.0 · <span data-t="readOnly"></span></small></footer>
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><div class="modal-heading"><h2 id="modalTitle"></h2><button id="closeModal" class="icon-btn" aria-label="Close">×</button></div><div id="modalContent"></div></div></div><div id="toast" role="status" aria-live="polite"></div>
-<script src="./vendor/three.min.js"></script><script src="./vendor/OrbitControls.js"></script><script src="./catalog.js"></script><script src="./cpus.js"></script><script src="./catalog-extended.js"></script><script src="./i18n.js"></script><script src="./glossary.js"></script><script src="./engine.js"></script><script src="./viewer.js"></script><script src="./app.js"></script><script src="./pwa.js"></script><script src="./desktop/renderer.js"></script>
+<script src="./vendor/three.min.js"></script><script src="./vendor/OrbitControls.js"></script><script src="./catalog.js"></script><script src="./cpus.js"></script><script src="./catalog-extended.js"></script><script src="./i18n.js"></script><script src="./hardware.js"></script><script src="./glossary.js"></script><script src="./engine.js"></script><script src="./viewer.js"></script><script src="./workshop-data.js"></script><script src="./workshop-models.js"></script><script src="./app.js"></script><script src="./workshop.js"></script><script src="./pwa.js"></script><script src="./desktop/renderer.js"></script>
 </body>
 </html>

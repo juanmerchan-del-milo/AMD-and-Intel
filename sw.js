@@ -1,9 +1,10 @@
 /* Offline shell. Manufacturer links and user configurations are never cached. */
 'use strict';
-const CACHE='pc-lab-builder-1.24.0-r2';
+const CACHE='pc-lab-builder-1.25.0-r1';
 const FILES=[
   './','./index.html','./styles.css','./catalog.js','./cpus.js','./catalog-extended.js',
-  './i18n.js','./glossary.js','./engine.js','./viewer.js','./app.js',
+  './i18n.js','./hardware.js','./glossary.js','./engine.js','./viewer.js','./app.js',
+  './workshop.css','./workshop-data.js','./workshop-models.js','./workshop.js',
   './cpu-lab.html','./v18-fixes.js','./lab-124-fixes.js','./pwa.js',
   './desktop/desktop.css','./desktop/renderer.js',
   './manifest.webmanifest','./vendor/three.min.js','./vendor/OrbitControls.js','./app-hero.png',

@@ -17,13 +17,14 @@ on:
       - "build/**"
       - "site/**"
       - "tests/**"
+      - "scripts/**"
       - ".github/workflows/release-all.yml"
 
 permissions:
   contents: write
 
 concurrency:
-  group: release-v1.24.0
+  group: release-v1.25.0
   cancel-in-progress: true
 
 jobs:
@@ -41,11 +42,12 @@ jobs:
       - name: Package Web/PWA
         run: |
           cd site
-          zip -qr ../PC-Lab-Builder-3D-1.24.0-Web-PWA.zip .
+          zip -qr ../PC-Lab-Builder-3D-1.25.0-Web-PWA.zip .
           cd ..
           printf '%s\n' \
-            'PC Lab Builder 3D v1.24.0 - iPhone/iPad' \
+            'PC Lab Builder 3D v1.25.0 - iPhone/iPad' \
             '' \
+            'Requisito: habilitar GitHub Pages en Settings > Pages del repositorio.' \
             '1. Abre en Safari: https://juanmerchan-del-milo.github.io/AMD-and-Intel/' \
             '2. Toca Compartir.' \
             '3. Selecciona Añadir a pantalla de inicio.' \
@@ -56,7 +58,7 @@ jobs:
         with:
           name: web-pwa
           path: |
-            PC-Lab-Builder-3D-1.24.0-Web-PWA.zip
+            PC-Lab-Builder-3D-1.25.0-Web-PWA.zip
             iPhone-iPad-INSTALL.txt
 
   android:
@@ -80,11 +82,11 @@ jobs:
       - name: Verify and name APK
         run: |
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs android-app/app/build/outputs/apk/release/app-release.apk
-          cp android-app/app/build/outputs/apk/release/app-release.apk PC-Lab-Builder-3D-1.24.0-Android.apk
+          cp android-app/app/build/outputs/apk/release/app-release.apk PC-Lab-Builder-3D-1.25.0-Android.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android
-          path: PC-Lab-Builder-3D-1.24.0-Android.apk
+          path: PC-Lab-Builder-3D-1.25.0-Android.apk
 
   desktop:
     strategy:
@@ -139,8 +141,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete v1.24.0 --yes --cleanup-tag || true
-          gh release create v1.24.0 dist/* \
-            --title "PC Lab Builder 3D v1.24.0" \
+          gh release create v1.25.0 dist/* \
+            --title "PC Lab Builder 3D v1.25.0" \
             --target "$GITHUB_SHA" \
-            --notes "Constructor 3D unificado y catálogo ampliado de CPU, GPU, DDR1-DDR5, almacenamiento SATA/PCIe 1.0-5.0, placas, fuentes, refrigeración y gabinetes. Repara Generaciones, NPU, portátiles y mini PC; separa plataformas y marcas en el laboratorio; mejora el zoom táctil y el rendimiento 3D. Incluye Android, Windows Installer/Portable, Linux, macOS Intel/Apple Silicon y Web/PWA para iPhone/iPad. La compatibilidad y potencia son orientativas: confirma BIOS, QVL, conectores y dimensiones antes de comprar."
+            --notes "Nuevo taller 3D: GPU y RAM por capas, desmontaje y montaje reversible, selección y aislamiento de piezas. Geometría didáctica por familia (no réplica exacta). Corrige nombres, unidades, traducciones y AGP/PCIe en placas antiguas. Conserva configuraciones existentes. Incluye Android, Windows Installer/Portable, Linux, macOS Intel/Apple Silicon y ZIP Web/PWA. La instalación PWA en iPhone/iPad requiere un alojamiento HTTPS; GitHub Pages sigue pendiente de habilitación por el propietario. macOS no está firmado/notarizado. La compatibilidad y potencia son orientativas: confirma BIOS, QVL, conectores y dimensiones antes de comprar."

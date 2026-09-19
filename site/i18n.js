@@ -1,5 +1,9 @@
 (function(){
 const rows={
+ gpuSlotBad:['Esta placa usa AGP: una tarjeta PCIe no encaja en esa ranura.','This board uses AGP: a PCIe card cannot fit that slot.','此主板使用 AGP，PCIe 显卡无法插入。'],
+ storageSlotBad:['Esta placa no tiene una ranura PCIe para el SSD AIC.','This board has no PCIe slot for an AIC SSD.','此主板没有用于 AIC SSD 的 PCIe 插槽。'],
+ graphicsSlot:['Ranura gráfica','Graphics slot','显卡插槽'],
+ boardGraphics:['Gráficos de la placa','Motherboard graphics','主板集成显卡'],
  defaultName:['Mi PC','My PC','我的电脑'],
  introKicker:['01 / TU PC, TUS REGLAS','01 / YOUR BUILD, YOUR RULES','01 / 你的电脑，你来做主'],learnKicker:['02 / DESCIFRA TU HARDWARE','02 / DECODE YOUR HARDWARE','02 / 读懂你的硬件'],savedKicker:['03 / TU COLECCIÓN DE EQUIPOS','03 / BUILD COLLECTION','03 / 配置收藏'],catalogKicker:['CATÁLOGO DE COMPONENTES','COMPONENT LIBRARY','组件目录'],realtime:['TIEMPO REAL / WEBGL','REALTIME / WEBGL','实时 / WEBGL'],coreCount:['Núcleos','Cores','核心数'],threadCount:['Hilos','Threads','线程数'],
  title:['Tu próxima PC, pieza por pieza.','Your next PC, piece by piece.','一步步搭建你的下一台电脑。'],
