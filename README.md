@@ -1,40 +1,37 @@
-# AMD Intel CPU Lab v1.23.0
+# AMD Intel CPU Lab v1.23.1
 
-Aplicación interactiva para explorar y comparar procesadores AMD e Intel. Incluye catálogo, especificaciones, gráficos integrados, NPU/IA, generaciones, portátiles, mini PCs, refrigeración y laboratorio 3D.
+Versión estable y reparada del laboratorio AMD/Intel.
 
-## Novedades v1.23.0
+## Correcciones v1.23.1
 
-- Se reparó la pestaña **Generaciones** para que no vuelva a aparecer en blanco.
-- El **Laboratorio 3D** ahora se puede separar y filtrar por:
-  - Marca: Todos / AMD / Intel.
-  - Plataforma: Móviles-portátiles / Escritorio / Mini PC-compactos.
-  - Funciones: Todos / NPU-IA / iGPU.
-- Los modelos filtrados se agrupan visualmente por AMD e Intel.
-- Los filtros son táctiles y responsivos para Android y iPhone.
-- La categoría Mini PC es orientativa: incluye chips móviles, embebidos y modelos de menor consumo que pueden usarse en equipos compactos.
+- Corrige el banner/imagen que aparecía rota.
+- Corrige mezclas de español, inglés y chino en la misma pantalla.
+- Corrige las etiquetas de la comparación directa.
+- Corrige textos y metadatos del laboratorio 3D.
+- Mantiene los filtros 3D por AMD / Intel, móvil / escritorio / Mini PC y NPU / iGPU.
+- Mantiene la pestaña Generaciones visible y funcional.
+- Se usa la misma versión de la app en Android, Windows, Linux, macOS y Web/PWA.
 
 ## Descargas
 
-- **Android:** APK.
-- **Windows:** instalador EXE y EXE portable.
-- **Linux:** AppImage y tar.gz.
-- **macOS:** DMG y ZIP para Intel x64 y Apple Silicon arm64.
-- **iPhone / iPad:** PWA instalable desde Safari cuando GitHub Pages esté habilitado en el repositorio.
-- **Web:** paquete PWA offline.
+Visita la última Release:
+https://github.com/juanmerchan-del-milo/AMD-and-Intel/releases/latest
 
-**Releases:** https://github.com/juanmerchan-del-milo/AMD-and-Intel/releases/latest
+La Release v1.23.1 genera:
+- Android APK
+- Windows Installer x64
+- Windows Portable x64
+- Linux AppImage x86_64
+- Linux tar.gz x64
+- macOS DMG/ZIP para Intel x64
+- macOS DMG/ZIP para Apple Silicon arm64
+- Web/PWA ZIP
 
 ## iPhone / iPad
 
-Cuando GitHub Pages esté habilitado, abre:
+La PWA está preparada para instalarse desde Safari cuando GitHub Pages esté habilitado:
 https://juanmerchan-del-milo.github.io/AMD-and-Intel/
 
-En Safari: **Compartir → Añadir a pantalla de inicio**.
+Safari → Compartir → Añadir a pantalla de inicio.
 
-Una IPA nativa para instalar directamente en un iPhone real requiere firma Apple Developer, certificado y perfil de aprovisionamiento.
-
-## macOS y Windows
-
-Los instaladores generados por GitHub Actions no llevan firma comercial ni notarización de Apple. El sistema puede mostrar una advertencia de seguridad la primera vez que se abren.
-
-Proyecto de Juan Pablo Merchan Sigua con ayuda de ChatGPT.
+Una IPA nativa requiere firma Apple Developer.

@@ -1,6 +1,6 @@
 {
   "name":"amd-intel-cpu-lab",
-  "version":"1.23.0",
+  "version":"1.23.1",
   "description":"Laboratorio educativo de procesadores AMD e Intel para Windows, Linux, macOS, Android, iPhone/iPad y web.",
   "desktopName":"amd-intel-cpu-lab.desktop",
   "main":"desktop/main.cjs",

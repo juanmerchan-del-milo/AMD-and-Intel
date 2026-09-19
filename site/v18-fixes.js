@@ -208,3 +208,224 @@ q("#language")?.addEventListener("change",()=>setTimeout(apply,180));q("#specMod
   setTimeout(function(){repairArchitecturePanels();localize3D()},250);
   setTimeout(function(){repairArchitecturePanels();localize3D()},900);
 })();
+
+
+/* v1.23.1 - stable final UI repair layer */
+(function(){
+  window.APP_BUILD="1.23.1";
+  const q=(s,r=document)=>r.querySelector(s);
+  const qa=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const code=()=>{
+    const v=(q("#language")?.value||"es").toLowerCase();
+    return v.startsWith("en")?"en":v.startsWith("zh")?"zh":"es";
+  };
+  const L={
+    es:{
+      heroTitle:"Compara, explora y entiende el procesador por dentro.",
+      heroSub:"Una sola aplicación para ver modelos, especificaciones, arquitectura, refrigeración, portátiles, mini PCs y vista 3D.",
+      chips:["AMD Ryzen","Intel Core","Arquitectura","3D","Windows","Android"],
+      compareTitle:"Comparación directa",compareSub:"Elige cualquier modelo disponible en cada lado.",tag:"No son equivalencias exactas",
+      labels:["Familia","Generación","Núcleos","Hilos","Frecuencia base / turbo","Caché","Potencia de referencia","Gráficos integrados"],
+      specsTitle:"Especificaciones del procesador",
+      specsSub:"Núcleos, hilos, frecuencia base/turbo, caché, potencia de referencia y gráficos integrados.",
+      visualTitle:"Cómo se construyen y dónde se usan",
+      visualSub:"Explora una vista esquemática del interior del chip, sus generaciones y equipos que usan estos procesadores.",
+      tabs:["Interior del procesador","Generaciones","Portátiles","Mini PCs","Refrigeración"],
+      processors:"Procesadores",models3d:"modelos 3D",desktop:"Escritorio",laptop:"Portátil",embedded:"Embebido",cores:"núcleos",threads:"hilos",
+      gpu:"Gráficos integrados",noGpu:"Sin gráficos integrados",
+      sources:"Fuentes de referencia: AMD e Intel. AMD publica especificaciones de Ryzen y productos heredados; Intel publica listas de procesadores, generaciones y gráficos integrados.",
+      footer:"Un Ryzen 7 o Core i7 no determina por sí solo cuál es más rápido. Compara el modelo concreto, generación, núcleos, hilos, frecuencia, caché, consumo y gráficos."
+    },
+    en:{
+      heroTitle:"Compare, explore and understand the processor from the inside.",
+      heroSub:"One app to view models, specifications, architecture, cooling, laptops, mini PCs and a 3D view.",
+      chips:["AMD Ryzen","Intel Core","Architecture","3D","Windows","Android"],
+      compareTitle:"Direct comparison",compareSub:"Choose any available model on each side.",tag:"Not exact equivalents",
+      labels:["Family","Generation","Cores","Threads","Base / turbo frequency","Cache","Reference power","Integrated graphics"],
+      specsTitle:"Processor specifications",
+      specsSub:"Cores, threads, base/turbo frequency, cache, reference power and integrated graphics.",
+      visualTitle:"How processors are built and where they are used",
+      visualSub:"Explore a schematic view of the chip interior, generations and the devices that use these processors.",
+      tabs:["Inside the processor","Generations","Laptops","Mini PCs","Cooling"],
+      processors:"Processors",models3d:"3D models",desktop:"Desktop",laptop:"Laptop",embedded:"Embedded",cores:"cores",threads:"threads",
+      gpu:"Integrated graphics",noGpu:"No integrated graphics",
+      sources:"Reference sources: AMD and Intel. AMD publishes Ryzen and legacy product specifications; Intel publishes processor lists, generations and integrated graphics.",
+      footer:"A Ryzen 7 or Core i7 name alone does not determine which is faster. Compare the exact model, generation, cores, threads, frequency, cache, power and graphics."
+    },
+    zh:{
+      heroTitle:"比较、探索并理解处理器内部结构。",
+      heroSub:"一个应用即可查看型号、规格、架构、散热、笔记本、迷你电脑和 3D 视图。",
+      chips:["AMD Ryzen","Intel Core","架构","3D","Windows","Android"],
+      compareTitle:"直接对比",compareSub:"在两侧选择任意可用型号。",tag:"不是精确对位",
+      labels:["系列","代际","核心","线程","基础 / 睿频频率","缓存","参考功耗","集成显卡"],
+      specsTitle:"处理器规格",
+      specsSub:"核心、线程、基础/睿频频率、缓存、参考功耗和集成显卡。",
+      visualTitle:"处理器如何构建以及用在哪里",
+      visualSub:"探索芯片内部结构、各代变化以及使用这些处理器的设备。",
+      tabs:["处理器内部","代际","笔记本","迷你电脑","散热"],
+      processors:"处理器",models3d:"个 3D 型号",desktop:"台式机",laptop:"笔记本",embedded:"嵌入式",cores:"核心",threads:"线程",
+      gpu:"集成显卡",noGpu:"无集成显卡",
+      sources:"参考来源：AMD 与 Intel。AMD 发布 Ryzen 和历史产品规格；Intel 发布处理器列表、代际和集成显卡信息。",
+      footer:"仅凭 Ryzen 7 或 Core i7 这个名称并不能判断谁更快。请比较具体型号、代际、核心、线程、频率、缓存、功耗和图形。"
+    }
+  };
+  const T=()=>L[code()];
+  const set=(sel,value,root=document)=>{
+    const el=q(sel,root);
+    if(el&&value!=null&&el.textContent!==String(value))el.textContent=String(value);
+  };
+  const heroSvg=[
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720">',
+    '<defs><linearGradient id="bg" x1="0" x2="1"><stop offset="0" stop-color="#06101d"/><stop offset="1" stop-color="#0e2340"/></linearGradient>',
+    '<linearGradient id="a" x1="0" x2="1"><stop offset="0" stop-color="#ff7148"/><stop offset="1" stop-color="#ffb657"/></linearGradient>',
+    '<linearGradient id="b" x1="0" x2="1"><stop offset="0" stop-color="#59b7ff"/><stop offset="1" stop-color="#8ce0ff"/></linearGradient></defs>',
+    '<rect width="1200" height="720" rx="36" fill="url(#bg)"/>',
+    '<circle cx="180" cy="120" r="140" fill="#1d4a82" opacity=".22"/><circle cx="980" cy="580" r="220" fill="#173861" opacity=".22"/>',
+    '<rect x="130" y="120" width="350" height="230" rx="28" fill="#09192d" stroke="#24486f"/>',
+    '<rect x="170" y="165" width="118" height="118" rx="18" fill="url(#a)"/><rect x="315" y="190" width="118" height="118" rx="18" fill="url(#b)"/>',
+    '<g fill="#d7e7ff" font-family="Arial,Helvetica,sans-serif"><text x="130" y="420" font-size="34" font-weight="700">AMD vs Intel</text>',
+    '<text x="130" y="460" font-size="18" opacity=".9">CPU LAB · Architecture · 3D · Compare</text>',
+    '<text x="560" y="205" font-size="28" font-weight="700" letter-spacing="4">AMD vs Intel · CPU LAB</text>',
+    '<text x="560" y="295" font-size="70" font-weight="800">CPU LAB</text><text x="560" y="380" font-size="48" font-weight="700">AMD · INTEL · 3D</text></g></svg>'
+  ].join("");
+  const heroUri="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(heroSvg);
+
+  function fixHero(){
+    const x=T();
+    document.documentElement.lang=code()==="zh"?"zh-CN":code();
+    document.title="AMD vs Intel · CPU LAB";
+    const img=q("#finalVisual img");
+    if(img&&img.src!==heroUri){img.src=heroUri;img.alt="AMD vs Intel CPU Lab";img.style.objectFit="cover";}
+    set("#finalVisual .kicker","AMD vs Intel · CPU LAB");
+    set("#finalVisual h2",x.heroTitle);
+    set("#finalVisual p",x.heroSub);
+    qa("#finalVisual .final-visual-chips span").forEach((el,i)=>{
+      if(x.chips[i]&&el.textContent!==x.chips[i])el.textContent=x.chips[i];
+    });
+  }
+
+  function repairArchitecture(){
+    qa("#architectureSection .arch-panel, #architectureSection .visual-panel").forEach(p=>p.classList.add("visible"));
+    const x=T();
+    set("#architectureSection h2",x.visualTitle);
+    const lead=q("#architectureSection .arch-hero p")||q("#architectureSection .visual-lead p");
+    if(lead&&lead.textContent!==x.visualSub)lead.textContent=x.visualSub;
+    const tabs=qa("#architectureSection .arch-tabs button, #architectureSection .visual-tabs button");
+    x.tabs.forEach((v,i)=>{if(tabs[i]&&tabs[i].textContent!==v)tabs[i].textContent=v;});
+  }
+
+  function fixComparison(){
+    const x=T();
+    set(".compare-head h2",x.compareTitle);
+    set(".compare-head .sub",x.compareSub);
+    set(".compare-head .tag",x.tag);
+    qa("#comparison .compare-grid .label").forEach((el,i)=>{
+      const v=x.labels[i];
+      if(v&&el.textContent!==v)el.textContent=v;
+    });
+  }
+
+  function wrapComparison(){
+    if(window.__v1231CompareWrapped)return;
+    const original=window.compare;
+    if(typeof original!=="function")return;
+    window.__v1231CompareWrapped=true;
+    window.compare=function(){
+      const out=original.apply(this,arguments);
+      setTimeout(fixComparison,0);
+      return out;
+    };
+  }
+
+  function fixSpecs(){
+    const x=T();
+    set('#specsSection [data-i18n="specsTitle"]',x.specsTitle);
+    set('#specsSection [data-i18n="specsSub"]',x.specsSub);
+    set('#specsSection [data-i18n="frequency"]',x.labels[4]);
+    set('#specsSection [data-i18n="power"]',x.labels[6]);
+    set('#specsSection [data-i18n="igpu"]',x.labels[7]);
+  }
+
+  function modelRows(){
+    try{if(typeof getAllModels==="function")return getAllModels()}catch(e){}
+    try{if(typeof models!=="undefined")return models}catch(e){}
+    return [];
+  }
+  function localizedDevice(row){
+    const x=T();
+    let d="";
+    try{if(typeof deviceType==="function")d=deviceType(row)||""}catch(e){}
+    if(!d){
+      const s=[row?.[1],row?.[2],row?.[3]].join(" ");
+      d=/Mobile|Ryzen AI|(?:HX|HS|H|U)\b/i.test(s)?"Laptop":(/PE\b|Embedded/i.test(s)?"Embedded":"Desktop");
+    }
+    return d==="Laptop"?x.laptop:d==="Embedded"?x.embedded:x.desktop;
+  }
+  function fix3DMeta(){
+    const x=T();
+    const sel=q("#v5Model");
+    const name=sel?.value||"";
+    const row=modelRows().find(r=>r[2]===name);
+    const meta=q("#v5ModelMeta");
+    if(meta&&row){
+      const gpu=String(row[9]||"No");
+      const gpuHtml=gpu==="No"
+        ? '<span class="meta-chip no-gpu">'+x.noGpu+'</span>'
+        : '<span class="meta-chip gpu"><i class="gpu-dot"></i>'+x.gpu+': <b>'+gpu+'</b></span>';
+      const wanted='<span class="meta-name">'+name+'</span>'+
+        '<span class="meta-chip">'+row[4]+' '+x.cores+'</span>'+
+        '<span class="meta-chip">'+localizedDevice(row)+'</span>'+gpuHtml;
+      if(meta.innerHTML!==wanted)meta.innerHTML=wanted;
+    }
+    const count=q("#v7ModelCount");
+    if(count){
+      const n=(count.textContent.match(/\d+/)||[String(sel?.options?.length||0)])[0];
+      const wanted=code()==="zh"?n+" "+x.models3d:n+" "+x.models3d;
+      if(count.textContent!==wanted)count.textContent=wanted;
+    }
+    set("#v23ProcessorLabel",x.processors);
+    const partTitle=q("#v5PartTitle"),partDesc=q("#v5PartDesc");
+    if(row&&partTitle&&partTitle.textContent===name&&partDesc){
+      const wanted=localizedDevice(row)+" · "+row[4]+" "+x.cores+" / "+row[5]+" "+x.threads+" · "+row[6];
+      if(partDesc.textContent!==wanted)partDesc.textContent=wanted;
+    }
+  }
+
+  function fixFooter(){
+    const x=T();
+    set('footer [data-i18n="sources"]',x.sources);
+    set('footer [data-i18n="footerNote"]',x.footer);
+  }
+
+  function run(){
+    wrapComparison();
+    repairArchitecture();
+    fixHero();
+    fixSpecs();
+    fixComparison();
+    fix3DMeta();
+    fixFooter();
+  }
+
+  qa("#architectureSection [data-tab]").forEach(btn=>{
+    if(btn.dataset.v1231Bound)return;
+    btn.dataset.v1231Bound="1";
+    btn.addEventListener("click",()=>setTimeout(repairArchitecture,20),true);
+  });
+  q("#language")?.addEventListener("change",()=>setTimeout(run,120));
+  q("#leftSelect")?.addEventListener("change",()=>setTimeout(fixComparison,20));
+  q("#rightSelect")?.addEventListener("change",()=>setTimeout(fixComparison,20));
+  q("#v5Model")?.addEventListener("change",()=>setTimeout(()=>{fix3DMeta();fixComparison();},30));
+  q("#specModel")?.addEventListener("change",()=>setTimeout(fixSpecs,20));
+  document.addEventListener("amdIntelLanguageApplied",()=>setTimeout(run,140));
+
+  let timer=0;
+  const observer=new MutationObserver(()=>{
+    clearTimeout(timer);
+    timer=setTimeout(run,90);
+  });
+  try{observer.observe(document.body,{subtree:true,childList:true});}catch(e){}
+  setTimeout(run,80);
+  setTimeout(run,450);
+  setTimeout(run,1200);
+})();
