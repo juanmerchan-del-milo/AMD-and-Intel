@@ -1,6 +1,6 @@
-/* PC Lab Builder 1.25.0 — historical, mobile and compact-system expansion.
-   Mobile/BGA processors are reference records only: they are soldered to a
-   laptop or mini-PC board and cannot be selected as desktop build parts. */
+/* PC Lab Builder 1.26.0 — historical, mobile and compact-system expansion.
+   Mobile/BGA processors require a platform-specific board. They are selectable
+   in the educational model, without declaring desktop compatibility. */
 (function (root) {
   'use strict';
 
@@ -153,5 +153,5 @@
     ...gpu
   }));
 
-  root.PC_CATALOG_VERSION = '1.25.0';
+  root.PC_CATALOG_VERSION = '1.26.0';
 })(typeof window !== 'undefined' ? window : globalThis);

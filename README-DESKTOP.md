@@ -1,4 +1,4 @@
-# PC Lab Builder 3D — escritorio 1.25.0
+# PC Lab Builder 3D — escritorio 1.26.0
 
 Aplicación educativa sin conexión para construir una PC en 3D, revisar compatibilidad preliminar y explorar el laboratorio AMD/Intel.
 

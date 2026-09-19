@@ -6,7 +6,7 @@ window.createPCViewer=function(host,onSelect,onFailure){
  try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){onFailure();return null}
  const coarse=matchMedia('(pointer:coarse)').matches||innerWidth<760;
  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
- let low=coarse,active=true,visible=true,dirty=true,raf=0,inFrame=false,auto=false,glassOn=false,explode=0,shownExplode=0,lastTime=0,model=null,groups={},fans=[],glass=null;
+ let low=coarse,active=true,visible=true,dirty=true,raf=0,inFrame=false,auto=false,glassOn=false,explode=0,shownExplode=0,lastTime=0,model=null,groups={},fans=[],glass=null,solderedCpu=false;
  const scene=new T.Scene(),camera=new T.PerspectiveCamera(35,1,.1,100);camera.position.set(8.6,5.1,9.4);
  renderer.outputColorSpace=T.SRGBColorSpace;renderer.setPixelRatio(Math.min(devicePixelRatio||1,coarse?1.15:1.5));renderer.setClearColor(0x000000,0);host.prepend(renderer.domElement);
  const controls=new T.OrbitControls(camera,renderer.domElement);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.1;controls.zoomSpeed=coarse?2.2:1.8;controls.rotateSpeed=coarse?.85:.72;controls.zoomToCursor=true;controls.enablePan=false;controls.minDistance=5.2;controls.maxDistance=25;controls.maxPolarAngle=Math.PI*.88;controls.update();
@@ -32,7 +32,7 @@ window.createPCViewer=function(host,onSelect,onFailure){
  function dispose(root){const geometries=new Set(),materials=new Set(),textures=new Set();root.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{materials.add(m);if(m.map)textures.add(m.map)})});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose())}
  function rebuild(build){
   if(model){scene.remove(model);dispose(model)}model=new T.Group();scene.add(model);groups={};fans=[];glass=null;
-  const b=PC_ENGINE.resolve(build);
+  const b=PC_ENGINE.resolve(build);solderedCpu=b.cpu?.packaging==='Soldado';
   if(b.case){const g=component('case');box(g,2.9,.13,4.2,0,-2.48,0,0x273140);box(g,2.9,.11,4.2,0,2.48,0,0x273140);box(g,.07,4.9,4.2,-1.43,0,0,0x18232d);
    for(const x of [-1.42,1.42])for(const z of [-2.04,2.04])box(g,.12,5,.12,x,0,z,0x3b4652);
    box(g,2.9,.8,.1,0,-2.05,2.04,0x27313f);box(g,2.9,.18,.1,0,2.34,2.04,0x27313f);
@@ -71,7 +71,7 @@ window.createPCViewer=function(host,onSelect,onFailure){
  const offsets={cpu:[2.9,1.7,-.2],gpu:[2.3,-.1,1.2],ram:[1.5,2.2,1.1],storage:[1.5,-.7,1.3],motherboard:[-.8,.3,-.3],psu:[.8,-1.1,-1.6],cooler:[2.6,1.8,-1.4],case:[0,0,0]};
  function invalidate(){dirty=true;if(!raf&&!inFrame&&active&&visible&&!document.hidden)raf=requestAnimationFrame(frame)}
  function frame(time){raf=0;if(!active||!visible||document.hidden)return;inFrame=true;const dt=Math.min((time-lastTime)/1000||.016,.05);lastTime=time;const moving=Math.abs(shownExplode-explode)>.001;
-  if(moving){shownExplode=reduce?explode:shownExplode+(explode-shownExplode)*Math.min(1,dt*14);Object.keys(groups).forEach(k=>groups[k].position.set(...offsets[k].map(v=>v*shownExplode)));dirty=true}
+  if(moving){shownExplode=reduce?explode:shownExplode+(explode-shownExplode)*Math.min(1,dt*14);Object.keys(groups).forEach(k=>groups[k].position.set(...offsets[k==='cpu'&&solderedCpu?'motherboard':k].map(v=>v*shownExplode)));dirty=true}
   if(auto&&!reduce){controls.autoRotate=true;controls.autoRotateSpeed=1.2;dirty=true}else controls.autoRotate=false;
   if(auto&&!low&&!reduce)fans.forEach(f=>f.rotation.z-=dt*1.5);
   const changed=controls.update();if(dirty||changed||auto||moving){renderer.render(scene,camera);dirty=false}

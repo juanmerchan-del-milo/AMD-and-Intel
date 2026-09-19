@@ -6,7 +6,7 @@
     inside:['Ver por dentro','Explore inside','探索内部'],
     kicker:['02 / ASÍ ESTÁ CONSTRUIDO','02 / HOW IT IS BUILT','02 / 内部构造'],
     title:['Desmonta. Descubre. Vuelve a montar.','Disassemble. Discover. Reassemble.','拆解 · 探索 · 重新组装'],
-    subtitle:['Explora las capas de una gráfica o un módulo de RAM sin cambiar tu configuración.','Explore the layers of a graphics card or RAM module without changing your build.','探索显卡或内存模块的分层结构，不会更改装机配置。'],
+    subtitle:['Abre CPU, gráfica, RAM y los demás componentes. Sigue el recorrido de los datos, la energía y el calor.','Open the CPU, GPU, RAM and other components. Follow the paths of data, power and heat.','打开 CPU、显卡、内存等组件，跟随数据、电能和热量的路径。'],
     model:['Modelo de referencia','Reference model','参考型号'],
     category:['Componente','Component','组件'],
     gpu:['Tarjeta gráfica','Graphics card','显卡'],
@@ -83,7 +83,8 @@
   const tr=(key,lang='es')=>(text[key]||[key,key,key])[{es:0,en:1,zh:2}[lang]||0];
   const sources={ram:'https://www.kingston.com/en/blog/pc-performance/ddr5-overview',gpu:'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/'};
   function profile(item,category,covered=true){
-    if(!item||!['gpu','ram'].includes(category))throw Error('Unsupported workshop component');
+    if(!item||!['cpu','gpu','ram','storage','motherboard','psu','cooler','case'].includes(category))throw Error('Unsupported workshop component');
+    if(!['gpu','ram'].includes(category))return finish(root.PC_WORKSHOP_COMPONENTS.profile(item,category));
     const parts=[],steps=[];
     const add=(id,key,desc,offset=[0,0,0],step=0)=>{parts.push({id,key,desc,offset,step});return id};
     if(category==='gpu'){
@@ -106,12 +107,17 @@
         steps.push(add('spreaderBack','spreaderBack','spreaderDesc',[0,0,-1.5],3));
       }
     }
-    return {category,item,parts,steps,max:steps.length,source:sources[category]};
+    return finish({category,item,parts,steps,max:steps.length,source:sources[category]});
   }
-  function offset(part,progress){
+  function finish(p){
+    let i=0;for(const part of p.parts){part.studyStep=p.max+1;part.studyOffset=[0,0,0];if(!part.step&&part.id!=='pcb'){const n=i++;part.studyOffset=[(n%3-1)*2.5,1+Math.floor(n/3)*1.5,(n%2?1:-1)*1.7]}}
+    return p;
+  }
+  function offset(part,progress,conceptual=false,spread=1){
+    if(conceptual&&!part.step){const n=Math.max(0,Math.min(1,progress-part.studyStep+1));return part.studyOffset.map(v=>n?v*n*n*(3-2*n)*spread:0)}
     const amount=part.step?Math.max(0,Math.min(1,progress-part.step+1)):0;
     const eased=amount*amount*(3-2*amount);
-    return part.offset.map(value=>eased?value*eased:0);
+    return part.offset.map(value=>eased?value*eased*spread:0);
   }
   root.PC_WORKSHOP_DATA={text,tr,profile,offset};
 })(typeof window!=='undefined'?window:globalThis);

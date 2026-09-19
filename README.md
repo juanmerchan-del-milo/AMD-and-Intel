@@ -1,4 +1,4 @@
-# PC Lab Builder 3D v1.25.0
+# PC Lab Builder 3D v1.26.0
 
 Constructor educativo de PC en 3D, catálogo de hardware y laboratorio de procesadores AMD/Intel para web, Android, Windows, Linux, macOS, iPhone y iPad.
 
@@ -10,7 +10,10 @@ Constructor educativo de PC en 3D, catálogo de hardware y laboratorio de proces
 - Almacenamiento SATA y perfiles PCIe 1.0, 2.0, 3.0, 4.0 y 5.0. La versión PCIe describe el enlace; no es la «versión del SSD».
 - Placas base, fuentes, refrigeración, gabinetes, potencia orientativa y comprobaciones preliminares de compatibilidad.
 - Constructor 3D con giro, zoom/pellizco fluido, explosión de componentes y perfiles de calidad.
-- Taller 3D de GPU y RAM: desmontaje/montaje por capas, selección de piezas, aislamiento, vistas superior/inferior y controles de zoom.
+- Taller 3D para las ocho categorías: CPU, GPU, RAM, almacenamiento, placa base, fuente, refrigeración y gabinete. Desmontaje continuo, separación ajustable, aislamiento, nombres sobre el modelo, cubiertas transparentes y vista ampliada.
+- Recorridos «Cómo funciona» de datos, energía y calor, con reproducción/pausa, pasos y velocidad ajustable. Las animaciones son explicativas, no mediciones.
+- Los 93 procesadores se pueden elegir: montaje de escritorio o maqueta educativa para las 25 CPU móviles/embebidas sin plataforma de escritorio validada. Las incompatibilidades reales siguen visibles.
+- Enlaces desde CPU Lab para elegir el procesador en el constructor o abrir su interior en el taller. El filtro de compatibilidad explica lo que oculta y permite mostrar todos los modelos.
 - Interiores con PCB, núcleo gráfico, VRAM/HBM, VRM, aletas, tubos de calor y contactos. DDR5 muestra PMIC; RDIMM incluye registro; SO-DIMM conserva su formato compacto.
 - Nombres y capacidades legibles: `512 MB`, `1 GB`, Founders Edition, perfiles traducidos y módulos DDR1 expresados en MB cuando corresponde.
 - CPU Lab reparado: Generaciones, Portátiles, Mini PC, NPU, filtros AMD/Intel/móvil/escritorio y vistas educativas.
@@ -18,7 +21,9 @@ Constructor educativo de PC en 3D, catálogo de hardware y laboratorio de proces
 
 El catálogo contiene modelos verificables y perfiles genéricos claramente identificados. No pretende representar cada SKU regional fabricado en la historia. La compatibilidad y el consumo son una orientación educativa: antes de comprar, confirma BIOS, QVL, dimensiones, conectores y límites del fabricante.
 
-El taller usa **geometría didáctica por familia, no escaneos de cada SKU**. La cantidad de chips, ventiladores y tornillos es ilustrativa. Los chips permanecen soldados; únicamente se separan cubiertas y capas térmicas. No es una guía para abrir o reparar hardware real. En RAM, la cubierta opcional no implica que el perfil elegido la incluya. Explorar no modifica la configuración hasta pulsar **Usar en mi PC**.
+La vista de alta definición se activa por defecto y ofrece alternativas de menor consumo.
+
+El taller usa **geometría didáctica por familia, no escaneos de cada SKU**. La cantidad de chips, ventiladores y tornillos es ilustrativa. En el desmontaje normal, los chips soldados permanecen unidos. La opción **Separar también uniones soldadas · esquema** permite apartarlos conceptualmente para estudiarlos. Las zonas CPU/caché/iGPU/NPU son un mapa funcional, no una distribución exacta del silicio. Las fuentes y discos duros se abren solo virtualmente. La maqueta educativa no representa una laptop o mini PC comercial ni confirma que las piezas se puedan conectar. No es una guía para abrir o reparar hardware real. En RAM, la cubierta opcional no implica que el perfil elegido la incluya. Explorar no modifica la configuración hasta pulsar **Usar en mi PC**.
 
 La vista DDR5 distingue PMIC y concentrador SPD según la [documentación de Kingston](https://www.kingston.com/en/blog/pc-performance/ddr5-overview). Los sistemas térmicos varían: véase el [diseño Founders Edition de NVIDIA](https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/). La placa [ASRock P4i65G](https://www.asrock.com/mb/Intel/P4i65G/index.asp) usa AGP, no PCIe, y el comprobador ahora rechaza esa combinación.
 
@@ -47,3 +52,7 @@ npm run check:mirrors
 ```
 
 Los datos están separados del motor de compatibilidad para poder ampliar el catálogo sin rehacer la interfaz. Consulta [README-DESKTOP.md](README-DESKTOP.md), [android-app/README.md](android-app/README.md) e [ios/README.md](ios/README.md) para cada plataforma.
+
+## Validación de 1.26.0
+
+Se prueban los 378 modelos procedurales, los 93 caminos de selección de CPU, el modo educativo, enlaces desde CPU Lab, conservación de configuraciones, las rutas funcionales en tres idiomas y el control del renderizador con WebGL simulado. Estas pruebas no sustituyen una comprobación de rendimiento o instalación en un dispositivo físico.

@@ -30,7 +30,7 @@ jobs:
       - run: ${{ matrix.command }}
       - uses: actions/upload-artifact@v4
         with:
-          name: PC-Lab-Builder-3D-1.25.0-${{ matrix.artifact }}
+          name: PC-Lab-Builder-3D-1.26.0-${{ matrix.artifact }}
           path: |
             release/*.exe
             release/*.AppImage

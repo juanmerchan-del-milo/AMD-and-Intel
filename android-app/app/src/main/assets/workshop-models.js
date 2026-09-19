@@ -2,7 +2,7 @@
 (function(root){
   'use strict';
   function create(T,profile){
-    const group=new T.Group(),parts={},materials=new Map(),fans=[];
+    const group=new T.Group(),parts={},materials=new Map(),fans=[],spinners=[];
     const mat=(color,metal=.25,rough=.55)=>{
       const key=[color,metal,rough].join(':');
       if(!materials.has(key))materials.set(key,new T.MeshStandardMaterial({color,metalness:metal,roughness:rough}));
@@ -61,7 +61,9 @@
       cylinder(rotor,r*.08,.085,[0,.05,0],0x859399);
     }
     const item=profile.item;
-    if(profile.category==='gpu'){
+    if(!['gpu','ram'].includes(profile.category)){
+      root.PC_WORKSHOP_COMPONENTS.create({T,parts,group,mat,box,cylinder,bevel,instances,coolingFan,traces,decal,item,profile,fans,spinners});
+    }else if(profile.category==='gpu'){
       const compact=item.watts<=75,w=compact?4.1:6.25,d=compact?1.75:2.45;
       const g=parts.pcb;box(g,[w,.075,d],[0,0,0],0x143b31);traces(g,w,d,.042);
       const tiny=[];for(let i=0;i<40;i++)tiny.push([-w/2+.25+(i%10)*.11,.082,-d/2+.2+Math.floor(i/10)*.18]);
@@ -160,7 +162,7 @@
         bevel(parts.strip,w-.1,.10,.42,[0,h/2+.075,0],0x9edfcf);
       }
     }
-    return {group,parts,fans};
+    return {group,parts,fans,spinners};
   }
   function dispose(group){
     const geometry=new Set(),materials=new Set(),textures=new Set();
