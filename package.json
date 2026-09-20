@@ -1,6 +1,6 @@
 {
   "name": "pc-lab-builder-3d",
-  "version": "1.26.0",
+  "version": "1.26.1",
   "description": "Constructor 3D educativo de PC con catálogo de CPU, GPU, RAM, almacenamiento, placas, fuentes y refrigeración.",
   "desktopName": "pc-lab-builder-3d.desktop",
   "main": "desktop/main.cjs",
@@ -35,6 +35,7 @@
       "index.html",
       "cpu-lab.html",
       "styles.css",
+      "onboarding.css",
       "catalog.js",
       "cpus.js",
       "catalog-extended.js",
@@ -51,6 +52,7 @@
       "workshop-models.js",
       "workshop.js",
       "app.js",
+      "onboarding.js",
       "v18-fixes.js",
       "lab-124-fixes.js",
       "pwa.js",
