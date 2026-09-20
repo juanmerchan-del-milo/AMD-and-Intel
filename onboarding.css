@@ -1,0 +1,49 @@
+/* Friendly CPU-family welcome screen shown before the main application */
+.cpu-welcome{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  overflow:auto;
+  background:
+    radial-gradient(circle at 12% 12%,rgba(108,155,255,.28),transparent 26%),
+    radial-gradient(circle at 88% 18%,rgba(255,130,90,.25),transparent 26%),
+    radial-gradient(circle at 50% 90%,rgba(127,235,211,.18),transparent 30%),
+    linear-gradient(155deg,#0b1224,#121c34 56%,#101725);
+  color:#f6f8ff;
+  padding:clamp(18px,4vw,44px);
+}
+.cpu-welcome[hidden]{display:none!important}
+.cpu-welcome-shell{max-width:1180px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+.cpu-welcome-top{text-align:center;max-width:820px;margin:0 auto 26px}
+.cpu-welcome-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:#ffffff12;border:1px solid #ffffff22;font-weight:800;font-size:12px;letter-spacing:.4px}
+.cpu-welcome-kicker::before{content:"✦";color:#ffd166}
+.cpu-welcome h1{font-size:clamp(30px,5vw,58px);line-height:1.04;letter-spacing:-1.8px;margin:14px 0 12px}
+.cpu-welcome-sub{font-size:clamp(14px,2vw,18px);color:#cad5ef;line-height:1.65;margin:0 auto}
+.cpu-family-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cpu-family{border-radius:28px;padding:22px;border:1px solid #ffffff20;background:#ffffff0d;box-shadow:0 20px 55px #00000040;overflow:hidden;position:relative}
+.cpu-family::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-80px;filter:blur(2px);opacity:.18;pointer-events:none}
+.cpu-family.intel::after{background:#58a6ff}.cpu-family.amd::after{background:#ff7d55}
+.cpu-family-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.cpu-family-name{display:flex;align-items:center;gap:11px;font-size:24px;font-weight:900;letter-spacing:-.5px}
+.cpu-family-logo{display:grid;place-items:center;width:44px;height:44px;border-radius:15px;font-weight:950}
+.intel .cpu-family-logo{background:#6da8ff;color:#071426}.amd .cpu-family-logo{background:#ff845f;color:#291008}
+.cpu-family-note{font-size:11px;color:#aebcda;text-align:right;max-width:180px}
+.cpu-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cpu-tier{min-width:0;border-radius:18px;padding:15px 11px;background:#0b1325aa;border:1px solid #ffffff18;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.cpu-tier:hover{transform:translateY(-4px);background:#14213b;border-color:#ffffff3b}
+.cpu-tier strong{display:block;font-size:21px;margin-bottom:7px}
+.intel .cpu-tier strong{color:#8ec2ff}.amd .cpu-tier strong{color:#ffab91}
+.cpu-tier p{font-size:11px;line-height:1.5;color:#c7d1e8;margin:0}
+.cpu-tier-meter{height:6px;border-radius:99px;background:#ffffff12;margin-top:12px;overflow:hidden}
+.cpu-tier-meter span{display:block;height:100%;border-radius:inherit}
+.intel .cpu-tier-meter span{background:linear-gradient(90deg,#64a8ff,#86e3ff)}
+.amd .cpu-tier-meter span{background:linear-gradient(90deg,#ff7d55,#ffd166)}
+.cpu-welcome-tip{margin:18px auto 0;max-width:920px;text-align:center;padding:13px 16px;border-radius:16px;background:#ffffff0b;border:1px dashed #ffffff28;color:#cdd8ef;font-size:12px;line-height:1.6}
+.cpu-welcome-actions{display:flex;justify-content:center;margin-top:22px}
+.cpu-welcome-continue{border:0!important;border-radius:999px!important;padding:14px 30px!important;min-width:190px;font-size:15px!important;font-weight:900!important;background:linear-gradient(135deg,#7febd3,#78a8ff)!important;color:#07151a!important;box-shadow:0 14px 36px #5bd7c23d;transition:transform .18s ease,box-shadow .18s ease!important}
+.cpu-welcome-continue:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 18px 42px #5bd7c255}
+.cpu-welcome-dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.cpu-welcome-dots i{width:7px;height:7px;border-radius:50%;background:#ffffff35}.cpu-welcome-dots i:nth-child(2){background:#7febd3}
+@media(max-width:900px){.cpu-family-grid{grid-template-columns:1fr}.cpu-welcome-shell{justify-content:flex-start}.cpu-tiers{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.cpu-welcome{padding:18px 12px}.cpu-family{padding:16px;border-radius:22px}.cpu-family-head{align-items:flex-start}.cpu-family-note{font-size:10px}.cpu-tier{padding:13px 10px}.cpu-tier strong{font-size:18px}.cpu-tier p{font-size:10px}.cpu-welcome h1{font-size:33px}.cpu-welcome-sub{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.cpu-tier,.cpu-welcome-continue{transition:none!important}}
