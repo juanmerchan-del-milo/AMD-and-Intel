@@ -1,0 +1,67 @@
+/* Compact CPU-family welcome shown before the main application */
+.cpu-welcome{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  overflow:auto;
+  background:
+    radial-gradient(circle at 10% 8%,rgba(85,151,255,.24),transparent 25%),
+    radial-gradient(circle at 92% 12%,rgba(255,124,88,.22),transparent 26%),
+    linear-gradient(155deg,#0b1224,#121b31 58%,#0d1424);
+  color:#f7f9ff;
+  padding:20px 16px 34px;
+}
+.cpu-welcome[hidden]{display:none!important}
+.cpu-welcome-shell{max-width:1060px;margin:0 auto;min-height:calc(100vh + 70px);display:flex;flex-direction:column}
+.cpu-welcome-top{text-align:center;max-width:760px;margin:8px auto 18px}
+.cpu-welcome-kicker{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:#ffffff10;border:1px solid #ffffff1f;font-weight:800;font-size:11px}
+.cpu-welcome-kicker::before{content:"✦";color:#ffd166}
+.cpu-welcome h1{font-size:clamp(26px,4.2vw,44px);line-height:1.06;letter-spacing:-1.2px;margin:11px 0 9px}
+.cpu-welcome-sub{max-width:690px;font-size:clamp(12px,1.7vw,15px);color:#cbd5ec;line-height:1.55;margin:0 auto}
+.cpu-family-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cpu-family{border-radius:22px;padding:16px;border:1px solid #ffffff1d;background:#ffffff0b;box-shadow:0 16px 42px #00000032;position:relative;overflow:hidden}
+.cpu-family::after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-52px;top:-58px;opacity:.16;pointer-events:none}
+.cpu-family.intel::after{background:#58a6ff}.cpu-family.amd::after{background:#ff7d55}
+.cpu-family-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.cpu-family-name{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:900;letter-spacing:-.3px}
+.cpu-family-logo{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;font-weight:950;font-size:14px}
+.intel .cpu-family-logo{background:#6da8ff;color:#071426}.amd .cpu-family-logo{background:#ff845f;color:#291008}
+.cpu-family-note{font-size:9px;color:#aebcda;text-align:right;max-width:145px}
+.cpu-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cpu-tier{min-width:0;border-radius:14px;padding:11px 9px;background:#0b1325a8;border:1px solid #ffffff16;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.cpu-tier:hover{transform:translateY(-2px);background:#14213b;border-color:#ffffff32}
+.cpu-tier strong{display:block;font-size:16px;margin-bottom:5px}
+.intel .cpu-tier strong{color:#8ec2ff}.amd .cpu-tier strong{color:#ffab91}
+.cpu-tier p{font-size:9.5px;line-height:1.42;color:#c7d1e8;margin:0}
+.cpu-tier-meter{height:4px;border-radius:99px;background:#ffffff10;margin-top:9px;overflow:hidden}
+.cpu-tier-meter span{display:block;height:100%;border-radius:inherit}
+.intel .cpu-tier-meter span{background:linear-gradient(90deg,#64a8ff,#86e3ff)}
+.amd .cpu-tier-meter span{background:linear-gradient(90deg,#ff7d55,#ffd166)}
+.cpu-welcome-tip{margin:14px auto 0;max-width:850px;text-align:center;padding:10px 13px;border-radius:13px;background:#ffffff09;border:1px dashed #ffffff24;color:#cdd8ef;font-size:10px;line-height:1.5}
+.cpu-welcome-more{margin:auto auto 0;padding-top:46px;text-align:center;color:#9fb0cf;font-size:10px;letter-spacing:.2px}
+.cpu-welcome-more span{display:block;font-size:18px;line-height:1;margin-top:4px;animation:cpuBounce 1.5s ease-in-out infinite}
+.cpu-welcome-actions{display:flex;justify-content:center;margin-top:12px;padding-bottom:4px}
+.cpu-welcome-continue{border:0!important;border-radius:999px!important;padding:12px 26px!important;min-width:170px;font-size:13px!important;font-weight:900!important;background:linear-gradient(135deg,#7febd3,#78a8ff)!important;color:#07151a!important;box-shadow:0 12px 30px #5bd7c23d;transition:transform .16s ease,box-shadow .16s ease!important}
+.cpu-welcome-continue:hover{transform:translateY(-2px) scale(1.015);box-shadow:0 16px 34px #5bd7c250}
+@keyframes cpuBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media(max-width:860px){
+  .cpu-family-grid{grid-template-columns:1fr}
+  .cpu-welcome-shell{min-height:calc(100vh + 110px)}
+  .cpu-tiers{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:620px){
+  .cpu-welcome{padding:16px 10px 28px}
+  .cpu-welcome-top{margin-bottom:14px}
+  .cpu-family{padding:13px;border-radius:18px}
+  .cpu-family-head{align-items:flex-start}
+  .cpu-family-name{font-size:17px}
+  .cpu-family-note{font-size:8.5px}
+  .cpu-tiers{grid-template-columns:repeat(2,1fr)}
+  .cpu-tier{padding:10px 9px}
+  .cpu-tier strong{font-size:15px}
+  .cpu-tier p{font-size:9px}
+  .cpu-welcome h1{font-size:29px}
+  .cpu-welcome-sub{font-size:12px}
+  .cpu-welcome-more{padding-top:34px}
+}
+@media(prefers-reduced-motion:reduce){.cpu-tier,.cpu-welcome-continue{transition:none!important}.cpu-welcome-more span{animation:none}}
