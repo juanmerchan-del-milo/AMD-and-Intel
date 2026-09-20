@@ -13,11 +13,49 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icons/icon-192.png">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./styles.css">\n<link rel="stylesheet" href="./onboarding.css">
 <link rel="stylesheet" href="./workshop.css">
 <link rel="stylesheet" href="./desktop/desktop.css">
 </head>
 <body>
+<section id="cpuFamilyWelcome" class="cpu-welcome" aria-labelledby="cpuWelcomeTitle">
+  <div class="cpu-welcome-shell">
+    <div class="cpu-welcome-top">
+      <span class="cpu-welcome-kicker" data-welcome="kicker">Guía rápida de procesadores</span>
+      <h1 id="cpuWelcomeTitle" data-welcome="title">Conoce las familias antes de entrar</h1>
+      <p class="cpu-welcome-sub" data-welcome="sub"></p>
+    </div>
+    <div class="cpu-family-grid">
+      <article class="cpu-family intel">
+        <div class="cpu-family-head">
+          <div class="cpu-family-name"><span class="cpu-family-logo">I</span><span>Intel Core</span></div>
+          <span class="cpu-family-note" data-welcome="intelNote"></span>
+        </div>
+        <div class="cpu-tiers">
+          <div class="cpu-tier"><strong>Core i3</strong><p data-welcome="intel3"></p><div class="cpu-tier-meter"><span style="width:35%"></span></div></div>
+          <div class="cpu-tier"><strong>Core i5</strong><p data-welcome="intel5"></p><div class="cpu-tier-meter"><span style="width:55%"></span></div></div>
+          <div class="cpu-tier"><strong>Core i7</strong><p data-welcome="intel7"></p><div class="cpu-tier-meter"><span style="width:78%"></span></div></div>
+          <div class="cpu-tier"><strong>Core i9</strong><p data-welcome="intel9"></p><div class="cpu-tier-meter"><span style="width:100%"></span></div></div>
+        </div>
+      </article>
+      <article class="cpu-family amd">
+        <div class="cpu-family-head">
+          <div class="cpu-family-name"><span class="cpu-family-logo">A</span><span>AMD Ryzen</span></div>
+          <span class="cpu-family-note" data-welcome="amdNote"></span>
+        </div>
+        <div class="cpu-tiers">
+          <div class="cpu-tier"><strong>Ryzen 3</strong><p data-welcome="amd3"></p><div class="cpu-tier-meter"><span style="width:35%"></span></div></div>
+          <div class="cpu-tier"><strong>Ryzen 5</strong><p data-welcome="amd5"></p><div class="cpu-tier-meter"><span style="width:55%"></span></div></div>
+          <div class="cpu-tier"><strong>Ryzen 7</strong><p data-welcome="amd7"></p><div class="cpu-tier-meter"><span style="width:78%"></span></div></div>
+          <div class="cpu-tier"><strong>Ryzen 9</strong><p data-welcome="amd9"></p><div class="cpu-tier-meter"><span style="width:100%"></span></div></div>
+        </div>
+      </article>
+    </div>
+    <p class="cpu-welcome-tip" data-welcome="tip"></p>
+    <div class="cpu-welcome-more"><span data-welcome="more"></span><span aria-hidden="true">↓</span></div>
+    <div class="cpu-welcome-actions"><button id="cpuFamilyContinue" class="cpu-welcome-continue" type="button" data-welcome="continue">Continuar</button></div>
+  </div>
+</section>\n
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg"><defs>
 <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 2v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3"/></symbol>
 <symbol id="i-gpu" viewBox="0 0 24 24"><path d="M2 6h19v12H4V6m0 12v3m4-3v3m4-3v3"/><circle cx="9" cy="12" r="3"/><circle cx="16" cy="12" r="3"/></symbol>
@@ -70,5 +108,5 @@
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><div class="modal-heading"><h2 id="modalTitle"></h2><button id="closeModal" class="icon-btn" aria-label="Close">×</button></div><div id="modalContent"></div></div></div><div id="toast" role="status" aria-live="polite"></div>
 <script src="./vendor/three.min.js"></script><script src="./vendor/OrbitControls.js"></script><script src="./catalog.js"></script><script src="./cpus.js"></script><script src="./catalog-extended.js"></script><script src="./i18n.js"></script><script src="./hardware.js"></script><script src="./glossary.js"></script><script src="./engine.js"></script><script src="./viewer.js"></script><script src="./workshop-data.js"></script><script src="./workshop-components.js"></script><script src="./workshop-lessons.js"></script><script src="./workshop-models.js"></script><script src="./app.js"></script><script src="./workshop.js"></script><script src="./pwa.js"></script><script src="./desktop/renderer.js"></script>
-</body>
+<script src="./onboarding.js"></script>\n</body>
 </html>
