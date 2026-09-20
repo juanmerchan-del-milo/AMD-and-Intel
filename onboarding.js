@@ -7,53 +7,56 @@ if(!intro||!button)return;
 const copy={
  es:{
   kicker:'Guía rápida de procesadores',
-  title:'Antes de empezar: conoce las familias de CPU',
-  sub:'Los números 3, 5, 7 y 9 sirven como una guía rápida del nivel de cada familia. Mira qué suele ofrecer cada una y luego entra a la aplicación.',
-  intelNote:'Intel Core · nivel general',
-  amdNote:'AMD Ryzen · nivel general',
-  intel3:'Clases, internet, tareas y juegos ligeros.',
-  intel5:'Equilibrio para gaming, estudio y multitarea.',
-  intel7:'Gaming exigente, edición y creación de contenido.',
-  intel9:'Trabajo pesado, renderizado y alto rendimiento.',
-  amd3:'Clases, internet, tareas y juegos ligeros.',
-  amd5:'Equilibrio para gaming, estudio y multitarea.',
-  amd7:'Gaming exigente, edición y creación de contenido.',
-  amd9:'Trabajo pesado, renderizado y alto rendimiento.',
-  tip:'Importante: un número más alto suele indicar una gama superior, pero el rendimiento real también depende de la generación y del modelo exacto.',
+  title:'Conoce las familias antes de entrar',
+  sub:'Aquí tienes una idea corta de Intel Core y AMD Ryzen. Es solo una guía rápida: dentro de la app puedes ver modelos, generaciones, núcleos, hilos, gráficos integrados y más.',
+  intelNote:'Intel Core · de entrada a alta gama',
+  amdNote:'AMD Ryzen · de entrada a alta gama',
+  intel3:'Gama de entrada. Tareas, clases, internet y uso diario.',
+  intel5:'Gama media. Buen equilibrio para juegos y multitarea.',
+  intel7:'Gama alta. Juegos exigentes, edición y trabajo pesado.',
+  intel9:'Tope de gama. Renderizado, creación y cargas intensas.',
+  amd3:'Gama de entrada. Tareas, clases, internet y uso diario.',
+  amd5:'Gama media. Buen equilibrio para juegos y multitarea.',
+  amd7:'Gama alta. Juegos exigentes, edición y trabajo pesado.',
+  amd9:'Tope de gama. Renderizado, creación y cargas intensas.',
+  tip:'El número ayuda a ubicar la gama, pero no decide todo: también importan la generación, el modelo exacto, los núcleos, los hilos, la frecuencia, la caché y la potencia.',
+  more:'¿Quieres seguir viendo la aplicación?',
   continue:'Continuar'
  },
  en:{
   kicker:'Quick processor guide',
-  title:'Before you start: meet the CPU families',
-  sub:'The numbers 3, 5, 7 and 9 are a quick guide to each family’s general tier. See what each one is usually made for, then enter the app.',
-  intelNote:'Intel Core · general tier',
-  amdNote:'AMD Ryzen · general tier',
-  intel3:'Classes, web, everyday tasks and light games.',
-  intel5:'Balanced for gaming, school and multitasking.',
-  intel7:'Demanding gaming, editing and content creation.',
-  intel9:'Heavy workloads, rendering and high performance.',
-  amd3:'Classes, web, everyday tasks and light games.',
-  amd5:'Balanced for gaming, school and multitasking.',
-  amd7:'Demanding gaming, editing and content creation.',
-  amd9:'Heavy workloads, rendering and high performance.',
-  tip:'Important: a higher number usually means a higher tier, but real performance also depends on the generation and exact model.',
+  title:'Meet the CPU families before entering',
+  sub:'Here is a short overview of Intel Core and AMD Ryzen. It is only a quick guide: inside the app you can explore models, generations, cores, threads, integrated graphics and more.',
+  intelNote:'Intel Core · entry to high-end',
+  amdNote:'AMD Ryzen · entry to high-end',
+  intel3:'Entry tier. School, web, everyday tasks and light use.',
+  intel5:'Mid tier. A balanced choice for gaming and multitasking.',
+  intel7:'High tier. Demanding games, editing and heavier work.',
+  intel9:'Top tier. Rendering, creation and intensive workloads.',
+  amd3:'Entry tier. School, web, everyday tasks and light use.',
+  amd5:'Mid tier. A balanced choice for gaming and multitasking.',
+  amd7:'High tier. Demanding games, editing and heavier work.',
+  amd9:'Top tier. Rendering, creation and intensive workloads.',
+  tip:'The number helps show the tier, but it does not tell the whole story: generation, exact model, cores, threads, clock speed, cache and power also matter.',
+  more:'Want to keep exploring the app?',
   continue:'Continue'
  },
  zh:{
   kicker:'处理器快速指南',
-  title:'开始之前：先认识 CPU 系列',
-  sub:'3、5、7、9 可以快速表示产品的大致级别。先看看每个级别通常适合什么，再进入应用。',
-  intelNote:'Intel Core · 大致级别',
-  amdNote:'AMD Ryzen · 大致级别',
-  intel3:'上课、上网、日常任务和轻度游戏。',
-  intel5:'适合游戏、学习和多任务的均衡选择。',
-  intel7:'高要求游戏、剪辑和内容创作。',
-  intel9:'重负载、渲染和高性能任务。',
-  amd3:'上课、上网、日常任务和轻度游戏。',
-  amd5:'适合游戏、学习和多任务的均衡选择。',
-  amd7:'高要求游戏、剪辑和内容创作。',
-  amd9:'重负载、渲染和高性能任务。',
-  tip:'提示：数字更高通常表示更高的产品级别，但实际性能还取决于处理器代际和具体型号。',
+  title:'进入应用前先认识处理器系列',
+  sub:'这里简单介绍 Intel Core 和 AMD Ryzen。进入应用后还可以查看型号、代际、核心、线程、集成显卡等更多信息。',
+  intelNote:'Intel Core · 从入门到高端',
+  amdNote:'AMD Ryzen · 从入门到高端',
+  intel3:'入门级。适合学习、上网和日常任务。',
+  intel5:'中端。适合游戏和多任务，比较均衡。',
+  intel7:'高端。适合高要求游戏、剪辑和较重任务。',
+  intel9:'旗舰级。适合渲染、创作和高负载工作。',
+  amd3:'入门级。适合学习、上网和日常任务。',
+  amd5:'中端。适合游戏和多任务，比较均衡。',
+  amd7:'高端。适合高要求游戏、剪辑和较重任务。',
+  amd9:'旗舰级。适合渲染、创作和高负载工作。',
+  tip:'数字可以帮助判断大致级别，但不是全部。处理器代际、具体型号、核心、线程、频率、缓存和功耗也很重要。',
+  more:'想继续查看应用吗？',
   continue:'继续'
  }
 };
@@ -66,14 +69,15 @@ function apply(){
 }
 function close(){
  intro.hidden=true;
- try{sessionStorage.setItem('pc-lab-cpu-welcome','seen')}catch{}
- document.querySelector('main')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+ document.querySelector('main')?.scrollIntoView({
+  behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',
+  block:'start'
+ });
 }
 button.addEventListener('click',close);
 language?.addEventListener('change',apply);
 apply();
 try{
- const hasDeepLink=/cpu=/.test(location.hash);
- if(sessionStorage.getItem('pc-lab-cpu-welcome')==='seen'||hasDeepLink)intro.hidden=true;
+ if(/cpu=/.test(location.hash))intro.hidden=true;
 }catch{}
 })();
